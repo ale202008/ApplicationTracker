@@ -25,16 +25,34 @@ class Source(models.Model):
     class Meta:
         managed=True
 
+class Location(models.Model):
+    name = models.CharField(max_length=50)
+    
+    def __str__(self):
+        return self.name
+    
+    class Meta:
+        managed=True
+
+class Employer(models.Model):
+    name = models.CharField(max_length=50)
+    
+    def __str__(self):
+        return self.name
+    
+    class Meta:
+        managed=True
+
 class Application(models.Model):
     # Everything a job application might have that I would like to record, and status of application
     status = models.ForeignKey(Status, on_delete=models.CASCADE)
     application_id = models.IntegerField(null=False)
-    location = models.CharField(max_length=255, null=False)
-    employer = models.CharField(max_length=255, null=False)
+    location = models.ForeignKey(Location, on_delete=models.CASCADE)
+    employer = models.ForeignKey(Employer, on_delete=models.CASCADE)
     position = models.CharField(max_length=255, null=False)
     pay = models.IntegerField(null=False)
     desc = models.TextField()
-    source = models.ForeignKey(Source, on_delete=models.CASCADE, default=1)
+    source = models.ForeignKey(Source, on_delete=models.CASCADE)
     notes = models.TextField(null=True, blank=True)
     application_date = models.DateField(null=True, blank=True)
     img_url = models.URLField(null=True)
@@ -49,7 +67,7 @@ class Application(models.Model):
         (INOFFICE, "InOffice"),
         (CONTRACT, "Contract")
     ]    
-    exployment_type = models.CharField(max_length=10, choices=EMPLOYMENT_CHOICES)
+    employment_type = models.CharField(max_length=10, choices=EMPLOYMENT_CHOICES)
     created_at = models.DateTimeField(auto_now_add=True, blank=True)
     
     def update_status(self, new_status):
