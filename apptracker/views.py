@@ -6,8 +6,27 @@ from apptracker.models import *
 # Create your views here.
 
 def application_submission(request):
-    location = request.POST.get('location')
-    print("LOCATION", location)
+    position = request.POST.get('position')
+    pay = request.POST.get('pay')
+    employer = request.POST.get('employer') if request.POST.get('employer') else request.POST.get('other_employer')
+    location = request.POST.get('location') if request.POST.get('location') else request.POST.get('other_location')
+    employment_type =  request.POST.get('employment_type')
+    source = request.POST.get('source') if request.POST.get('source') else request.POST.get('other_source')
+    description = request.POST.get('description')
+    notes = request.POST.get('notes')
+    
+    print(
+        "Position:", position,
+        "Pay:", pay,
+        "employer:", employer,
+        "location:", location,
+        "employment_type:", employment_type,
+        "source:", source,
+        "description:", description,
+        "notes:", notes,
+    )
+    
+
     
     
     return JsonResponse({'success': True})
