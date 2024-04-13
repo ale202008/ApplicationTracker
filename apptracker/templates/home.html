@@ -15,24 +15,25 @@
 
                 <div class="row">
 
-
                   <div class="col-md-6 mb-3">
                     <label for="position" class="form-label">Position</label>
                     <input class="form-control" id="position_id" name="position">
                   </div>
+
                   <div class="col-md-6 mb-3">
                     <label for="employer" class="form-label">Employer</label>
                     <input class="form-control" id="employer_id" name="employer">
                   </div>
+
                   <div class="col-md-6 mb-3">
                     <label for="location" class="form-label">Location</label>
                     <input class="form-control" id="location_id" name="location">
                   </div>
+
                   <div class="col-md-6 mb-3">
                     <label for="" class="form-label">Pay</label>
                     <input class="form-control" type="number" id="pay_id" name="pay">
                   </div>
-
 
                   <div class="col-md-6 mb-3">
                     <label for="employment_type" class="form-label">Employment Type</label>
@@ -43,9 +44,16 @@
                       {% endfor %}
                     </select>
                   </div>
+
                   <div class="col-md-6 mb-3">
                     <label for="source" class="form-label">Source</label>
-                    <input class="form-control" id="source_id" name="source">
+                    <select class="form-select" id="source_id" name="source">
+                      <option value="">Select Source</option>
+                      {% for choice in source_choices %}
+                          <option value="{{ choice.0 }}">{{ choice.1 }}</option>
+                      {% endfor %}
+                      <option value="other">Other</option>
+                    </select>
                   </div>
 
 
@@ -53,6 +61,7 @@
                     <label for="description" class="form-label">Description</label>
                     <textarea class="form-control" id="description_id" name="description"></textarea>
                   </div>
+
                   <div class="mb-3">
                     <label for="notes" class="form-label">Notes</label>
                     <textarea class="form-control" id="notes_id" name="notes"></textarea>

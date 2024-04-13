@@ -16,9 +16,11 @@ def application_submission(request):
 class HomeView(View):
     def get(self, request):
         employment_choices = Application.EMPLOYMENT_CHOICES
+        source_choices = Source.objects.all() if Source.objects.exists() else None
         
         context = {
-            "employment_choices": employment_choices
+            "employment_choices": employment_choices,
+            'source_choices': source_choices
         }
         
         return render(request, 'home.html', context)
