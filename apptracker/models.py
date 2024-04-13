@@ -50,5 +50,8 @@ class Application(models.Model):
         # Return a queryset of available transitions based on current status
         return Status.objects.filter(transitions_from=self.status)
     
+    def __str__(self):
+        return (self.application_id, ":", self.position, "at", self.location)
+    
     class Meta:
         managed=True

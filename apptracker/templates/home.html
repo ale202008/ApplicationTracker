@@ -7,44 +7,51 @@
     <div class="row justify-content-center align-items-center">
         <div class="col-md-6 d-flex align-items-center justify-content-center vh-100">
             <div class="card" style="width: 75%;">
-              <div class="card-header">
+              <div class="card-header text-center">
                 Application Submission
               </div>
               <form class="applicationForm p-3">
+                {% csrf_token %}
+                
                 <div class="row">
 
 
                   <div class="col-md-6 mb-3">
-                    <label for="" class="form-label">Position</label>
-                    <input type="" class="form-control" id="">
+                    <label for="position" class="form-label">Position</label>
+                    <input class="form-control" id="position">
                   </div>
                   <div class="col-md-6 mb-3">
-                    <label for="" class="form-label">Employer</label>
-                    <input type="" class="form-control" id="">
+                    <label for="employer" class="form-label">Employer</label>
+                    <input class="form-control" id="employer">
                   </div>
                   <div class="col-md-6 mb-3">
-                    <label for="" class="form-label">Location</label>
-                    <input type="" class="form-control" id="">
+                    <label for="location" class="form-label">Location</label>
+                    <input class="form-control" id="location">
                   </div>
                   <div class="col-md-6 mb-3">
                     <label for="" class="form-label">Pay</label>
-                    <input type="" class="form-control" id="">
+                    <input class="form-control" id="">
                   </div>
                   <div class="col-md-6 mb-3">
-                    <label for="" class="form-label">Employment Type</label>
-                    <input type="" class="form-control" id="">
+                    <label for="employment_type" class="form-label">Employment Type</label>
+                    <select class="form-select" name="employment_type" id="employment_type">
+                      {% for choice in employment_choices %}
+                          <option value="{{ choice.0 }}">{{ choice.1 }}</option>
+                      {% endfor %}
+                    </select>
                   </div>
                   <div class="col-md-6 mb-3">
-                    <label for="" class="form-label">Source</label>
-                    <input type="" class="form-control" id="">
+                    <label for="source" class="form-label">Source</label>
+                    <input class="form-control" id="source">
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="description" class="form-label">Description</label>
+                    <textarea class="form-control" id="description"></textarea>
                   </div>
                   <div class="mb-3">
-                    <label for="" class="form-label">Description</label>
-                    <input type="" class="form-control" id="">
-                  </div>
-                  <div class="mb-3">
-                    <label for="" class="form-label">Notes</label>
-                    <input type="" class="form-control" id="">
+                    <label for="notes" class="form-label">Notes</label>
+                    <textarea class="form-control" id="notes"></textarea>
                   </div>
   
   
@@ -60,4 +67,6 @@
     </div>
 </div>
 
+
+<script src="{% static 'js/applicationsubmission.js' %}"></script>
 {% endblock %}

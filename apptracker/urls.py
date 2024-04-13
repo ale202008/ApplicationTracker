@@ -7,4 +7,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', HomeView.as_view(), name='home'),
     
+    
+    # For Endpoints
+    path('application_submission/', application_submission, name='application_submission'),
+    
 ]
