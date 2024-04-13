@@ -3,19 +3,6 @@ from django.utils import timezone
 from .models import *
 
 # Create your models here.
-class Status(models.Model):
-    # Holds all the potential statuses of application I might need while also allowing the ability to update and add
-    name = models.CharField(max_length=50)
-    # Creates a me to check which status leads into which
-    transitions_from = models.ManyToManyField('self', symmetrical=False, related_name='transitions', blank=True)
-    
-    # Name
-    def __str__(self):
-        return self.name
-    
-    class Meta:
-        managed=True
-        
 class Source(models.Model):
     name = models.CharField(max_length=50)
     
@@ -43,9 +30,15 @@ class Employer(models.Model):
     class Meta:
         managed=True
 
+class Status(models.Model):
+    name = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.name
+
 class Application(models.Model):
     # Everything a job application might have that I would like to record, and status of application
-    status = models.ForeignKey(Status, on_delete=models.CASCADE)
+    status = status = models.ForeignKey(Status, on_delete=models.CASCADE, default=1)
     application_id = models.IntegerField(null=False)
     location = models.ForeignKey(Location, on_delete=models.CASCADE)
     employer = models.ForeignKey(Employer, on_delete=models.CASCADE)
@@ -79,7 +72,7 @@ class Application(models.Model):
         return Status.objects.filter(transitions_from=self.status)
     
     def __str__(self):
-        return (self.application_id, ":", self.position, "at", self.location)
+        return f"{self.application_id, self.position, self.location.name, self.employer.name}"
     
     class Meta:
         managed=True

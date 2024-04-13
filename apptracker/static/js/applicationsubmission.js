@@ -2,12 +2,7 @@ $(document).ready(function() {
   $('.applicationForm').submit(function(event) {
       event.preventDefault(); // Prevent default form submission
 
-      var formData = {}; // Initialize an empty object to hold form data
-
-      // Serialize regular form fields
-      $(this).find('input, select, textarea').each(function() {
-          formData[$(this).attr('name')] = $(this).val();
-      });
+      var formData = new FormData(this); // Initialize FormData with the form data
 
       // Loop through 'other_' fields and append them to formData object
       $('[id^="other_"]').each(function() {
@@ -15,35 +10,34 @@ $(document).ready(function() {
           var selectField = document.getElementById(fieldName + '_id');
           var selectedValue = selectField.options[selectField.selectedIndex].value;
           if (selectedValue === "other") {
-              formData[fieldName] = $(this).val();
+              formData.append(fieldName, $(this).val());
           }
       });
-
-      // Convert formData object to FormData
-      var formDataObject = new FormData();
-      for (var key in formData) {
-          formDataObject.append(key, formData[key]);
-      }
 
       $.ajax({
-          type: 'POST',
-          url: '/application_submission/',
-          data: formDataObject, // Use formDataObject instead of formData
-          processData: false, // Prevent jQuery from automatically converting formDataObject to a query string
-          contentType: false, // Prevent jQuery from automatically setting Content-Type header
-          success: function(response) {
-              // Handle successful response
-              console.log(response);
-              alert('Form submitted successfully!');
-              $('.applicationForm').trigger('reset');
-              $('[id^="other_"]').addClass('d-none');
-          },
-          error: function(xhr, status, error) {
-              // Handle errors
-              console.error(xhr.responseText);
-              alert('Error submitting form!');
-          }
-      });
+        type: 'POST',
+        url: '/application_submission/',
+        data: formData, // Use formData object
+        processData: false, // Prevent jQuery from automatically converting formDataObject to a query string
+        contentType: false, // Prevent jQuery from automatically setting Content-Type header
+        beforeSend: function(xhr, settings) {
+            xhr.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');
+        },
+        success: function(response) {
+            // Handle successful response
+            console.log(response);
+            alert('Form submitted successfully!');
+            $('.applicationForm').trigger('reset');
+            $('[id^="other_"]').addClass('d-none');
+        },
+        error: function(xhr, status, error) {
+            // Handle errors
+            console.error(xhr.responseText);
+            alert('Error submitting form!');
+        }
+    });
+    
+
   });
 });
 
