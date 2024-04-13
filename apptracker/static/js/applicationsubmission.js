@@ -1,7 +1,9 @@
 $(document).ready(function() {
     $('.applicationForm').submit(function(event) {
         event.preventDefault(); // Prevent default form submission
+
         var formData = $(this).serialize(); // Serialize form data
+        
         $.ajax({
             type: 'POST',
             url: '/application_submission/',

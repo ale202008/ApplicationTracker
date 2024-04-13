@@ -6,6 +6,10 @@ from apptracker.models import *
 # Create your views here.
 
 def application_submission(request):
+    location = request.POST.get('location')
+    print("LOCATION", location)
+    
+    
     return JsonResponse({'success': True})
     
 

@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from .models import *
 
 # Create your models here.
 class Status(models.Model):
@@ -9,6 +10,15 @@ class Status(models.Model):
     transitions_from = models.ManyToManyField('self', symmetrical=False, related_name='transitions', blank=True)
     
     # Name
+    def __str__(self):
+        return self.name
+    
+    class Meta:
+        managed=True
+        
+class Source(models.Model):
+    name = models.CharField(max_length=50)
+    
     def __str__(self):
         return self.name
     
@@ -24,7 +34,7 @@ class Application(models.Model):
     position = models.CharField(max_length=255, null=False)
     pay = models.IntegerField(null=False)
     desc = models.TextField()
-    source = models.CharField(max_length=100, null=True, blank=True)
+    source = models.ForeignKey(Source, on_delete=models.CASCADE, default=1)
     notes = models.TextField(null=True, blank=True)
     application_date = models.DateField(null=True, blank=True)
     img_url = models.URLField(null=True)
