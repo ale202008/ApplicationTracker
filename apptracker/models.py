@@ -27,6 +27,7 @@ class Application(models.Model):
     source = models.CharField(max_length=100, null=True, blank=True)
     notes = models.TextField(null=True, blank=True)
     application_date = models.DateField(null=True, blank=True)
+    img_url = models.URLField(null=True)
     
     REMOTE = "R"
     HYBRID = "H"
@@ -39,7 +40,6 @@ class Application(models.Model):
         (CONTRACT, "Contract")
     ]    
     exployment_type = models.CharField(max_length=10, choices=EMPLOYMENT_CHOICES)
-    
     created_at = models.DateTimeField(auto_now_add=True, blank=True)
     
     def update_status(self, new_status):
