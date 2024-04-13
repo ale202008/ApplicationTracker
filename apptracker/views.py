@@ -53,9 +53,9 @@ def application_submission(request):
 class HomeView(View):
     def get(self, request):
         employment_choices = Application.EMPLOYMENT_CHOICES
-        source_choices = Source.objects.all() if Source.objects.exists() else None
-        employer_choices = Employer.objects.all() if Employer.objects.exists() else None
-        location_choices = Location.objects.all() if Location.objects.exists() else None
+        source_choices = list(Source.objects.values_list('name', flat=True)) if Source.objects.exists() else None
+        employer_choices = list(Employer.objects.values_list('name', flat=True)) if Employer.objects.exists() else None
+        location_choices = list(Location.objects.values_list('name', flat=True)) if Location.objects.exists() else None
         
         context = {
             'employment_choices': employment_choices,

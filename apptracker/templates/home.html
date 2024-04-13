@@ -29,7 +29,7 @@
                       <select class="form-select" id="employer_id" name="employer">
                         <option value="">Select Employer</option>
                         {% for choice in employer_choices %}
-                            <option value="{{ choice.0 }}">{{ choice.1 }}</option>
+                            <option value="{{ choice }}">{{ choice }}</option>
                         {% endfor %}
                         <option value="other">Other...</option>
                       </select>
@@ -66,7 +66,7 @@
                       <select class="form-select" id="location_id" name="location">
                         <option value="">Select Location</option>
                         {% for choice in location_choices %}
-                            <option value="{{ choice.0 }}">{{ choice.1 }}</option>
+                            <option value="{{ choice }}">{{ choice }}</option>
                         {% endfor %}
                         <option value="other">Other...</option>
                       </select>
@@ -78,7 +78,7 @@
                       <select class="form-select" id="source_id" name="source">
                         <option value="">Select Source</option>
                         {% for choice in source_choices %}
-                            <option value="{{ choice.0 }}">{{ choice.1 }}</option>
+                            <option value="{{ choice }}">{{ choice }}</option>
                         {% endfor %}
                         <option value="other">Other...</option>
                         <input type="text" class="form-control d-none" id="other_source" name="other_source" placeholder="Enter other source">
