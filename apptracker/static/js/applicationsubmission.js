@@ -3,7 +3,7 @@ $(document).ready(function() {
         event.preventDefault(); // Prevent default form submission
 
         var formData = $(this).serialize(); // Serialize form data
-        
+
         $.ajax({
             type: 'POST',
             url: '/application_submission/',
@@ -21,3 +21,24 @@ $(document).ready(function() {
         });
     });
 });
+
+document.addEventListener("DOMContentLoaded", function() {
+    // Function to show/hide input field based on select option
+    function toggleInput(selectId, inputId) {
+      const select = document.getElementById(selectId);
+      const input = document.getElementById(inputId);
+      select.addEventListener("change", function() {
+        if (select.value === "other") {
+          input.classList.remove("d-none");
+        } else {
+          input.classList.add("d-none");
+        }
+      });
+    }
+  
+    // Toggle input fields for employer and location
+    toggleInput("employer_id", "other_employer");
+    toggleInput("location_id", "other_location");
+    toggleInput("source_id", "other_source");
+
+  });
