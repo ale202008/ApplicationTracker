@@ -1,0 +1,87 @@
+<div class="card" style="width: 75%;">
+    <div class="card-header text-center">
+      Application Submission
+    </div>
+    <form class="applicationForm p-3" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="row">
+        {% comment %} left inputs {% endcomment %}
+        <div class="col-md-6">
+          <div class="col-md-12 mb-3">
+            <label for="position" class="form-label">Position</label>
+            <input class="form-control" id="position_id" name="position">
+          </div>
+          <div class="col-md-12 mb-3">
+            <label for="employer" class="form-label">Employer</label>
+            <select class="form-select" id="employer_id" name="employer">
+              <option value="">Select Employer</option>
+              {% for choice in employer_choices %}
+                  <option value="{{ choice }}">{{ choice }}</option>
+              {% endfor %}
+              <option value="other">Other...</option>
+            </select>
+            <input type="text" class="form-control d-none" id="other_employer" name="other_employer" placeholder="Enter other employer">
+          </div>
+          <div class="col-md-12 mb-3">
+            <label for="employment_type" class="form-label">Employment Type</label>
+            <select class="form-select" id="employment_type_id" name="employment_type">
+              <option value="">Select Employment Type</option>
+              {% for choice in employment_choices %}
+                  <option value="{{ choice.0 }}">{{ choice.1 }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="col-md-12 mb-3">
+            <label for="image" class="form-label">Image</label>
+            <input type="file" class="form-control" id="image" name="image">
+          </div>
+        </div>
+        {% comment %} right inputs {% endcomment %}
+        <div class="col-md-6">
+          <div class="col-md-12 mb-3">
+            <label for="" class="form-label">Pay</label>
+            <input class="form-control" type="number" id="pay_id" name="pay">
+          </div>
+          <div class="col-md-12 mb-3">
+            <label for="location" class="form-label">Location</label>
+            <select class="form-select" id="location_id" name="location">
+              <option value="">Select Location</option>
+              {% for choice in location_choices %}
+                  <option value="{{ choice }}">{{ choice }}</option>
+              {% endfor %}
+              <option value="other">Other...</option>
+            </select>
+            <input type="text" class="form-control d-none" id="other_location" name="other_location" placeholder="Enter other location">
+          </div>
+          <div class="col-md-12 mb-3">
+            <label for="source" class="form-label">Source</label>
+            <select class="form-select" id="source_id" name="source">
+              <option value="">Select Source</option>
+              {% for choice in source_choices %}
+                  <option value="{{ choice }}">{{ choice }}</option>
+              {% endfor %}
+              <option value="other">Other...</option>
+              <input type="text" class="form-control d-none" id="other_source" name="other_source" placeholder="Enter other source">
+            </select>
+          </div>
+          <div class="col-md-12 mb-3">
+            <label for="application_date" class="form-label">Application Date</label>
+            <input class="form-control" type="date" id="application_date" name="application_date">
+        </div>
+        </div>
+      </div>
+      <div class='row'>
+        <div class='col-md-12'>
+          <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea class="form-control" id="description_id" name="description"></textarea>
+          </div>
+          <div class="mb-3">
+            <label for="notes" class="form-label">Notes</label>
+            <textarea class="form-control" id="notes_id" name="notes"></textarea>
+          </div>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+  </div>
