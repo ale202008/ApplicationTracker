@@ -4,14 +4,19 @@
 {% block content %}
 
 <div class="container-fluid">
-    <div class="row justify-content-center align-items-center">
-        {% comment %} Submission Form {% endcomment %}
-        <div class="col-md-6 d-flex align-items-center justify-content-center vh-100">
-            {% include 'components/submissionform.html' %}
+    <div class="row">
+        <div class="col-md-5 d-flex align-items-center vh-100">
+            <div class="row align-items-center">
+                <div class="col-md-12 mb-3" style="width: 70%;">
+                    {% include 'components/applicationcarousel.html' %}
+                </div>
+                <div class="col-md-12" style="width: 70%;">
+                    {% include 'components/submissionform.html' %}
+                </div>
+            </div>
         </div>
-        {% comment %} Application Image Carousel {% endcomment %}
-        <div class="col-md-6">
-            {% include 'components/applicationcarousel.html' %}
+
+        <div class="col-md-7">
         </div>
     </div>
 </div>

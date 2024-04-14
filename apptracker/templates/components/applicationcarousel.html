@@ -1,11 +1,11 @@
 {% load static %}
 
 
-<div id="carouselExample" class="carousel slide">
+<div id="carouselExample" class="carousel slide" data-interval="false">
     <div class="carousel-inner">
-        {% for index, url in urls %}
+        {% for url in urls %}
             <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                <img src="{{ url }}" class="d-block w-100" alt="...">
+                <img src="{{ url }}" class="img-fluid" alt="...">
             </div>
         {% endfor %}
     </div>

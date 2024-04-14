@@ -57,7 +57,6 @@ class HomeView(View):
         employer_choices = list(Employer.objects.order_by('name').values_list('name', flat=True)) if Employer.objects.exists() else None
         location_choices = list(Location.objects.order_by('name').values_list('name', flat=True)) if Location.objects.exists() else None
         application_urls = list(Application.objects.exclude(img_url__isnull=True).values_list('img_url', flat=True))
-        print(application_urls)
         
         context = {
             'employment_choices': employment_choices,
