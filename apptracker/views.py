@@ -53,15 +53,18 @@ def application_submission(request):
 class HomeView(View):
     def get(self, request):
         employment_choices = Application.EMPLOYMENT_CHOICES
-        source_choices = list(Source.objects.values_list('name', flat=True)) if Source.objects.exists() else None
-        employer_choices = list(Employer.objects.values_list('name', flat=True)) if Employer.objects.exists() else None
-        location_choices = list(Location.objects.values_list('name', flat=True)) if Location.objects.exists() else None
+        source_choices = list(Source.objects.order_by('name').values_list('name', flat=True)) if Source.objects.exists() else None
+        employer_choices = list(Employer.objects.order_by('name').values_list('name', flat=True)) if Employer.objects.exists() else None
+        location_choices = list(Location.objects.order_by('name').values_list('name', flat=True)) if Location.objects.exists() else None
+        application_urls = list(Application.objects.exclude(img_url__isnull=True).values_list('img_url', flat=True))
+        print(application_urls)
         
         context = {
             'employment_choices': employment_choices,
             'source_choices': source_choices,
             'employer_choices': employer_choices,
             'location_choices': location_choices,
+            'urls': application_urls,
         }
         
         return render(request, 'home.html', context)

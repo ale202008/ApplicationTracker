@@ -27,8 +27,7 @@ $(document).ready(function() {
             // Handle successful response
             console.log(response);
             alert('Form submitted successfully!');
-            $('.applicationForm').trigger('reset');
-            $('[id^="other_"]').addClass('d-none');
+            location.reload();
         },
         error: function(xhr, status, error) {
             // Handle errors
