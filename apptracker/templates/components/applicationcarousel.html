@@ -1,7 +1,7 @@
 {% load static %}
 
 
-<div id="carouselExample" class="carousel slide" data-interval="false">
+<div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
     <div class="carousel-inner">
         {% for url in urls %}
             <div class="carousel-item {% if forloop.first %}active{% endif %}">
