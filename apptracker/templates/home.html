@@ -3,20 +3,12 @@
 
 {% block content %}
 
-<div class="container-fluid">
+<div class="container-fluid bg-secondary-subtle">
     <div class="row">
-        <div class="col-md-5 d-flex align-items-center vh-100">
-            <div class="row align-items-center">
-                <div class="col-md-12 mb-3" style="width: 70%;">
-                    {% include 'components/applicationcarousel.html' %}
-                </div>
-                <div class="col-md-12" style="width: 70%;">
-                    {% include 'components/submissionform.html' %}
-                </div>
+        <div class="col-md-12 d-flex align-items-center vh-100">
+            <div class="mx-auto">
+                {% include 'components/submissionform.html' %}
             </div>
-        </div>
-
-        <div class="col-md-7">
         </div>
     </div>
 </div>
