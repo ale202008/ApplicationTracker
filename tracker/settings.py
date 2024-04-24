@@ -130,11 +130,10 @@ STATICFILES_FINDERS =(
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
     'compressor.finders.CompressorFinder',
 )
-COMPRESS_ENABLED=True
+COMPRESS_ENABLED=False
 COMPRESS_PRECOMPILERS = (    
     ('text/x-scss', 'django_libsass.SassCompiler'),
 )
-SCSS_CACHE = os.path.join(STATIC_ROOT, 'cache')
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR.joinpath("apptracker"), 'media')
