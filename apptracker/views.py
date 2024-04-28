@@ -67,4 +67,13 @@ class HomeView(View):
         }
         
         return render(request, 'home.html', context)
-    
+
+class ApplicationsView(View):
+    def get(self, request):
+        applications = list(Application.objects.order_by('-id'))
+        
+        context = {
+            'applications': applications,
+        }
+        
+        return render(request, 'applications.html', context) 

@@ -7,6 +7,7 @@ from .views import *
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', HomeView.as_view(), name='home'),
+    path('applications/', ApplicationsView.as_view(), name='applications'),
     
     
     # For Endpoints

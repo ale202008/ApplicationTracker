@@ -38,7 +38,7 @@ class Status(models.Model):
 
 class Application(models.Model):
     # Everything a job application might have that I would like to record, and status of application
-    status = status = models.ForeignKey(Status, on_delete=models.CASCADE, default=1)
+    status = models.ForeignKey(Status, on_delete=models.CASCADE, default=1)
     application_id = models.IntegerField(null=False)
     location = models.ForeignKey(Location, on_delete=models.CASCADE)
     employer = models.ForeignKey(Employer, on_delete=models.CASCADE)
