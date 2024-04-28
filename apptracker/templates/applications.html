@@ -2,9 +2,11 @@
 {% load static %}
 
 {% block content %}
-    <div class="container-fluid bg-secondary-subtle">
-        <div class="row">
-
+    <div class="container-fluid mt-3 mb-3">
+        <div class="row g-3">
+            {% for application in applications %}
+                {% include 'components/applicationcard.html' %}
+            {% endfor %}
         </div>
     </div>
 {% endblock %}
