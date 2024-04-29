@@ -30,8 +30,8 @@ def application_submission(request):
     notes = request.POST.get('notes')
     image = save_image(request.FILES.get('image'))
     application_date = request.POST.get('application_date')
+    applied_status = Status.objects.get_or_create(name='Applied')
     
-    applied_status = Status.objects.get(name='Applied')
     application = Application.objects.create(
         status=applied_status,
         application_id = Application.objects.count() + 1,
@@ -49,6 +49,18 @@ def application_submission(request):
     application.save()
     
     return JsonResponse({'success': True})
+
+def get_applied_applications():
+    status, _ = Status.objects.get_or_create(name='Applied')
+    return list(Application.objects.filter(status=status).order_by('-id')) if Application.objects.filter(status=status).exists() else None
+
+def get_rejected_applications():
+    status, _ = Status.objects.get_or_create(name='Rejected')
+    return list(Application.objects.filter(status=status).order_by('-id')) if Application.objects.filter(status=status).exists() else None
+
+def get_interview_applications():
+    status, _ = Status.objects.get_or_create(name='Interview')
+    return list(Application.objects.filter(status=status).order_by('-id')) if Application.objects.filter(status=status).exists() else None
 
 class HomeView(View):
     def get(self, request):
@@ -70,10 +82,9 @@ class HomeView(View):
 
 class ApplicationsView(View):
     def get(self, request):
-        applications = list(Application.objects.order_by('-id'))
-        
         context = {
-            'applications': applications,
+            'applied_applications': get_applied_applications(),
+            'rejected_applications': get_rejected_applications(),
+            'interview_applications': get_interview_applications(),
         }
-        
         return render(request, 'applications.html', context) 
