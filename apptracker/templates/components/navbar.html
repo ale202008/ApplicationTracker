@@ -16,7 +16,9 @@
                 </li>
             </ul>
         </div>
-        <div>
+        <div 
+            class="{% if appliedtoday %} text-success {% else %} text-danger {% endif %}"
+        >
             <span>{{ applicationcount }}</span>
         </div>
     </div>
