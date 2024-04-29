@@ -3,8 +3,9 @@ from django.http import JsonResponse
 from django.core.files.storage import FileSystemStorage
 from django.views import View
 from django.conf import settings
-import os
 from apptracker.models import *
+from datetime import date
+import os
 
 # Create your views here.
 
@@ -48,9 +49,6 @@ def application_submission(request):
     application.save()
     
     return JsonResponse({'success': True})
-    
-def get_application_count():
-    return Application.objects.count()
 
 class HomeView(View):
     def get(self, request):
@@ -66,7 +64,6 @@ class HomeView(View):
             'employer_choices': employer_choices,
             'location_choices': location_choices,
             'urls': application_urls,
-            'applicationcount': get_application_count(),
         }
         
         return render(request, 'home.html', context)
@@ -77,7 +74,6 @@ class ApplicationsView(View):
         
         context = {
             'applications': applications,
-            'applicationcount': get_application_count(),
         }
         
         return render(request, 'applications.html', context) 
