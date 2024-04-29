@@ -1,18 +1,27 @@
 {% load static %}
 
-<div class="col-md-12" style="">
+<div class="col-md-12">
     <div class="card h-100 text-center border border-1 shadow-lg">
         <div class="row p-2">
-            <div class="col-md-2 my-auto">
-                <span class='fs-3 mx-auto'> {{ application.application_id }} </span>
+            <div class="col-md-1 mx-auto my-auto">
+                <span class='fs-4'> {{ application.application_id }} </span>
             </div>
-            <div class="col-md-10">
+            <div class="col-md-9">
                 <div class="row">
-                    <span> {{ application.employer }} </span>
+                    <span>
+                        {{ application.employer }}
+                    </span>
                 </div>
                 <div class="row">
-                    <span> {{ application.position }} </span>
+                    <span>
+                        {{ application.position }}
+                    </span>
                 </div>
+            </div>
+            <div class="col-md-2 mx-auto my-auto">
+                <span>
+                    {{ application.application_date }}
+                </span>
             </div>
         </div>
     </div>

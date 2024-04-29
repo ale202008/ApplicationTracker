@@ -2,31 +2,40 @@
 {% load static %}
 
 {% block content %}
-    <div class="container-fluid mt-3 mb-3">
-        <div class="row">
-            <div class='col-md text-center'>
+    <div class="container-fluid bg-secondary-subtle pt-3">
+        <div class="row mx-2">
+            <div class='col-md text-center bg-body rounded-4 border border-0 text-bg-dark py-2 mx-2'>
                 <span class='h2'>
                     Applied
                 </span>
                 <div class="row g-2 mt-1">
-                    {% for application in applied_applications %}
-                        {% include 'components/applicationcard.html' %}
-                    {% endfor %}
+                    {% if applied_applications %}
+                        {% for application in applied_applications %}
+                            {% include 'components/applicationcard.html' %}
+                        {% endfor %}
+                    {% endif %}
                 </div>
             </div>
-            <div class='col-md text-center'>
+            <div class='col-md text-center bg-body rounded-4 border border-0 text-bg-dark py-2 mx-2'>
                 <span class='h2'>
                     Rejected
+                    {% if rejected_applications %}
+                        {% for application in rejected_applications %}
+                            {% include 'components/applicationcard.html' %}
+                        {% endfor %}
+                    {% endif %}
                 </span>
             </div>
-            <div class='col-md text-center'>
+            <div class='col-md text-center bg-body rounded-4 border border-0 text-bg-dark py-2 mx-2'>
                 <span class='h2'>
                     Interview
+                    {% if interview_applications %}
+                        {% for application in interview_applications %}
+                            {% include 'components/applicationcard.html' %}
+                        {% endfor %}
+                    {% endif %}
                 </span>
             </div>
-        </div>
-        <div class="row g-3">
-
         </div>
     </div>
 {% endblock %}
