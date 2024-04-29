@@ -6,6 +6,7 @@ from django.conf import settings
 from apptracker.models import *
 from datetime import date
 import os
+import json
 
 # Create your views here.
 
@@ -52,15 +53,25 @@ def application_submission(request):
 
 def get_applied_applications():
     status, _ = Status.objects.get_or_create(name='Applied')
-    return list(Application.objects.filter(status=status).order_by('-id')) if Application.objects.filter(status=status).exists() else None
+    return list(Application.objects.filter(status=status).order_by('-id'))
 
 def get_rejected_applications():
     status, _ = Status.objects.get_or_create(name='Rejected')
-    return list(Application.objects.filter(status=status).order_by('-id')) if Application.objects.filter(status=status).exists() else None
+    return list(Application.objects.filter(status=status).order_by('-id'))
 
 def get_interview_applications():
     status, _ = Status.objects.get_or_create(name='Interview')
-    return list(Application.objects.filter(status=status).order_by('-id')) if Application.objects.filter(status=status).exists() else None
+    return list(Application.objects.filter(status=status).order_by('-id'))
+
+def update_status(request):
+    data = json.loads(request.body)
+    status, _ = Status.objects.get_or_create(name=data.get("columnId"))
+    application = Application.objects.get(id=data.get("applicationId"))
+    
+    application.status = status
+    application.save()
+
+    return JsonResponse({ "success": True})
 
 class HomeView(View):
     def get(self, request):
@@ -88,3 +99,16 @@ class ApplicationsView(View):
             'interview_applications': get_interview_applications(),
         }
         return render(request, 'applications.html', context) 
+    
+class ChartView(View):
+    def get(self, request):
+        data =  [
+                    {'from': "Applied", "to": "Rejected", "value": len(get_rejected_applications())},
+                    {'from': "Applied", "to": "Interview", "value": len(get_interview_applications())},
+                    {'from': "Applied", "to": "No Response", "value": len(get_applied_applications())},
+                ]
+        
+        context = {
+            "data": data
+        }
+        return render(request, 'chart.html', context) 

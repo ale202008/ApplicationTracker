@@ -2,9 +2,14 @@
 {% load static %}
 
 {% block content %}
+{% csrf_token %}
     <div class="container-fluid bg-secondary-subtle pt-3">
         <div class="row mx-2">
-            <div class='col-md text-center bg-body rounded-4 border border-0 text-bg-dark py-2 mx-2'>
+            <div 
+                class='status-column col-md text-center bg-body rounded-4 border border-0 text-bg-dark py-2 mx-2'
+                id="applied-column"
+                data-column-id="Applied"
+            >
                 <span class='h2'>
                     Applied
                 </span>
@@ -16,26 +21,43 @@
                     {% endif %}
                 </div>
             </div>
-            <div class='col-md text-center bg-body rounded-4 border border-0 text-bg-dark py-2 mx-2'>
+            <div 
+                class='status-column col-md text-center bg-body rounded-4 border border-0 text-bg-dark py-2 mx-2'
+                id="rejected-column"
+                data-column-id="Rejected"
+            >
                 <span class='h2'>
                     Rejected
+                </span>
+                <div class="row g-2 mt-1">
                     {% if rejected_applications %}
                         {% for application in rejected_applications %}
                             {% include 'components/applicationcard.html' %}
                         {% endfor %}
                     {% endif %}
-                </span>
+                </div>
+
             </div>
-            <div class='col-md text-center bg-body rounded-4 border border-0 text-bg-dark py-2 mx-2'>
+            <div 
+                class='status-column col-md text-center bg-body rounded-4 border border-0 text-bg-dark py-2 mx-2'
+                id="interview-column"
+                data-column-id="Interview"
+            >
                 <span class='h2'>
                     Interview
+                </span>
+                <div class="row g-2 mt-1">
                     {% if interview_applications %}
                         {% for application in interview_applications %}
                             {% include 'components/applicationcard.html' %}
                         {% endfor %}
                     {% endif %}
-                </span>
+                </div>
+
             </div>
         </div>
     </div>
+
+<script src="{% static 'js\applicationdraganddrop.js' %}"></script>
 {% endblock %}
+
