@@ -5,6 +5,16 @@ function chart(data) {
     var root = am5.Root.new("chartdiv");
     root._logo.dispose()
     
+    // Exporting
+    var exporting = am5plugins_exporting.Exporting.new(root, {
+      menu: am5plugins_exporting.ExportingMenu.new(root, {
+        align: "left",
+        valign: "bottom",
+        container: document.getElementById("exportdiv"),
+        fill: am5.color(0xffffff),
+      })
+    });
+
     // Set themes
     // https://www.amcharts.com/docs/v5/concepts/themes/
     root.setThemes([
@@ -22,6 +32,7 @@ function chart(data) {
         paddingRight: 150,
         nodeWidth: 5,
         nodePadding: 150,
+        paddingBottom: 50,
     }));
     
     series.nodes.get("colors").set("step", 2);
