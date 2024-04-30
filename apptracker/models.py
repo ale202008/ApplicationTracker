@@ -31,7 +31,7 @@ class Employer(models.Model):
         managed=True
 
 class Status(models.Model):
-    status_id = models.IntegerField(null=False, unique=True)
+    status_id = models.IntegerField(null=False)
     name = models.CharField(max_length=50)
 
     def __str__(self):

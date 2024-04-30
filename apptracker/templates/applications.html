@@ -1,10 +1,10 @@
 {% extends 'base.html' %}
 {% load static %}
-
+    
 {% block content %}
 {% csrf_token %}
     <div class="container-fluid bg-secondary-subtle pt-3">
-        <div class="row mx-2">
+        <div class="row mx-1">
             <div 
                 class='status-column col-md text-center bg-body rounded-4 border border-0 text-bg-dark py-2 mx-2'
                 id="applied-column"
@@ -54,6 +54,38 @@
                     {% endif %}
                 </div>
 
+            </div>
+            <div 
+                class='status-column col-md text-center bg-body rounded-4 border border-0 text-bg-dark py-2 mx-2'
+                id="applied-column"
+                data-column-id="Applied"
+            >
+                <span class='h2'>
+                    Withdrawn
+                </span>
+                <div class="row g-2 mt-1">
+                    {% if withdrawn_applications %}
+                        {% for application in withdrawn_applications %}
+                            {% include 'components/applicationcard.html' %}
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+            <div 
+                class='status-column col-md text-center bg-body rounded-4 border border-0 text-bg-dark py-2 mx-2'
+                id="applied-column"
+                data-column-id="Applied"
+            >
+                <span class='h2'>
+                    Offer
+                </span>
+                <div class="row g-2 mt-1">
+                    {% if offer_applications %}
+                        {% for application in offer_applications %}
+                            {% include 'components/applicationcard.html' %}
+                        {% endfor %}
+                    {% endif %}
+                </div>
             </div>
         </div>
     </div>
