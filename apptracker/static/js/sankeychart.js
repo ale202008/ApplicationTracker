@@ -19,9 +19,9 @@ function chart(data) {
         sourceIdField: "from",
         targetIdField: "to",
         valueField: "value",
-        paddingRight: 100,
-        nodeWidth: 10,
-        nodePadding: 100,
+        paddingRight: 150,
+        nodeWidth: 5,
+        nodePadding: 150,
     }));
     
     series.nodes.get("colors").set("step", 2);

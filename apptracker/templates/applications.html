@@ -11,7 +11,7 @@
                 data-column-id="Applied"
             >
                 <span class='h2'>
-                    Applied
+                    Applied {% if applied_applications %} ({{ applied_applications|length }}) {% endif %}
                 </span>
                 <div class="row g-2 mt-1">
                     {% if applied_applications %}
@@ -27,7 +27,7 @@
                 data-column-id="Rejected"
             >
                 <span class='h2'>
-                    Rejected
+                    Rejected {% if rejected_applications %} ({{ rejected_applications|length }}) {% endif %}
                 </span>
                 <div class="row g-2 mt-1">
                     {% if rejected_applications %}
@@ -44,7 +44,7 @@
                 data-column-id="Interview"
             >
                 <span class='h2'>
-                    Interview
+                    Interview {% if interview_applications %} ({{ interview_applications|length }}) {% endif %}
                 </span>
                 <div class="row g-2 mt-1">
                     {% if interview_applications %}
@@ -58,10 +58,10 @@
             <div 
                 class='status-column col-md text-center bg-body rounded-4 border border-0 text-bg-dark py-2 mx-2'
                 id="applied-column"
-                data-column-id="Applied"
+                data-column-id="Withdrawn"
             >
                 <span class='h2'>
-                    Withdrawn
+                    Withdrawn {% if withdrawn_applications %} ({{ withdrawn_applications|length }}) {% endif %}
                 </span>
                 <div class="row g-2 mt-1">
                     {% if withdrawn_applications %}
@@ -74,10 +74,10 @@
             <div 
                 class='status-column col-md text-center bg-body rounded-4 border border-0 text-bg-dark py-2 mx-2'
                 id="applied-column"
-                data-column-id="Applied"
+                data-column-id="Offered"
             >
                 <span class='h2'>
-                    Offer
+                    Offer {% if offer_applications %} ({{ offer_applications|length }}) {% else %} (0) {% endif %}
                 </span>
                 <div class="row g-2 mt-1">
                     {% if offer_applications %}

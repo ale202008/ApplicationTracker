@@ -1,12 +1,13 @@
 from django.shortcuts import render
-from django.http import JsonResponse
 from django.core.files.storage import FileSystemStorage
 from django.views import View
 from django.conf import settings
 from apptracker.models import *
+from .utils import *
 from datetime import date
 import os
-import json
+
+
 
 # Create your views here.
 
@@ -51,31 +52,6 @@ def application_submission(request):
     
     return JsonResponse({'success': True})
 
-def get_applied_applications():
-    status, _ = Status.objects.get_or_create(name='Applied')
-    return list(Application.objects.filter(status=status).order_by('-id'))
-
-def get_rejected_applications():
-    status, _ = Status.objects.get_or_create(name='Rejected')
-    return list(Application.objects.filter(status=status).order_by('-id'))
-
-def get_interview_applications():
-    status, _ = Status.objects.get_or_create(name='Interview')
-    return list(Application.objects.filter(status=status).order_by('-id'))
-
-def get_response_count():
-    return len(get_rejected_applications()) + len(get_interview_applications())
-
-def update_status(request):
-    data = json.loads(request.body)
-    status, _ = Status.objects.get_or_create(name=data.get("columnId"))
-    application = Application.objects.get(id=data.get("applicationId"))
-    
-    application.status = status
-    application.save()
-
-    return JsonResponse({ "success": True})
-
 class HomeView(View):
     def get(self, request):
         employment_choices = Application.EMPLOYMENT_CHOICES
@@ -97,19 +73,23 @@ class HomeView(View):
 class ApplicationsView(View):
     def get(self, request):
         context = {
-            'applied_applications': get_applied_applications(),
-            'rejected_applications': get_rejected_applications(),
-            'interview_applications': get_interview_applications(),
+            'applied_applications': get_all_status_applications("Applied"),
+            'rejected_applications': get_all_status_applications("Rejected"),
+            'interview_applications': get_all_status_applications("Interview"),
+            'withdrawn_applications': get_all_status_applications("Withdrawn"),
+            'offered_applications': get_all_status_applications("Offered"),
         }
         return render(request, 'applications.html', context) 
     
 class ChartView(View):
     def get(self, request):
         data =  [
-                    {'from': "Applied", "to": "No Response", "value": len(get_applied_applications())},
-                    {'from': "Applied", "to": "Responded", "value": get_response_count()},
-                    {'from': "Responded", "to": "Rejected", "value": len(get_rejected_applications())},
-                    {'from': "Responded", "to": "Interview", "value": len(get_interview_applications())},
+                    {'from': "Applied", "to": "No Response", "value": len(get_all_status_applications("Applied"))},
+                    {'from': "Applied", "to": "Response", "value": get_response_count()},
+                    {'from': "Response", "to": "Rejected", "value": get_status_application_count("Rejected", 1)},
+                    {'from': "Response", "to": "1st Interview", "value": get_status_application_count("Interview", 1)},
+                    {'from': "1st Interview", "to": "Rejected After 1st", "value": get_status_application_count("Rejected", 2)},
+                    {'from': "1st Interview", "to": "Withdrawn After 1st", "value": get_status_application_count("Withdrawn", 1)},
                 ]
         
         context = {
