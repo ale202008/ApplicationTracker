@@ -63,6 +63,9 @@ def get_interview_applications():
     status, _ = Status.objects.get_or_create(name='Interview')
     return list(Application.objects.filter(status=status).order_by('-id'))
 
+def get_response_count():
+    return len(get_rejected_applications()) + len(get_interview_applications())
+
 def update_status(request):
     data = json.loads(request.body)
     status, _ = Status.objects.get_or_create(name=data.get("columnId"))
@@ -103,9 +106,10 @@ class ApplicationsView(View):
 class ChartView(View):
     def get(self, request):
         data =  [
-                    {'from': "Applied", "to": "Rejected", "value": len(get_rejected_applications())},
-                    {'from': "Applied", "to": "Interview", "value": len(get_interview_applications())},
                     {'from': "Applied", "to": "No Response", "value": len(get_applied_applications())},
+                    {'from': "Applied", "to": "Responded", "value": get_response_count()},
+                    {'from': "Responded", "to": "Rejected", "value": len(get_rejected_applications())},
+                    {'from': "Responded", "to": "Interview", "value": len(get_interview_applications())},
                 ]
         
         context = {
