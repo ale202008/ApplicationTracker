@@ -1,6 +1,6 @@
 {% load static %}
 
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
+<nav class="navbar navbar-expand-lg bg-body-tertiary fixed-top">
     <div class="container-fluid">
         <a class="navbar-brand testfont">AppTracker</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -22,6 +22,14 @@
                 </li>
             </ul>
         </div>
+
+        <div class="d-flex justify-content-center align-items-center">
+            <span>
+                test
+            </span>
+
+        </div>
+
         <div 
             class="{% if appliedtoday %} text-success {% else %} text-danger {% endif %}"
         >
@@ -29,5 +37,6 @@
                 {{ applicationcount }}
             </span>
         </div>
+
     </div>
 </nav>

@@ -2,6 +2,24 @@
     --white: #fff;
 }
 
+body { 
+    padding-top: 56px;
+}
+
+.navbarheightfix {
+    height: calc(100vh - 56px);
+}
+
+/* navbar.html */
+
+.rate-font {
+    font-size: 70%;
+}
+
+/* navbar.html end */
+
+/* chart.html */
+
 #chartdiv {
     width: 100%;
     height: calc(100vh - 89px);
@@ -18,6 +36,7 @@ a.am5exporting-icon:hover,
     background: #85FFC4;
 }
 
-.navbarheightfix {
-    height: calc(100vh - 57px)
-}
+/* chart.html end */
+
+
+

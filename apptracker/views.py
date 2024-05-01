@@ -37,6 +37,7 @@ class ApplicationsView(View):
             'interview_applications': get_all_status_applications("Interview"),
             'withdrawn_applications': get_all_status_applications("Withdrawn"),
             'offered_applications': get_all_status_applications("Offered"),
+            'accepted_applications': get_all_status_applications("Accepted"),
         }
         return render(request, 'applications.html', context) 
     

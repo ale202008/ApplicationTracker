@@ -33,7 +33,14 @@ def get_status_application_count(status_name, index):
 
 # Function to get all applications that have received a response
 def get_response_count():
-    return len(get_all_status_applications("Rejected")) + len(get_all_status_applications("Interview")) + len(get_all_status_applications("Withdrawn"))
+    status_list = ["Rejected", "Interview", "Withdrawn", "Offered", "Accepted"]
+    count = 0
+    for status in status_list:
+        status_applications = get_all_status_applications(status)
+        if status_applications:
+            count += len(status_applications)
+    
+    return count
 
 # ---- GET FUNCTIONS END --- #
 

@@ -3,7 +3,7 @@
     
 {% block content %}
 {% csrf_token %}
-    <div class="container-fluid bg-secondary-subtle pt-3">
+    <div class="container-fluid bg-secondary-subtle py-3 h-100">
         <div class="row mx-1">
             <div 
                 class='status-column col-md text-center bg-body rounded-4 border border-0 text-bg-dark py-2 mx-2'
@@ -44,7 +44,7 @@
                 data-column-id="Interview"
             >
                 <span class='h2'>
-                    Interview {% if interview_applications %} ({{ interview_applications|length }}) {% endif %}
+                    Interviewed {% if interview_applications %} ({{ interview_applications|length }}) {% endif %}
                 </span>
                 <div class="row g-2 mt-1">
                     {% if interview_applications %}
@@ -77,11 +77,27 @@
                 data-column-id="Offered"
             >
                 <span class='h2'>
-                    Offer {% if offer_applications %} ({{ offer_applications|length }}) {% else %} (0) {% endif %}
+                    Offered {% if offered_applications %} ({{ offered_applications|length }}) {% else %} (0) {% endif %}
                 </span>
                 <div class="row g-2 mt-1">
-                    {% if offer_applications %}
-                        {% for application in offer_applications %}
+                    {% if offered_applications %}
+                        {% for application in offered_applications %}
+                            {% include 'components/applicationcard.html' %}
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+            <div 
+                class='status-column col-md text-center bg-body rounded-4 border border-0 text-bg-dark py-2 mx-2'
+                id="applied-column"
+                data-column-id="Accepted"
+            >
+                <span class='h2'>
+                    Accepted {% if accepted_applications %} ({{ accepted_applications|length }}) {% else %} (0) {% endif %}
+                </span>
+                <div class="row g-2 mt-1">
+                    {% if accepted_applications %}
+                        {% for application in accepted_applications %}
                             {% include 'components/applicationcard.html' %}
                         {% endfor %}
                     {% endif %}
