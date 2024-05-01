@@ -7,3 +7,4 @@ migrations
 db.sqlite3
 cache
 data
+application_data
