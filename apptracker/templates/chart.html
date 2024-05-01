@@ -1,26 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block style %}
-    <style>
-        #chartdiv {
-            width: 100%%;
-            height: calc(100vh - 89px);
-        }
-
-        a.am5exporting-icon,
-        .am5exporting-list {
-            background: #C2FFE2;
-        }
-
-        a.am5exporting-icon:hover,
-        .am5exporting-menu-open a.am5exporting-icon,
-        .am5exporting-item a:hover {
-            background: #85FFC4;
-        }
-    </style>
-{% endblock %}
-
 {% block js %}
     <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
     <script src="https://cdn.amcharts.com/lib/5/flow.js"></script>

@@ -2,8 +2,22 @@
     --white: #fff;
 }
 
-/* Classes that might be used  */
+#chartdiv {
+    width: 100%;
+    height: calc(100vh - 89px);
+}
 
-.testfont {
-    font-size: 10000px;
+a.am5exporting-icon,
+.am5exporting-list {
+    background: #C2FFE2;
+}
+
+a.am5exporting-icon:hover,
+.am5exporting-menu-open a.am5exporting-icon,
+.am5exporting-item a:hover {
+    background: #85FFC4;
+}
+
+.navbarheightfix {
+    height: calc(100vh - 57px)
 }
