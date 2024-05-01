@@ -14,7 +14,6 @@ def get_rate(status_name):
     
     if total_status_applications == 0:
         return round(0, 2)
-    
     if status_name == "Applied":
         rate = (total_response_applications/total_status_applications) * 100
     else:
