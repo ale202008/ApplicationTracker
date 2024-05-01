@@ -12,8 +12,7 @@ def get_rate(status_name):
     total_response_applications = get_response_count()
     total_status_applications = get_status_application_count(status_name, 1)
     
-    if total_status_applications == 0:
-        return round(0, 2)
+    if total_status_applications == 0: return 0
     if status_name == "Applied":
         rate = (total_response_applications/total_status_applications) * 100
     else:

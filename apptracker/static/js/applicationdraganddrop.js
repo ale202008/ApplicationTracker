@@ -66,13 +66,18 @@ document.addEventListener('DOMContentLoaded', function() {
             },
             success: function(response) {
                 console.log('Status updated successfully:', response);
+                alert("Status updated successfully.")
                 location.reload();
             },
             error: function(xhr, status, error) {
-                console.error('Error updating status:', xhr.responseText);
-                alert('Error updating status. Please try again.');
+                if (xhr.responseJSON && xhr.responseJSON.error) {
+                    alert(xhr.responseJSON.error);
+                } else {
+                    console.error('Error updating status:', xhr.responseText);
+                    alert('Error updating status. Please try again.');
+                }
                 location.reload();
-            }
+            },
         });
         
     }

@@ -91,17 +91,23 @@ def application_submission(request):
 def update_status(request):
     data = json.loads(request.body)
     application = Application.objects.get(id=data.get("applicationId"))
+    if application.status.name != "Interview" or application.status.name != "Applied":
+        return JsonResponse({ "error": "Application status cannot be changed to new status." }, status=500)
+    
+    
     status = data.get("columnId")
     status_list = Status.objects.filter(status_id__gt=application.status.status_id)
     
-    if application.status.name == "Interview" and (status != "Applied" or status != "Offer"):
+    if application.status.name == "Interview" and status != "Applied":
         temp_status = status_list.filter(name=status).first()
         if not temp_status:
             status = Status.objects.create(status_id=Status.objects.count() + 1, name=status)
             status.save()
         else:
             status = temp_status
-
+    elif application.status.name == "Applied" and status == "Rejected":
+        temp_status = status_list.filter(name=status).first()
+        status = temp_status
     
     application.status = status
     application.save()
