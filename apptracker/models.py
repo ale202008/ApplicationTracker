@@ -23,6 +23,7 @@ class Location(models.Model):
 
 class Employer(models.Model):
     name = models.CharField(max_length=50)
+    icon_url = models.URLField(null=True, blank=True)
     
     def __str__(self):
         return self.name
@@ -49,7 +50,6 @@ class Application(models.Model):
     source = models.ForeignKey(Source, on_delete=models.CASCADE)
     notes = models.TextField(null=True, blank=True)
     application_date = models.DateField(null=True, blank=True)
-    img_url = models.URLField(null=True, blank=True)
     
     REMOTE = "R"
     HYBRID = "H"
