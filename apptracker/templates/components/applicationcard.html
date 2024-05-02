@@ -1,4 +1,5 @@
 {% load static %}
+{% load custom_filters %}
 
 
 <div class="col-md-12">
@@ -11,6 +12,10 @@
             <div class="col-md-2 mx-auto my-auto">
                 <span class='fs-6'>
                     {{ application.application_id }}
+                    {% if application.employer.website_url %}
+                        <img src="https://logo.uplead.com/{{ application.employer.website_url|remove_https }}" alt="logo" height='24px' />
+
+                    {% endif %}
                 </span>
             </div>
             <div class="col-md-7">

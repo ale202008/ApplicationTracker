@@ -24,11 +24,12 @@ def get_all_status_applications(status_name):
 
 # Function to get interview applications based on index in status list
 def get_status_application_count(status_name, index):
-    if status_name == "Rejected":
-        return len(Application.objects.filter(status=Status.objects.filter(name="Rejected")[index-1]))
+    if status_name == "Rejected" or status_name == "Withdrawn":
+        return len(Application.objects.filter(status=Status.objects.filter(name=status_name)[index-1]))
     status = Status.objects.filter(name=status_name)
     status_list = Status.objects.filter(status_id__gt = status[index-1].status_id - 1)
     applications_list = Application.objects.filter(status__in=status_list)
+    
     return len(applications_list)
 
 # Function to get all applications that have received a response
@@ -40,7 +41,7 @@ def get_response_count():
         if status_applications:
             count += len(status_applications)
     
-    return count
+    return count - get_status_application_count("Withdrawn", 1)
 
 # ---- GET FUNCTIONS END --- #
 
@@ -89,7 +90,7 @@ def application_submission(request):
 def update_status(request):
     data = json.loads(request.body)
     application = Application.objects.get(id=data.get("applicationId"))
-    if application.status.name != "Interview" or application.status.name != "Applied":
+    if application.status.name != "Interview" and application.status.name != "Applied":
         return JsonResponse({ "error": "Application status cannot be changed to new status." }, status=500)
     
     
@@ -103,7 +104,7 @@ def update_status(request):
             status.save()
         else:
             status = temp_status
-    elif application.status.name == "Applied" and status == "Rejected":
+    elif application.status.name == "Applied" and (status == "Rejected" or status == "Withdrawn"):
         temp_status = status_list.filter(name=status).first()
         status = temp_status
     
