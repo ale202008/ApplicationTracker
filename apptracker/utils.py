@@ -45,12 +45,11 @@ def get_response_count():
 # ---- GET FUNCTIONS END --- #
 
 # Function that saves an image
-def save_image(image):
-    if image:
-        fs = FileSystemStorage(location=settings.MEDIA_ROOT)
-        filename =  fs.save(image.name, image)
-        return fs.url(filename)
-    return None
+def save_url(url, employer):
+    if url and not employer.website_url:
+        employer.website_url = url
+        employer.save()
+
 
 # Function that submits a new application submission
 def application_submission(request):
@@ -65,7 +64,7 @@ def application_submission(request):
     source, _ = Source.objects.get_or_create(name=source_name) if source_name else (None, None)
     description = request.POST.get('description')
     notes = request.POST.get('notes')
-    image = save_image(request.FILES.get('image'))
+    save_url(request.POST.get('websiteurl'), employer)
     application_date = request.POST.get('application_date')
     applied_status = Status.objects.get(status_id=1, name='Applied')
     
@@ -80,7 +79,6 @@ def application_submission(request):
         source=source,
         desc=description,
         notes=notes,
-        img_url=image,
         application_date = application_date,
     )
     application.save()

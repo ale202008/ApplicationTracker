@@ -23,7 +23,7 @@ class Location(models.Model):
 
 class Employer(models.Model):
     name = models.CharField(max_length=50)
-    icon_url = models.URLField(null=True, blank=True)
+    website_url = models.URLField(null=True, blank=True)
     
     def __str__(self):
         return self.name

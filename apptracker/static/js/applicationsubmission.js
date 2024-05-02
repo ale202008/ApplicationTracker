@@ -61,6 +61,6 @@ document.addEventListener("DOMContentLoaded", function() {
   // Toggle input fields for employer and location
   toggleInput("employer_id", "other_employer");
   toggleInput("location_id", "other_location");
-    toggleInput("source_id", "other_source");
+  toggleInput("source_id", "other_source");
 
   });

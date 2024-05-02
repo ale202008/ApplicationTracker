@@ -1,15 +1,9 @@
 from django.shortcuts import render
-
 from django.views import View
-
 from apptracker.models import *
 from .utils import *
-
 import os
 
-
-
-# Create your views here.
 
 class HomeView(View):
     def get(self, request):
@@ -17,14 +11,12 @@ class HomeView(View):
         source_choices = list(Source.objects.order_by('name').values_list('name', flat=True)) if Source.objects.exists() else None
         employer_choices = list(Employer.objects.order_by('name').values_list('name', flat=True)) if Employer.objects.exists() else None
         location_choices = list(Location.objects.order_by('name').values_list('name', flat=True)) if Location.objects.exists() else None
-        application_urls = list(Application.objects.exclude(img_url__isnull=True).values_list('img_url', flat=True))
         
         context = {
             'employment_choices': employment_choices,
             'source_choices': source_choices,
             'employer_choices': employer_choices,
             'location_choices': location_choices,
-            'urls': application_urls,
         }
         
         return render(request, 'home.html', context)
