@@ -46,5 +46,16 @@ def populateApplications():
             application_date=application_date,
         )
 
+def update_models():
+    status = Status.objects.get(status_id=3)
+    # new_status = Status.objects.get(status_id=2)
+    applications_list = Application.objects.filter(status=status)
+    for application in applications_list:
+        application.interview_counter += 1
+        # application.status = new_status
+        application.save()
+
+
 # Call the function to populate applications
-populateApplications()
+# populateApplications()
+update_models()
