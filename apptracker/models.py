@@ -40,6 +40,7 @@ class Status(models.Model):
 
 class Application(models.Model):
     # Everything a job application might have that I would like to record, and status of application
+    interview_counter = models.IntegerField(default=0)
     status = models.ForeignKey(Status, on_delete=models.CASCADE, default=1)
     application_id = models.IntegerField(null=False)
     location = models.ForeignKey(Location, on_delete=models.CASCADE)
