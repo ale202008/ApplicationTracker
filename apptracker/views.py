@@ -38,11 +38,11 @@ class ChartView(View):
         data =  [
                     {'from': "Applied", "to": "No Response", "value": len(get_all_status_applications("Applied"))},
                     {'from': "Applied", "to": "Response", "value": get_response_count()},
-                    {'from': "Response", "to": "Rejected", "value": get_status_application_count("Rejected", 1)},
-                    {'from': "Response", "to": "1st Interview", "value": get_status_application_count("Interview", 1)},
-                    {'from': "1st Interview", "to": "Rejected After 1st", "value": get_status_application_count("Rejected", 2)},
-                    {'from': "1st Interview", "to": "Withdrawn After 1st", "value": get_status_application_count("Withdrawn", 2)},
-                    {'from': "Applied", "to": "Withdrawn", "value": get_status_application_count("Withdrawn", 1)},
+                    {'from': "Response", "to": "Rejected", "value": len(get_status_application_count("Rejected", 0))},
+                    {'from': "Response", "to": "1st Interview", "value": len(get_status_application_count("Interview", 1))},
+                    {'from': "1st Interview", "to": "Rejected After 1st", "value": len(get_status_application_count("Rejected", 1))},
+                    {'from': "1st Interview", "to": "Withdrawn After 1st", "value": len(get_status_application_count("Withdrawn", 1))},
+                    {'from': "Applied", "to": "Withdrawn", "value": len(get_status_application_count("Withdrawn", 0))},
                 ]
         
         context = {
