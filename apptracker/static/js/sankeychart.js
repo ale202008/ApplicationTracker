@@ -53,13 +53,17 @@ function chart(data) {
     });
 
     series.nodes.labels.template.setAll({
-      text: "[bold]{name}[/] ({sumIncoming})",
       fontSize: 15,
       maxWidth: 140,
-      oversizedBehavior: "wrap",
       brightness: 1,
       fill: am5.color(0xffffff),
       centerX: true,
+      oversizedBehavior: "wrap",
+    });
+
+    // Iterate through the labels
+    series.nodes.labels.template.each({
+      fill: am5.color(0xffffff),
     });
 
     series.nodes.rectangles.template.setAll({

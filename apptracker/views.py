@@ -35,14 +35,25 @@ class ApplicationsView(View):
     
 class ChartView(View):
     def get(self, request):
+        applied_label = "[bold]Applied[/] " + "(" + str(Application.objects.count()) + ")"
+        no_response_label = "[bold]No Response[/] " + "(" + str(get_response_count()) + ")"
+        response_label =  "[bold]Response[/] " + "(" + str(get_response_count()) + ")"
+        rejected_label = "[bold]Rejected[/] " + "(" + str(len(get_status_application_count("Rejected", 0))) + ")"
+        withdrawn_label = "[bold]Withdrawn[/] " + "(" + str(len(get_status_application_count("Withdrawn", 0))) + ")"
+        first_interview_label = "[bold]1st Interview[/] " + "(" + str(len(get_status_application_count("Interview", 1))) + ")"
+        rejected_after_first_label =  "[bold]Rejected After 1st[/] " + "(" + str(len(get_status_application_count("Rejected", 1))) + ")"
+        withdrawn_after_first_label = "[bold]Withdrawn After 1st[/] " + "(" + str(len(get_status_application_count("Withdrawn", 1))) + ")"
+        
+        
+        
         data =  [
-                    {'from': "Applied", "to": "No Response", "value": len(get_all_status_applications("Applied"))},
-                    {'from': "Applied", "to": "Response", "value": get_response_count()},
-                    {'from': "Response", "to": "Rejected", "value": len(get_status_application_count("Rejected", 0))},
-                    {'from': "Response", "to": "1st Interview", "value": len(get_status_application_count("Interview", 1))},
-                    {'from': "1st Interview", "to": "Rejected After 1st", "value": len(get_status_application_count("Rejected", 1))},
-                    {'from': "1st Interview", "to": "Withdrawn After 1st", "value": len(get_status_application_count("Withdrawn", 1))},
-                    {'from': "Applied", "to": "Withdrawn", "value": len(get_status_application_count("Withdrawn", 0))},
+                    {'from': applied_label, "to": no_response_label, "value": len(get_all_status_applications("Applied")), "labelText": "Node 1 (100)"},
+                    {'from': applied_label, "to": response_label, "value": get_response_count()},
+                    {'from': response_label, "to": rejected_label, "value": len(get_status_application_count("Rejected", 0))},
+                    {'from': response_label, "to": first_interview_label, "value": len(get_status_application_count("Interview", 1))},
+                    {'from': first_interview_label, "to": rejected_after_first_label, "value": len(get_status_application_count("Rejected", 1))},
+                    {'from': first_interview_label, "to": withdrawn_after_first_label, "value": len(get_status_application_count("Withdrawn", 1))},
+                    {'from': applied_label, "to": withdrawn_label, "value": len(get_status_application_count("Withdrawn", 0))},
                 ]
         
         context = {
