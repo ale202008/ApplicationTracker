@@ -33,12 +33,11 @@ function chart(data) {
         nodeWidth: 5,
         nodePadding: 150,
         paddingBottom: 50,
+        nodeAlign: "left",
     }));
     
     series.nodes.get("colors").set("step", 2);
-    
-    
-    
+  
     // Set data
     // https://www.amcharts.com/docs/v5/charts/flow-charts/#Setting_data
     series.data.setAll(data);
@@ -59,11 +58,6 @@ function chart(data) {
       fill: am5.color(0xffffff),
       centerX: true,
       oversizedBehavior: "wrap",
-    });
-
-    // Iterate through the labels
-    series.nodes.labels.template.each({
-      fill: am5.color(0xffffff),
     });
 
     series.nodes.rectangles.template.setAll({

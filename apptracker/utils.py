@@ -27,13 +27,24 @@ def get_status_application_count(status_name, index):
     if status_name != "Interview":
         return Application.objects.filter(interview_counter=index, status=status)
     else:
-        return Application.objects.filter(interview_counter=index)
+        return Application.objects.filter(interview_counter__gte=index)
 
 # Function to get all applications that have received a response
 def get_response_count():
     return (Application.objects.count() - len(get_all_status_applications("Applied"))) - len(get_status_application_count("Withdrawn", 0))
 
+# Function that returns the count of Application objects
+def get_application_count():
+    return Application.objects.count()
+
 # ---- GET FUNCTIONS END ---- #
+# ---- BOOLEAN FUNCTION ---- #
+
+# Function that returns a boolean based if an Application object exists with today's date
+def applied_today():
+    return Application.objects.filter(application_date=date.today()).exists()
+
+# ---- BOOLEAN FUNCTION END ---- #
 # ---- MISC FUNCTIONS ---- #
 
 # Function that saves an image
@@ -90,5 +101,15 @@ def update_status(request):
     application.save()
 
     return JsonResponse({ "success": True})
+
+# Function that calculates the rate for the given status out of all Application objects
+def calc_rate(status_name):
+    total_applications = get_application_count()
+    rate = 0
+    if status_name == "Applied":
+        rate = (get_response_count()/total_applications) * 100
+    else:
+        rate = (len(get_all_status_applications(status_name))/total_applications) * 100
+    return round(rate, 2)
 
 # ---- MISC FUNCTIONS END ---- #
