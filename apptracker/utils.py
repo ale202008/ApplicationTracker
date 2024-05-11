@@ -1,8 +1,6 @@
 from apptracker.models import *
 from django.http import JsonResponse
-from django.conf import settings
-from django.core.files.storage import FileSystemStorage
-from datetime import date
+from datetime import date, datetime, timedelta
 import json
 
 # Functions dedicated to grab applications based on requirements, in decreasing order
@@ -37,6 +35,35 @@ def get_response_count():
 def get_application_count():
     return Application.objects.count()
 
+# Function that return the dates of the current month.
+def get_month_weeks():
+    current_year = datetime.now().year
+    current_month = datetime.now().month
+    first_day_of_month = datetime(current_year, current_month, 1)
+    last_day_of_month = datetime(current_year, current_month+1, 1) - timedelta(days=1)
+    week_periods = []
+    
+    current_day = first_day_of_month
+    
+    # Iterate through the days of the month
+    while current_day <= last_day_of_month:
+        # Get the start of the week (Sunday)
+        week_start = current_day - timedelta(days=current_day.weekday())
+        
+        # Get the end of the week (Saturday)
+        week_end = week_start + timedelta(days=6)
+        
+        # Format the week period
+        week_period = f"{week_start.strftime('%m/%d')}-{week_end.strftime('%m/%d')}"
+        
+        # Add the week period to the list
+        week_periods.append(week_period)
+        
+        # Move to the next week
+        current_day = week_end + timedelta(days=1)
+    
+    return week_periods
+
 # Function that correctly labels and sends the values for the Sankey chart display
 def get_sankeychart_data():
     applied_label = "[bold]Applied[/] " + "(" + str(Application.objects.count()) + ")"
@@ -61,6 +88,17 @@ def get_sankeychart_data():
             ]
     
     return data
+
+def get_heatmap_data():
+    week_period_data = []
+    for week in get_month_weeks():
+        week_period_data.append({'week': week})
+    
+    all_data = {
+        "week_periods": week_period_data
+    }
+    
+    return all_data
 
 # ---- GET FUNCTIONS END ---- #
 # ---- BOOLEAN FUNCTION ---- #

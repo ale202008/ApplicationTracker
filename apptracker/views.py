@@ -36,6 +36,7 @@ class ApplicationsView(View):
 class ChartView(View):
     def get(self, request):
         context = {
-            "sankeychart_data": get_sankeychart_data()
+            "sankeychart_data": get_sankeychart_data(),
+            "heatmap_data": get_heatmap_data()
         }
         return render(request, 'chart.html', context) 
