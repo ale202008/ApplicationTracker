@@ -22,7 +22,12 @@ body {
 
 #chartdiv {
     width: 100%;
-    height: calc(100vh - 89px);
+    /* height: calc(100vh - 89px); */
+    height: 40vh;
+}
+
+#exportdiv {
+    margin: auto;
 }
 
 a.am5exporting-icon,

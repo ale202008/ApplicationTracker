@@ -8,11 +8,17 @@ function chart(data) {
     // Exporting
     var exporting = am5plugins_exporting.Exporting.new(root, {
       menu: am5plugins_exporting.ExportingMenu.new(root, {
-        align: "left",
-        valign: "bottom",
         container: document.getElementById("exportdiv"),
         fill: am5.color(0xffffff),
-      })
+      }),
+      pngOptions: {
+        quality: 0.7,
+        maintainPixelRatio: true
+      },
+      jpgOptions: {
+        quality: 0.7,
+        maintainPixelRatio: true
+      }
     });
 
     // Set themes
@@ -30,9 +36,9 @@ function chart(data) {
         targetIdField: "to",
         valueField: "value",
         paddingRight: 150,
-        nodeWidth: 5,
-        nodePadding: 150,
-        paddingBottom: 50,
+        nodeWidth: 10,
+        nodePadding: 50,
+        paddingBottom: 25,
         nodeAlign: "left",
     }));
     
