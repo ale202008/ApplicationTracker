@@ -20,7 +20,7 @@ body {
 
 /* chart.html */
 
-#chartdiv {
+#sankeychart {
     width: 100%;
     /* height: calc(100vh - 89px); */
     height: 40vh;
@@ -28,6 +28,11 @@ body {
 
 #exportdiv {
     margin: auto;
+}
+
+#heatmap {
+    width: 100%;
+    height: 40vh;
 }
 
 a.am5exporting-icon,

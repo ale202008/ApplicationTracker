@@ -4,10 +4,12 @@
 {% block js %}
     <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
     <script src="https://cdn.amcharts.com/lib/5/flow.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
     <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
     <script src="https://cdn.amcharts.com/lib/5/themes/Micro.js"></script>
     <script src="https://cdn.amcharts.com/lib/5/plugins/exporting.js"></script>
     <script src="{% static 'js/sankeychart.js' %}"></script>
+    <script src="{% static 'js/heatmap.js' %}"></script>
     {% include 'components/data_chart.html' %}
 {% endblock %}
 
@@ -15,14 +17,22 @@
 {% block content %}
 
 <div class="container-fluid bg-secondary-subtle p-3 ">
-    <div class="row g-2">
+    <div class="row g-3">
 
         {% comment %} Sankey chart {% endcomment %}
-        <div class="card">
-            <div class="col-md-12">
-                <div id="chartdiv">
-                </div>
+        <div class="col-md-12">
+            <div class="card">
+                <div id="sankeychart">
+                </div> 
                 <div id="exportdiv">
+                </div>
+            </div>
+        </div>
+
+        {% comment %} Heatmap {% endcomment %}
+        <div class="col-md-6">
+            <div class="card">
+                <div id="heatmap">
                 </div>
             </div>
         </div>

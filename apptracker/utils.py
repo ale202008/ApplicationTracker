@@ -37,6 +37,31 @@ def get_response_count():
 def get_application_count():
     return Application.objects.count()
 
+# Function that correctly labels and sends the values for the Sankey chart display
+def get_sankeychart_data():
+    applied_label = "[bold]Applied[/] " + "(" + str(Application.objects.count()) + ")"
+    no_response_label = "[bold]No Response[/] " + "(" + str(get_response_count()) + ")"
+    response_label =  "[bold]Response[/] " + "(" + str(get_response_count()) + ")"
+    rejected_label = "[bold]Rejected[/] " + "(" + str(len(get_status_application_count("Rejected", 0))) + ")"
+    withdrawn_label = "[bold]Withdrawn[/] " + "(" + str(len(get_status_application_count("Withdrawn", 0))) + ")"
+    first_interview_label = "[bold]1st Interview[/] " + "(" + str(len(get_status_application_count("Interview", 1))) + ")"
+    second_interview_label = "[bold]2nd Interview[/] " + "(" + str(len(get_status_application_count("Interview", 2))) + ")"
+    rejected_after_first_label =  "[bold]Rejected After 1st[/] " + "(" + str(len(get_status_application_count("Rejected", 1))) + ")"
+    withdrawn_after_first_label = "[bold]Withdrawn After 1st[/] " + "(" + str(len(get_status_application_count("Withdrawn", 1))) + ")"
+    
+    data =  [
+                {'from': applied_label, "to": no_response_label, "value": len(get_all_status_applications("Applied")), "labelText": "Node 1 (100)"},
+                {'from': applied_label, "to": response_label, "value": get_response_count()},
+                {'from': applied_label, "to": withdrawn_label, "value": len(get_status_application_count("Withdrawn", 0))},
+                {'from': response_label, "to": rejected_label, "value": len(get_status_application_count("Rejected", 0))},
+                {'from': response_label, "to": first_interview_label, "value": len(get_status_application_count("Interview", 1))},
+                {'from': first_interview_label, "to": rejected_after_first_label, "value": len(get_status_application_count("Rejected", 1))},
+                {'from': first_interview_label, "to": withdrawn_after_first_label, "value": len(get_status_application_count("Withdrawn", 1))},
+                {'from': first_interview_label, "to": second_interview_label, "value": len(get_status_application_count("Interview", 2))},
+            ]
+    
+    return data
+
 # ---- GET FUNCTIONS END ---- #
 # ---- BOOLEAN FUNCTION ---- #
 

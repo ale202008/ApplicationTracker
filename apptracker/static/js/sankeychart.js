@@ -1,8 +1,8 @@
-function chart(data) {
+function sankeychart(data) {
 
     // Create root element
     // https://www.amcharts.com/docs/v5/getting-started/#Root_element
-    var root = am5.Root.new("chartdiv");
+    var root = am5.Root.new("sankeychart");
     root._logo.dispose()
     
     // Exporting
