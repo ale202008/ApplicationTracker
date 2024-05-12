@@ -51,6 +51,7 @@ class Application(models.Model):
     source = models.ForeignKey(Source, on_delete=models.CASCADE)
     notes = models.TextField(null=True, blank=True)
     application_date = models.DateField(null=True, blank=True)
+    response_time = models.DateField(null=True, blank=True)
     
     REMOTE = "R"
     HYBRID = "H"

@@ -10,4 +10,5 @@ def common_data(request):
         'withdrawnrate': calc_rate("Withdrawn"),
         'offeredrate': calc_rate("Offered"),
         'acceptedrate': calc_rate("Accepted"),
+        'responsetime': calc_avg_response_time(),
     }

@@ -1,19 +1,6 @@
-/**
- * ---------------------------------------
- * This demo was created using amCharts 5.
- * 
- * For more information visit:
- * https://www.amcharts.com/
- * 
- * Documentation is available at:
- * https://www.amcharts.com/docs/v5/
- * ---------------------------------------
- */
-
-
 // Create root element
 // https://www.amcharts.com/docs/v5/getting-started/#Root_element
-function heatmap(all_data) {
+function heatmap(data) {
 
 var root = am5.Root.new("heatmap");
 root._logo.dispose()
@@ -22,7 +9,7 @@ root._logo.dispose()
 // Set themes
 // https://www.amcharts.com/docs/v5/concepts/themes/
 root.setThemes([
-  am5themes_Animated.new(root)
+  am5themes_Animated.new(root),
 ]);
 
 
@@ -48,10 +35,14 @@ var yRenderer = am5xy.AxisRendererY.new(root, {
 
 yRenderer.grid.template.set("visible", false);
 
+yRenderer.labels.template.setAll({
+    fill: am5.color(0xffffff),
+})
+
 var yAxis = chart.yAxes.push(am5xy.CategoryAxis.new(root, {
   maxDeviation: 0,
   renderer: yRenderer,
-  categoryField: "week"
+  categoryField: "week",
 }));
 
 var xRenderer = am5xy.AxisRendererX.new(root, {
@@ -63,11 +54,14 @@ var xRenderer = am5xy.AxisRendererX.new(root, {
 
 xRenderer.grid.template.set("visible", false);
 
+xRenderer.labels.template.setAll({
+    fill: am5.color(0xffffff),
+})
+
 var xAxis = chart.xAxes.push(am5xy.CategoryAxis.new(root, {
   renderer: xRenderer,
   categoryField: "weekday"
 }));
-
 
 // Create series
 // https://www.amcharts.com/docs/v5/charts/xy-chart/#Adding_series
@@ -81,6 +75,7 @@ var series = chart.series.push(am5xy.ColumnSeries.new(root, {
   categoryYField: "week",
   valueField: "value"
 }));
+
 
 series.columns.template.setAll({
   tooltipText: "{value}",
@@ -107,66 +102,39 @@ series.events.on("datavalidated", function() {
 // https://www.amcharts.com/docs/v5/concepts/settings/heat-rules/
 series.set("heatRules", [{
   target: series.columns.template,
-  min: am5.color(0xfffb77),
-  max: am5.color(0xfe131a),
+  min: am5.color(0x32292F),
+  max: am5.color(0x8256AE),
   dataField: "value",
   key: "fill"
 }]);
-
 
 // Add heat legend
 // https://www.amcharts.com/docs/v5/concepts/legend/heat-legend/
 var heatLegend = chart.bottomAxesContainer.children.push(am5.HeatLegend.new(root, {
   orientation: "horizontal",
-  endColor: am5.color(0xfffb77),
-  startColor: am5.color(0xfe131a)
+  endColor: am5.color(0x32292F),
+  startColor: am5.color(0x8256AE),
+  startText: "Highest",
+  endText: "Lowest",
+  stepCount: data.max_value
 }));
+
+heatLegend.startLabel.setAll({
+    fontSize: 16,
+    fill: am5.color(0xffffff),
+});
+  
+heatLegend.endLabel.setAll({
+    fontSize: 16,
+    fill: am5.color(0xffffff),
+});
 
 
 // Set data
 // https://www.amcharts.com/docs/v5/charts/xy-chart/#Setting_data
+series.data.setAll(data.applications_by_date);
 
-var data = [
-    {
-        week: "04/29-05/05",
-        weekday: "Sunday",
-        value: 1
-    },
-    {
-        week: "04/29-05/05",
-        weekday: "Monday",
-        value: 1
-    },
-    {
-        week: "04/29-05/05",
-        weekday: "Tuesday",
-        value: 1
-    },
-    {
-        week: "04/29-05/05",
-        weekday: "Wednesday",
-        value: 1
-    },
-    {
-        week: "04/29-05/05",
-        weekday: "Thursday",
-        value: 1
-    },
-    {
-        week: "04/29-05/05",
-        weekday: "Friday",
-        value: 1
-    },
-    {
-        week: "04/29-05/05",
-        weekday: "Saturday",
-        value: 1
-    },
-]
-
-series.data.setAll(data);
-
-yAxis.data.setAll(all_data.week_periods);
+yAxis.data.setAll(data.week_periods);
 
 xAxis.data.setAll([
     { weekday: "Sunday" },

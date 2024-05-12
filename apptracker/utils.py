@@ -1,9 +1,10 @@
 from apptracker.models import *
+from django.db.models import Q
 from django.http import JsonResponse
 from datetime import date, datetime, timedelta
 import json
 
-# Functions dedicated to grab applications based on requirements, in decreasing order
+# Functions dedicated to grab applications based on requirements separated by category
 
 # ---- GET ALL FUNCTIONS ---- #
 
@@ -36,33 +37,42 @@ def get_application_count():
     return Application.objects.count()
 
 # Function that return the dates of the current month.
-def get_month_weeks():
-    current_year = datetime.now().year
-    current_month = datetime.now().month
-    first_day_of_month = datetime(current_year, current_month, 1)
-    last_day_of_month = datetime(current_year, current_month+1, 1) - timedelta(days=1)
+def get_month_weeks(year, month):
+    first_day_of_month = datetime(year, month, 1)
+    last_day_of_month = datetime(year, month+1, 1) - timedelta(days=1)
     week_periods = []
     
     current_day = first_day_of_month
-    
-    # Iterate through the days of the month
     while current_day <= last_day_of_month:
-        # Get the start of the week (Sunday)
         week_start = current_day - timedelta(days=current_day.weekday())
-        
-        # Get the end of the week (Saturday)
         week_end = week_start + timedelta(days=6)
-        
-        # Format the week period
         week_period = f"{week_start.strftime('%m/%d')}-{week_end.strftime('%m/%d')}"
-        
-        # Add the week period to the list
         week_periods.append(week_period)
-        
-        # Move to the next week
         current_day = week_end + timedelta(days=1)
     
     return week_periods
+
+def get_applications_date(week):
+    start_date_str, end_date_str = week.split('-')
+    start_date = datetime.strptime(start_date_str, '%m/%d').replace(year=2024)
+    end_date = datetime.strptime(end_date_str, '%m/%d').replace(year=2024)
+    application_data = []
+
+
+    current_date = start_date
+    while current_date <= end_date:
+        applications_for_date_count = len(Application.objects.filter(application_date=current_date.strftime('%Y-%m-%d')))
+        application_data.append(
+            {
+                'week': week,
+                'weekday': current_date.strftime('%A'),
+                'value': applications_for_date_count
+            },
+        )
+        current_date += timedelta(days=1)
+        
+        
+    return application_data
 
 # Function that correctly labels and sends the values for the Sankey chart display
 def get_sankeychart_data():
@@ -89,16 +99,28 @@ def get_sankeychart_data():
     
     return data
 
+# Function that grabs heatmap data
 def get_heatmap_data():
     week_period_data = []
-    for week in get_month_weeks():
+    application_date_data = []
+    max_value = 0
+    for week in get_month_weeks(datetime.now().year, datetime.now().month):
+        for data in get_applications_date(week):
+            if data['value'] > max_value:
+                max_value = data['value']
+            application_date_data.append(data)
+        
         week_period_data.append({'week': week})
+
+    # print(application_date_data)
     
-    all_data = {
-        "week_periods": week_period_data
+    data = {
+        "week_periods": week_period_data,
+        "applications_by_date": application_date_data,
+        "max_value": max_value,
     }
     
-    return all_data
+    return data
 
 # ---- GET FUNCTIONS END ---- #
 # ---- BOOLEAN FUNCTION ---- #
@@ -159,7 +181,9 @@ def update_status(request):
     status = Status.objects.get(name=data.get("columnId"))
     if status.name == "Interview":
         application.interview_counter += 1
-        
+    
+    # Updates the most recent date a response was given
+    application.response_time = date.today()
     application.status = status
     application.save()
 
@@ -174,5 +198,15 @@ def calc_rate(status_name):
     else:
         rate = (len(get_all_status_applications(status_name))/total_applications) * 100
     return round(rate, 2)
+
+# Function that calculates the average response time period after sending an application
+def calc_avg_response_time():
+    applications = Application.objects.exclude(Q(response_time__isnull=True))
+    time_period = 0
+    for application in applications:
+        time = application.response_time - application.application_date
+        time_period += time.days
+    time_period = time_period / len(applications)
+    return int(time_period)
 
 # ---- MISC FUNCTIONS END ---- #
