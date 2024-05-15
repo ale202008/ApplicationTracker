@@ -64,7 +64,7 @@ def get_applications_date(week):
         applications_for_date_count = len(Application.objects.filter(application_date=current_date.strftime('%Y-%m-%d')))
         application_data.append(
             {
-                'week': week,
+                'week': "(" + week + ")",
                 'weekday': current_date.strftime('%A'),
                 'value': applications_for_date_count
             },
@@ -110,7 +110,7 @@ def get_heatmap_data():
                 max_value = data['value']
             application_date_data.append(data)
         
-        week_period_data.append({'week': week})
+        week_period_data.append({'week': "(" + week + ")"})
 
     # print(application_date_data)
     
