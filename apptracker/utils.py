@@ -3,6 +3,7 @@ from django.db.models import Q
 from django.http import JsonResponse
 from datetime import date, datetime, timedelta
 import json
+import calendar
 
 # Functions dedicated to grab applications based on requirements separated by category
 
@@ -36,7 +37,7 @@ def get_response_count():
 def get_application_count():
     return Application.objects.count()
 
-# Function that return the dates of the current month.
+# Function that return the week periods of the current month.
 def get_month_weeks(year, month):
     first_day_of_month = datetime(year, month, 1)
     last_day_of_month = datetime(year, month+1, 1) - timedelta(days=1)
@@ -44,12 +45,11 @@ def get_month_weeks(year, month):
     
     current_day = first_day_of_month
     while current_day <= last_day_of_month:
-        week_start = current_day - timedelta(days=current_day.weekday())
+        week_start = current_day - timedelta(days=current_day.isoweekday() % 7)
         week_end = week_start + timedelta(days=6)
         week_period = f"{week_start.strftime('%m/%d')}-{week_end.strftime('%m/%d')}"
         week_periods.append(week_period)
         current_day = week_end + timedelta(days=1)
-    
     return week_periods
 
 def get_applications_date(week):
