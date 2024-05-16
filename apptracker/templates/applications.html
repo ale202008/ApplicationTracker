@@ -11,8 +11,8 @@
                 id="applied-column"
                 data-column-id="Applied"
             >
-                <span class='h2'>
-                    Applied {% if applied_applications %} ({{ applied_applications|length }}) {% endif %}
+                <span class='h2 text-decoration-underline'>
+                    Applied:  {% if applied_applications %} {{ applied_applications|length }} {% endif %}
                 </span>
                 <div class="row g-2 mt-1">
                     {% if applied_applications %}
@@ -27,8 +27,8 @@
                 id="rejected-column"
                 data-column-id="Rejected"
             >
-                <span class='h2'>
-                    Rejected {% if rejected_applications %} ({{ rejected_applications|length }}) {% endif %}
+                <span class='h2 text-decoration-underline'>
+                    Rejected: {% if rejected_applications %} {{ rejected_applications|length }} {% endif %}
                 </span>
                 <div class="row g-2 mt-1">
                     {% if rejected_applications %}
@@ -44,8 +44,8 @@
                 id="interview-column"
                 data-column-id="Interview"
             >
-                <span class='h2'>
-                    Interviewed {% if interview_applications %} ({{ interview_applications|length }}) {% endif %}
+                <span class='h2 text-decoration-underline'>
+                    Interviewed: {% if interview_applications %} {{ interview_applications|length }} {% endif %}
                 </span>
                 <div class="row g-2 mt-1">
                     {% if interview_applications %}
@@ -61,8 +61,8 @@
                 id="applied-column"
                 data-column-id="Withdrawn"
             >
-                <span class='h2'>
-                    Withdrawn {% if withdrawn_applications %} ({{ withdrawn_applications|length }}) {% endif %}
+                <span class='h2 text-decoration-underline'>
+                    Withdrawn: {% if withdrawn_applications %} {{ withdrawn_applications|length }} {% endif %}
                 </span>
                 <div class="row g-2 mt-1">
                     {% if withdrawn_applications %}
@@ -77,8 +77,8 @@
                 id="applied-column"
                 data-column-id="Offered"
             >
-                <span class='h2'>
-                    Offered {% if offered_applications %} ({{ offered_applications|length }}) {% else %} (0) {% endif %}
+                <span class='h2 text-decoration-underline'>
+                    Offered:  {% if offered_applications %} {{ offered_applications|length }} {% else %} 0 {% endif %}
                 </span>
                 <div class="row g-2 mt-1">
                     {% if offered_applications %}
@@ -93,8 +93,8 @@
                 id="applied-column"
                 data-column-id="Accepted"
             >
-                <span class='h2'>
-                    Accepted {% if accepted_applications %} ({{ accepted_applications|length }}) {% else %} (0) {% endif %}
+                <span class='h2 text-decoration-underline'>
+                    Accepted:  {% if accepted_applications %} {{ accepted_applications|length }} {% else %} 0 {% endif %}
                 </span>
                 <div class="row g-2 mt-1">
                     {% if accepted_applications %}

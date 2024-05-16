@@ -45,7 +45,10 @@ document.addEventListener("DOMContentLoaded", function() {
 
             // Function to create a single logo element
             function createSingleLogo() {
-                createLogoElement(links[index]);
+                const existingLogo = document.querySelector(`img[src="${links[index]}"]`);
+                if (!existingLogo) {
+                    createLogoElement(links[index]);
+                }
                 index = (index + 1) % links.length; // Increment index and cycle back to 0 when it reaches the end
             }
 
