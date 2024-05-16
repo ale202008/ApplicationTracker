@@ -11,4 +11,5 @@ def common_data(request):
         'offeredrate': calc_rate("Offered"),
         'acceptedrate': calc_rate("Accepted"),
         'responsetime': calc_avg_response_time(),
+        'avgpay': calc_avg_salary(),
     }

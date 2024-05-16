@@ -2,18 +2,19 @@
 {% load static %}
 
 {% block content %}
-
-<div class="container-fluid bg-secondary-subtle navbarheightfix">
-    <div class="row">
-        <div class="col-md-12 d-flex align-items-center navbarheightfix">
-            <div class="mx-auto">
-                {% comment %} <img src="https://logo.uplead.com/uwm.edu" alt="amazon logo" /> {% endcomment %}
-                {% include 'components/submissionform.html' %}
+<div class="container-fluid bg-secondary-subtle navbarheightfix" style="z-index: -1">
+    <div id="logo-container" style="z-index: 0"></div>
+        <div class="row" style="z-index: 1">
+            <div class="col-md-12 d-flex align-items-center navbarheightfix">
+                <div class="mx-auto">
+                    {% include 'components/submissionform.html' %}
+                </div>
             </div>
         </div>
-    </div>
 </div>
+{% endblock %}
 
-
-<script src="{% static 'js/applicationsubmission.js' %}"></script>
+{% block js %}
+    <script src="{% static 'js/logofallinganimation.js' %}"></script>
+    <script src="{% static 'js/applicationsubmission.js' %}"></script>
 {% endblock %}

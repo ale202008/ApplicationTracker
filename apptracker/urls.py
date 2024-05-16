@@ -14,6 +14,7 @@ urlpatterns = [
     
     # For Endpoints
     path('application_submission/', application_submission, name='application_submission'),
-    path('update_status/', update_status, name='update_status')
+    path('update_status/', update_status, name='update_status'),
+    path('get_logo_links/', get_logo_links, name='get_links'),
     
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

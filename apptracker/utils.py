@@ -4,6 +4,7 @@ from django.http import JsonResponse
 from datetime import date, datetime, timedelta
 import json
 import calendar
+import random
 
 # Functions dedicated to grab applications based on requirements separated by category
 
@@ -122,6 +123,19 @@ def get_heatmap_data():
     
     return data
 
+# Function that gets all Employers with a link and appends them to an array
+def get_logo_links(request):
+    applications = Employer.objects.exclude(Q(website_url__isnull=True))
+    links = []
+    for application in applications:
+        url = application.website_url.replace('https://', '').replace("www.", "")
+        if url.endswith('/'):
+            url = url[:-1]  # Remove the final slash
+        links.append("https://logo.uplead.com/" + url)
+    
+    random.shuffle(links)
+    return JsonResponse({'links': links})
+
 # ---- GET FUNCTIONS END ---- #
 # ---- BOOLEAN FUNCTION ---- #
 
@@ -208,5 +222,14 @@ def calc_avg_response_time():
         time_period += time.days
     time_period = time_period / len(applications)
     return int(time_period)
+
+# Function that calculates the average salary/pay if the information is available from applications
+def calc_avg_salary():
+    applications = Application.objects.filter(pay__gt=0)
+    pay = 0
+    for application in applications:
+        pay += application.pay
+    avg_pay = pay / len(applications)
+    return round(avg_pay, 2)
 
 # ---- MISC FUNCTIONS END ---- #
