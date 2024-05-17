@@ -49,7 +49,10 @@ document.addEventListener("DOMContentLoaded", function() {
                 if (!existingLogo) {
                     createLogoElement(links[index]);
                 }
-                index = (index + 1) % links.length; // Increment index and cycle back to 0 when it reaches the end
+                index += 1; // Increment index and cycle back to 0 when it reaches the end
+                if (index == links.length) {
+                    index = 0
+                };
             }
 
             // Create the first logo immediately
