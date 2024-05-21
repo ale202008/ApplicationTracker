@@ -159,8 +159,11 @@ def application_submission(request):
     employer_name = request.POST.get('employer') or request.POST.get('other_employer')
     employer, _ = Employer.objects.get_or_create(name=employer_name) if employer_name else (None, None)
     location_name = request.POST.get('location') or request.POST.get('other_location')
-    location_city, location_state = location_name.split(", ")
-    location, _ = Location.objects.get_or_create(city=location_city, state=location_state) if location_name else (None, None)
+    if location_name == "Remote":
+        location = Location.objects.get(city=location_name)
+    else:
+        location_city, location_state = location_name.split(", ")
+        location, _ = Location.objects.get_or_create(city=location_city, state=location_state) if location_name else (None, None)
     employment_type = request.POST.get('employment_type')
     source_name = request.POST.get('source') or request.POST.get('other_source')
     source, _ = Source.objects.get_or_create(name=source_name) if source_name else (None, None)
