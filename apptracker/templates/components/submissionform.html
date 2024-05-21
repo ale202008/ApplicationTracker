@@ -47,7 +47,11 @@
             <select class="form-select" id="location_id" name="location">
               <option value="">Select Location</option>
               {% for choice in location_choices %}
-                  <option value="{{ choice }}">{{ choice }}</option>
+                  {% if choice.state %}
+                    <option value="{{ choice.city }}, {{choice.state}}">{{ choice.city }}, {{ choice.state }}</option>
+                  {% else %}
+                    <option value="{{ choice.city }}">{{ choice.city }}</option>
+                  {% endif %}
               {% endfor %}
               <option value="other">Other...</option>
             </select>

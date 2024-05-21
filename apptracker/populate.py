@@ -55,7 +55,17 @@ def update_models():
         # application.status = new_status
         application.save()
 
+def update_locations():
+    locations = Location.objects.all()
+    for location in locations:
+        index = location.name.find(",")
+        location.city = location.name[:index]
+        location.state = location.name[index+2:]
+        location.name = ""
+        location.save()
+
 
 # Call the function to populate applications
 # populateApplications()
-update_models()
+# update_models()
+update_locations()

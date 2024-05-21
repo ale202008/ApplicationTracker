@@ -10,8 +10,8 @@ class HomeView(View):
         employment_choices = Application.EMPLOYMENT_CHOICES
         source_choices = list(Source.objects.order_by('name').values_list('name', flat=True)) if Source.objects.exists() else None
         employer_choices = list(Employer.objects.order_by('name').values_list('name', flat=True)) if Employer.objects.exists() else None
-        location_choices = list(Location.objects.order_by('name').values_list('name', flat=True)) if Location.objects.exists() else None
-        
+        location_choices = Location.objects.order_by("state") if Location.objects.exists() else None
+
         context = {
             'employment_choices': employment_choices,
             'source_choices': source_choices,
