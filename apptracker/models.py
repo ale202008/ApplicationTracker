@@ -76,7 +76,7 @@ class Application(models.Model):
         return Status.objects.filter(transitions_from=self.status)
     
     def __str__(self):
-        return f"{self.application_id, self.position, self.location.name, self.employer.name}"
+        return f"{self.application_id, self.position, self.location, self.employer.name}"
     
     class Meta:
         managed=True

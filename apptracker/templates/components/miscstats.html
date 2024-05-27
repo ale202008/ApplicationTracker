@@ -1,0 +1,39 @@
+<div class="card h-100">
+    <div class="row mb-2">
+        <div class="col-md-12 text-center">
+            <span class="fs-3 text-decoration-underline">
+                Miscellaneous Statistics
+            </span>
+        </div>
+    </div>
+
+    <div class="row text-center">
+        {% comment %} Left Column {% endcomment %}
+        <div class="col-md-6">
+            <div class="vstack">
+                <span class="p-2">
+                    Longest Application Streak: {{ miscstats_data.applying_streak }} days!
+                </span>
+                <span class="p-2">
+                    Longest Not Application Streak: {{ miscstats_data.not_applying_streak }} days!
+                </span>
+                <span class="p-2">
+                   Most Applications in a day: {{ miscstats_data.most_applications_in_day }} Applications on {{ miscstats_data.most_applications_day }}!
+                </span>
+                <span class="p-2">
+                    Most Applications in a month: {{ miscstats_data.most_applications_in_month }} Applications in {{  miscstats_data.most_applications_month }}!
+                 </span>
+            </div>
+        </div>
+
+
+
+        {% comment %} Right Column {% endcomment %}
+        <div class="col-md-6">
+            <div class="vstack">
+                test
+            </div>
+        </div>
+
+    </div>
+</div>

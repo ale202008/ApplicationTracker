@@ -10,7 +10,7 @@ import random
 
 # ---- GET ALL FUNCTIONS ---- #
 
-# Function to get ALL applied applications
+# Function to get all applications of certain status
 def get_all_status_applications(status_name):
     status = Status.objects.get(name=status_name)
     
@@ -18,6 +18,10 @@ def get_all_status_applications(status_name):
         return Application.objects.filter(status=status).order_by('-id')
     else:
         return None
+
+# Function that gets all applications
+def get_all_applications():
+    return Application.objects.all() 
 
 # ---- GET ALL FUNCTIONS END ---- #
 # ---- GET FUNCTIONS ---- #
@@ -53,6 +57,7 @@ def get_month_weeks(year, month):
         current_day = week_end + timedelta(days=1)
     return week_periods
 
+# Function that returns the applications in heatmap data format.
 def get_applications_date(week):
     start_date_str, end_date_str = week.split('-')
     start_date = datetime.strptime(start_date_str, '%m/%d').replace(year=2024)
@@ -74,6 +79,62 @@ def get_applications_date(week):
         
         
     return application_data
+
+# Function that returns the current month.
+def get_month():
+    return date.today().strftime('%B')
+
+# Function that returns the longest streak of uninterrupted days of applying, and uninterrupted days not applying
+def get_streaks():
+    applications = get_all_applications()
+    streak_applying = 0
+    longest_streak_applying = 0
+    streak_not_applying = 0
+    longest_streak_not_applying = 0
+
+    last_date = date.today()
+    for application in applications:
+        if application.application_date != (last_date + timedelta(days=1)):
+            last_date = application.application_date
+            if streak_applying > longest_streak_applying:
+                longest_streak_applying = streak_applying
+                streak_applying = 0
+                
+            streak_not_applying +=1
+        else:
+            streak_applying += 1
+            
+            if streak_not_applying > longest_streak_not_applying:
+                longest_streak_not_applying = streak_not_applying
+                streak_not_applying = 0
+
+    
+    return streak_applying, streak_not_applying
+
+# Function that return the number of most applications in 1 day, and the date.
+def get_most_applications_in_day():
+    applications = get_all_applications()
+    most_applications = 0
+    date = None
+    
+    for application in applications:
+        if Application.objects.filter(application_date=application.application_date).count() > most_applications:
+            most_applications = Application.objects.filter(application_date=application.application_date).count()
+            date = application.application_date
+
+    return most_applications, date
+
+# Function that return the number of most applications in a month, and the month.
+def get_most_applications_in_month():
+    most_applications = 0
+    month = None
+    
+    for i in range(12):
+        if Application.objects.filter(application_date__month=i).count() > most_applications:
+            most_applications = Application.objects.filter(application_date__month=i).count()
+            month = calendar.month_name[i]
+            
+    return most_applications, month
 
 # Function that correctly labels and sends the values for the Sankey chart display
 def get_sankeychart_data():
@@ -112,13 +173,29 @@ def get_heatmap_data():
             application_date_data.append(data)
         
         week_period_data.append({'week': "(" + week + ")"})
-
-    # print(application_date_data)
     
     data = {
         "week_periods": week_period_data,
         "applications_by_date": application_date_data,
         "max_value": max_value,
+        "month": get_month(),
+    }
+    
+    return data
+
+# Function that gets miscellaneous stats
+def get_miscstats():
+    longest_streak_applying, longest_streak_not_applying = get_streaks()
+    most_applications_day, date = get_most_applications_in_day()
+    most_applications_month, month = get_most_applications_in_month()
+
+    data = {
+        "applying_streak": longest_streak_applying,
+        "not_applying_streak": longest_streak_not_applying,
+        "most_applications_in_day": most_applications_day,
+        "most_applications_day": date,
+        "most_applications_in_month": most_applications_month,
+        "most_applications_month": month,
     }
     
     return data
