@@ -23,6 +23,10 @@ def get_all_status_applications(status_name):
 def get_all_applications():
     return Application.objects.all() 
 
+# Functions that gets all employers
+def get_all_employers():
+    return Employer.objects.all()
+
 # ---- GET ALL FUNCTIONS END ---- #
 # ---- GET FUNCTIONS ---- #
 
@@ -136,6 +140,21 @@ def get_most_applications_in_month():
             
     return most_applications, month
 
+# Function that returns the employer with the most applications, and the number of applications
+def get_most_applications_employers():
+    employers = get_all_employers()
+    num_applications = 0
+    applied_employers = []
+    
+    for employer in employers:
+        if Application.objects.filter(employer=employer).count() > num_applications:
+            num_applications = Application.objects.filter(employer=employer).count()
+            applied_employers[:] = []
+            applied_employers.append(employer.name)
+        elif Application.objects.filter(employer=employer).count() >= num_applications:
+            applied_employers.append(employer.name)
+        
+    return applied_employers, num_applications
 # Function that correctly labels and sends the values for the Sankey chart display
 def get_sankeychart_data():
     applied_label = "[bold]Applied[/] " + "(" + str(Application.objects.count()) + ")"
@@ -188,6 +207,7 @@ def get_miscstats():
     longest_streak_applying, longest_streak_not_applying = get_streaks()
     most_applications_day, date = get_most_applications_in_day()
     most_applications_month, month = get_most_applications_in_month()
+    most_applied_company, num_applications_company = get_most_applications_employers()
 
     data = {
         "applying_streak": longest_streak_applying,
@@ -196,6 +216,8 @@ def get_miscstats():
         "most_applications_day": date,
         "most_applications_in_month": most_applications_month,
         "most_applications_month": month,
+        "most_applied_company": most_applied_company,
+        "num_applications_company": num_applications_company,
     }
     
     return data
