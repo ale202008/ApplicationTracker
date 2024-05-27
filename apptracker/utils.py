@@ -27,6 +27,10 @@ def get_all_applications():
 def get_all_employers():
     return Employer.objects.all()
 
+# Function that gets all sources
+def get_all_sources():
+    return Source.objects.all()
+
 # ---- GET ALL FUNCTIONS END ---- #
 # ---- GET FUNCTIONS ---- #
 
@@ -155,6 +159,23 @@ def get_most_applications_employers():
             applied_employers.append(employer.name)
         
     return applied_employers, num_applications
+
+# Function that returns the source with the most applications done.
+def get_most_source():
+    sources = get_all_sources()
+    source_count = 0
+    source_arr = []
+    
+    for source in sources:
+        if Application.objects.filter(source=source).count() > source_count:
+            source_count = Application.objects.filter(source=source).count()
+            source_arr[:] = []
+            source_arr.append(source.name)
+        elif Application.objects.filter(source=source).count() == source_count:
+            source_arr.append(source.name)
+            
+    return source_count, source_arr
+
 # Function that correctly labels and sends the values for the Sankey chart display
 def get_sankeychart_data():
     applied_label = "[bold]Applied[/] " + "(" + str(Application.objects.count()) + ")"
@@ -208,6 +229,7 @@ def get_miscstats():
     most_applications_day, date = get_most_applications_in_day()
     most_applications_month, month = get_most_applications_in_month()
     most_applied_company, num_applications_company = get_most_applications_employers()
+    most_source_count, most_source = get_most_source()
 
     data = {
         "applying_streak": longest_streak_applying,
@@ -218,6 +240,8 @@ def get_miscstats():
         "most_applications_month": month,
         "most_applied_company": most_applied_company,
         "num_applications_company": num_applications_company,
+        "most_source_count": most_source_count,
+        "most_source": most_source,
     }
     
     return data
