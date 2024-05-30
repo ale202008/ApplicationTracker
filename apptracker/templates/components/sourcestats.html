@@ -1,0 +1,16 @@
+<div class="card h-100">
+    <h2 class="card-title card-header text-center">
+        Source Stats 
+    </h2>
+
+    <div class="">
+        <ul class="list-group list-group-flush">
+            {% for source in source_stats_data.source_data %}
+                <li class="list-group-item">
+                    {{source.name}} : {{source.num_applications}} Applications
+                </li>
+            {% endfor %}
+
+        </ul>
+    </div>
+</div>

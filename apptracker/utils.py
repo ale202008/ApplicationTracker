@@ -209,7 +209,7 @@ def get_latitude_and_longitude(location_city, location_state):
     return location_latitude, location_longitude
 
 # ---- GET FUNCTIONS END ---- #
-# ---- CHART DATA FUNCTIONS ---- #
+# ---- CHART.HTML DATA FUNCTIONS ---- #
 
 # Function that correctly labels and sends the values for the Sankey chart display
 def get_sankeychart_data():
@@ -305,7 +305,22 @@ def get_miscstats():
     
     return data
 
-# ---- CHART DATA FUNCTIONS END ---- #
+# Function that gets source and # of applications from each source, organizes them from in decreasing order and returns the data
+def get_source_stats():
+    sources = Source.objects.order_by('-num_applications')
+    sources_applications = []
+    
+    for source in sources:
+        if source not in sources_applications:
+            sources_applications.append({'name': source.name, 'num_applications': source.num_applications})
+
+    data = {
+        "source_data": sources_applications
+    }
+
+    return data
+
+# ---- CHART.HTML DATA FUNCTIONS END ---- #
 # ---- BOOLEAN FUNCTION ---- #
 
 # Function that returns a boolean based if an Application object exists with today's date
@@ -357,6 +372,9 @@ def application_submission(request):
         application_date = application_date,
     )
     application.save()
+    
+    source.num_applications += 1
+    source.save()
     
     return JsonResponse({'success': True})
 

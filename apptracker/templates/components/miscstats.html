@@ -1,45 +1,25 @@
-<div class="card h-100">
-    <div class="row mb-2">
-        <div class="col-md-12 text-center">
-            <span class="fs-3 text-decoration-underline">
-                Miscellaneous Statistics
-            </span>
-        </div>
-    </div>
+<div class="card">
+    <h2 class="card-title card-header text-center">
+        Misc. Stats 
+    </h2>
 
-    <div class="row text-center">
-        {% comment %} Left Column {% endcomment %}
-        <div class="col-md-6">
-            <div class="vstack">
-                <span class="p-2">
-                    Longest Application Streak: {{ miscstats_data.applying_streak }} days!
-                </span>
-                <span class="p-2">
-                    Longest Not Application Streak: {{ miscstats_data.not_applying_streak }} days!
-                </span>
-                <span class="p-2">
-                   Applied the most on {{ miscstats_data.most_applications_day }} with {{ miscstats_data.most_applications_in_day }} applications!
-                </span>
-                <span class="p-2">
-                    Applied the most in {{  miscstats_data.most_applications_month }} with {{ miscstats_data.most_applications_in_month }} applications!
-                 </span>
-                 <span class="p-2">
-                    Most applied to company {{ miscstats_data.most_applied_company.0 }} with {{  miscstats_data.num_applications_company }} applications!
-                 </span>
-                 <span class="p-2">
-                    Most applied on {{ miscstats_data.most_source.0 }} with {{  miscstats_data.most_source_count }} applications!
-                 </span>
-            </div>
-        </div>
-
-
-
-        {% comment %} Right Column {% endcomment %}
-        <div class="col-md-6">
-            <div class="vstack">
-                test
-            </div>
-        </div>
-
+    <div class="">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+                Longest Application Streak: {{ miscstats_data.applying_streak }} days!
+            </li>
+            <li class="list-group-item">
+                Longest Not Application Streak: {{ miscstats_data.not_applying_streak }} days!
+            </li>
+            <li class="list-group-item">
+                Applied the most on {{ miscstats_data.most_applications_day }} with {{ miscstats_data.most_applications_in_day }} applications!
+            </li>
+            <li class="list-group-item">
+                Applied the most in {{  miscstats_data.most_applications_month }} with {{ miscstats_data.most_applications_in_month }} applications!
+            </li>
+            <li class="list-group-item">
+                Most applied to company {{ miscstats_data.most_applied_company.0 }} with {{  miscstats_data.num_applications_company }} applications!
+            </li>
+        </ul>
     </div>
 </div>

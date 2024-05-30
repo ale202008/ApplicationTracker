@@ -81,9 +81,17 @@ def update_locations_latitude_longitude():
             location.save()
             print(f'{location.city}, {location.state} saved at {location.latitude}, {location.longitude}')
             time.sleep(2)
+            
+def update_source_application_count():
+    sources = Source.objects.all()
+    for source in sources:
+        source.num_applications = Application.objects.filter(source=source).count()
+        source.save()
+        print(f'{source.name} count of {source.num_applications} applications')
 
 # Call the function to populate applications
 # populateApplications()
 # update_models()
 # update_locations()
-update_locations_latitude_longitude()
+# update_locations_latitude_longitude()
+update_source_application_count()

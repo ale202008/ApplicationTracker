@@ -24,17 +24,17 @@ var chart = root.container.children.push(am5xy.XYChart.new(root, {
   layout: root.verticalLayout
 }));
 
-chart.children.unshift(am5.Label.new(root, {
-  text: data.month,
-  fontSize: 30,
-  fontWeight: "500",
-  textAlign: "center",
-  x: am5.percent(50),
-  centerX: am5.percent(50),
-  paddingTop: 0,
-  paddingBottom: 10,
-  fill: am5.color(0xffffff),
-}));
+// chart.children.unshift(am5.Label.new(root, {
+//   text: data.month,
+//   fontSize: 30,
+//   fontWeight: "500",
+//   textAlign: "center",
+//   x: am5.percent(50),
+//   centerX: am5.percent(50),
+//   paddingTop: 0,
+//   paddingBottom: 10,
+//   fill: am5.color(0xffffff),
+// }));
 
 // Create axes and their renderers
 var yRenderer = am5xy.AxisRendererY.new(root, {

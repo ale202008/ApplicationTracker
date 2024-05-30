@@ -5,6 +5,7 @@ from .models import *
 # Create your models here.
 class Source(models.Model):
     name = models.CharField(max_length=50)
+    num_applications = models.IntegerField(null=True, blank=True)
     
     def __str__(self):
         return self.name

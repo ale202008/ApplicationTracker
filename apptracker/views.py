@@ -40,5 +40,6 @@ class ChartView(View):
             "heatmap_data": get_heatmap_data(),
             "map_data": get_map_data(),
             "miscstats_data": get_miscstats(),
+            "source_stats_data": get_source_stats(),
         }
         return render(request, 'chart.html', context) 
