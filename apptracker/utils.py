@@ -117,7 +117,7 @@ def get_streaks():
                 streak_not_applying = 0
 
     
-    return streak_applying, streak_not_applying
+    return longest_streak_applying, longest_streak_not_applying
 
 # Function that return the number of most applications in 1 day, and the date.
 def get_most_applications_in_day():
