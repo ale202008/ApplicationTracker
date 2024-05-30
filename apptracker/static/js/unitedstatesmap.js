@@ -89,8 +89,7 @@ var currentSeries;
 
 // Parses data and creats map point series for domestic and state-level
 function setupStores(data) {
-  console.log(data.query_results);
-  
+
   // Init country-level series
   regionalSeries.US = {
     markerData: [],
@@ -115,7 +114,6 @@ function setupStores(data) {
     if (regionalSeries[store.state] == undefined) {
       var statePolygon = getPolygon("US-" + store.state);
       if (statePolygon) {
-        
         var centroid = statePolygon.visualCentroid();
 
         // Add state data
@@ -175,7 +173,6 @@ function getPolygon(id) {
     polygonSeries.mapPolygons.each(function(polygon) {
         if (polygon.dataItem.get("id") == id) {
             found = polygon;
-
         }
     })
   return found;
@@ -227,7 +224,7 @@ function createSeries(heatfield) {
       
       // Create actual series if it hasn't been yet created
       if (!regionalSeries[data.target].series) {
-        regionalSeries[data.target].series = createSeries("count");
+        regionalSeries[data.target].series = createSeries("cities");
         regionalSeries[data.target].series.data.setAll(data.markerData);
       }
 
@@ -249,7 +246,7 @@ function createSeries(heatfield) {
       }
       zoomOut.show();
 
-      // Show new targert series
+      // Show new target series
       currentSeries = regionalSeries[data.target].series;
       currentSeries.show();
     });

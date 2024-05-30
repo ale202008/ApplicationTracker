@@ -258,7 +258,7 @@ def get_heatmap_data():
     
     return data
 
-# Function that gets map_data, formats it, and returns it in GeoJSON
+# Function that gets map data, formats it, and returns it in GeoJSON
 def get_map_data():
     applications_locations = []
     locations = get_all_locations()
