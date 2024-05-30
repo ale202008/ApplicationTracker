@@ -38,6 +38,7 @@ class ChartView(View):
         context = {
             "sankeychart_data": get_sankeychart_data(),
             "heatmap_data": get_heatmap_data(),
+            "map_data": get_map_data(),
             "miscstats_data": get_miscstats(),
         }
         return render(request, 'chart.html', context) 

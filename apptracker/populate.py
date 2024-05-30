@@ -3,6 +3,9 @@ import sys
 import django
 import json
 from datetime import datetime
+import pycountry
+import time
+from geopy.geocoders import Nominatim
 
 # Add your Django project directory to the Python path
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -64,8 +67,23 @@ def update_locations():
         location.name = ""
         location.save()
 
+def update_locations_latitude_longitude():
+    locations = Location.objects.exclude(city="Remote")
+    geolocator = Nominatim(user_agent="appl_tracker")
+    for location in locations:
+        if not location.latitude and not location.longitude:
+            state_code = pycountry.subdivisions.search_fuzzy(location.state)[0].code
+            state_code = state_code[3:]
+            geo_location_str = f'{location.city}, {state_code}'
+            geo_location = geolocator.geocode(geo_location_str)
+            location.latitude = geo_location.latitude
+            location.longitude = geo_location.longitude
+            location.save()
+            print(f'{location.city}, {location.state} saved at {location.latitude}, {location.longitude}')
+            time.sleep(2)
 
 # Call the function to populate applications
 # populateApplications()
 # update_models()
-update_locations()
+# update_locations()
+update_locations_latitude_longitude()

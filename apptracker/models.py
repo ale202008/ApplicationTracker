@@ -15,6 +15,8 @@ class Source(models.Model):
 class Location(models.Model):
     city = models.CharField(max_length=50, blank=True)
     state = models.CharField(max_length=50, blank=True)
+    latitude = models.FloatField(blank=True, null=True)
+    longitude = models.FloatField(blank=True, null=True)
     
     def __str__(self):
         return self.city + ", " + self.state

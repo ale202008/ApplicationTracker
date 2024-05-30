@@ -2,9 +2,13 @@ from apptracker.models import *
 from django.db.models import Q
 from django.http import JsonResponse
 from datetime import date, datetime, timedelta
+from geopy.geocoders import Nominatim
 import json
 import calendar
 import random
+import pycountry
+import time
+
 
 # Functions dedicated to grab applications based on requirements separated by category
 
@@ -26,6 +30,10 @@ def get_all_applications():
 # Functions that gets all employers
 def get_all_employers():
     return Employer.objects.all()
+
+# Function that gets all locations
+def get_all_locations():
+    return Location.objects.exclude(city="Remote")
 
 # Function that gets all sources
 def get_all_sources():
@@ -176,6 +184,33 @@ def get_most_source():
             
     return source_count, source_arr
 
+# Function that gets all Employers with a link and appends them to an array
+def get_logo_links(request):
+    applications = Employer.objects.exclude(Q(website_url__isnull=True))
+    links = []
+    for application in applications:
+        url = application.website_url.replace('https://', '').replace("www.", "")
+        if url.endswith('/'):
+            url = url[:-1]  # Remove the final slash
+        links.append("https://logo.uplead.com/" + url)
+    
+    random.shuffle(links)
+    return JsonResponse({'links': links})
+
+# Function that returns the latitude and longitude of City, State
+def get_latitude_and_longitude(location_city, location_state):
+    geolocator = Nominatim(user_agent="appl_tracker")
+    state_code = pycountry.subdivisions.search_fuzzy(location_state)[0].code
+    state_code = state_code[3:]
+    geo_location_str = f'{location_city}, {state_code}'
+    geo_location = geolocator.geocode(geo_location_str)
+    location_latitude = geo_location.latitude
+    location_longitude = geo_location.longitude
+    return location_latitude, location_longitude
+
+# ---- GET FUNCTIONS END ---- #
+# ---- CHART DATA FUNCTIONS ---- #
+
 # Function that correctly labels and sends the values for the Sankey chart display
 def get_sankeychart_data():
     applied_label = "[bold]Applied[/] " + "(" + str(Application.objects.count()) + ")"
@@ -223,6 +258,30 @@ def get_heatmap_data():
     
     return data
 
+# Function that gets map_data, formats it, and returns it in GeoJSON
+def get_map_data():
+    applications_locations = []
+    locations = get_all_locations()
+    location_remote = Location.objects.get(city="Remote")
+    num_remote = Application.objects.filter(location=location_remote).count()
+
+    for location in locations:
+        state_code = pycountry.subdivisions.search_fuzzy(location.state)[0].code
+        location_map_str = {
+            "MAIL_ST_PROV_C": state_code[3:],
+            "LNGTD_I": location.latitude,
+            "LATTD_I": location.longitude,
+            "mail_city_n": location.city,
+        }
+        applications_locations.append(location_map_str)
+    
+    data = {
+        "query_results": applications_locations,
+        "num_location_remote": num_remote,
+    }
+    
+    return data
+
 # Function that gets miscellaneous stats
 def get_miscstats():
     longest_streak_applying, longest_streak_not_applying = get_streaks()
@@ -246,20 +305,7 @@ def get_miscstats():
     
     return data
 
-# Function that gets all Employers with a link and appends them to an array
-def get_logo_links(request):
-    applications = Employer.objects.exclude(Q(website_url__isnull=True))
-    links = []
-    for application in applications:
-        url = application.website_url.replace('https://', '').replace("www.", "")
-        if url.endswith('/'):
-            url = url[:-1]  # Remove the final slash
-        links.append("https://logo.uplead.com/" + url)
-    
-    random.shuffle(links)
-    return JsonResponse({'links': links})
-
-# ---- GET FUNCTIONS END ---- #
+# ---- CHART DATA FUNCTIONS END ---- #
 # ---- BOOLEAN FUNCTION ---- #
 
 # Function that returns a boolean based if an Application object exists with today's date
@@ -286,7 +332,8 @@ def application_submission(request):
         location = Location.objects.get(city=location_name)
     else:
         location_city, location_state = location_name.split(", ")
-        location, _ = Location.objects.get_or_create(city=location_city, state=location_state) if location_name else (None, None)
+        latitude, longitude = get_latitude_and_longitude(location_city, location_state)
+        location, _ = Location.objects.get_or_create(city=location_city, state=location_state, latitude=latitude, longitude=longitude) if location_name else (None, None)
     employment_type = request.POST.get('employment_type')
     source_name = request.POST.get('source') or request.POST.get('other_source')
     source, _ = Source.objects.get_or_create(name=source_name) if source_name else (None, None)
