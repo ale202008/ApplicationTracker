@@ -6,13 +6,24 @@
     <div class="">
         <ul class="list-group list-group-flush">
             <li class="list-group-item">
-                You have applied to {{ current_month_stats_data.num_applications }} jobs this month
-            </li>
-            <li class="list-group-item">
                 You have applied to at least 1 job {{ current_month_stats_data.application_streak }} days in a row this month
             </li>
             <li class="list-group-item">
                 You did not apply for any jobs for {{ current_month_stats_data.not_application_streak }} days in a row this month
+            </li>
+            <li class="list-group-item">
+                You have applied to {{ current_month_stats_data.num_applications }} jobs this month
+            </li>
+            <li class="list-group-item">
+                Out of {{ current_month_stats_data.num_applications }} applications, {{ current_month_stats_data.response_count }} have responded at a
+                {{ current_month_stats_data.response_rate }}% response rate
+            </li>
+            <li class="list-group-item">
+                You have applied for {{ current_month_stats_data.position_count }} {{current_month_stats_data.position}} positions, roughly {{current_month_stats_data.position_count_percent}}%
+                of this months number of applications
+            </li>
+            <li class="list-group-item">
+                The average position pay you have applied for this month is ${{ current_month_stats_data.avg_salary }} or ${{ current_month_stats_data.avg_hourly }}/hr
             </li>
         </ul>
     </div>

@@ -27,6 +27,10 @@ def get_all_status_applications(status_name):
 def get_all_applications():
     return Application.objects.all() 
 
+# Function that returns the count of Application objects
+def get_all_application_count():
+    return Application.objects.count()
+
 # Functions that returns all employers
 def get_all_employers():
     return Employer.objects.all()
@@ -62,12 +66,18 @@ def get_status_application_count(status_name, index):
         return Application.objects.filter(interview_counter__gte=index)
 
 # Function to get all applications that have received a response
-def get_response_count():
-    return (Application.objects.count() - len(get_all_status_applications("Applied"))) - len(get_status_application_count("Withdrawn", 0))
+def get_response_count(applications):
+    if not applications:
+        return (Application.objects.count() - len(get_all_status_applications("Applied")))
+    else:
+        return applications.count() - applications.filter(status=Status.objects.get(name="Applied")).count()
 
-# Function that returns the count of Application objects
-def get_application_count():
-    return Application.objects.count()
+# Function that return all applications that have received no response
+def get_no_response_count(applications):
+    if not applications:
+        return Application.objects.filter(status=Status.objects.get(name="Applied")).count()
+    else:
+        return applications.filter(status=Status.objects.get(name="Applied")).count()
 
 # Function that return the week periods of the current month.
 def get_month_weeks(year, month):
@@ -137,7 +147,6 @@ def get_streaks(applications):
     longest_streak_not_applying = max(longest_streak_not_applying, streak_not_applying)
     
     return longest_streak_applying, longest_streak_not_applying
-
 
 # Function that return the number of most applications in 1 day, and the date.
 def get_most_applications_in_day():
@@ -220,14 +229,50 @@ def get_latitude_and_longitude(location_city, location_state):
     location_longitude = geo_location.longitude
     return location_latitude, location_longitude
 
+# Function that returns the most applied for role and count
+def get_position_and_count(applications):
+    if not applications:
+        applications = get_all_applications()
+    
+    position_count = {}
+    
+    for application in applications:
+        position = application.position
+        if position in position_count:
+            position_count[position] += 1
+        else:
+            position_count[position] = 1
+
+    sorted_positions = sorted(position_count.items(), key=lambda item: item[1], reverse=True)
+    most_applied_position, highest_count = sorted_positions[0]
+    
+    return most_applied_position, highest_count
+
+# Function that returns the average salary of the given query_set of applications or all applications if None
+def get_average_salary(applications):
+    if not applications:
+        applications = get_all_applications()
+    
+    total_salary = 0
+    
+    for application in applications:
+        salary = application.pay
+        total_salary += salary
+        
+    return round(total_salary/applications.count(), 2)
+
+# Function that returns the hourly based of a regular 40 hour work week, 2080 hours a year
+def get_average_hourly(salary):
+    return round(salary/2080, 2)
+
 # ---- GET FUNCTIONS END ---- #
 # ---- CHART.HTML DATA FUNCTIONS ---- #
 
 # Function that correctly labels and sends the values for the Sankey chart display
 def get_sankeychart_data():
     applied_label = "[bold]Applied[/] " + "(" + str(Application.objects.count()) + ")"
-    no_response_label = "[bold]No Response[/] " + "(" + str(get_response_count()) + ")"
-    response_label =  "[bold]Response[/] " + "(" + str(get_response_count()) + ")"
+    no_response_label = "[bold]No Response[/] " + "(" + str(get_no_response_count(None)) + ")"
+    response_label =  "[bold]Response[/] " + "(" + str(get_response_count(None)) + ")"
     rejected_label = "[bold]Rejected[/] " + "(" + str(len(get_status_application_count("Rejected", 0))) + ")"
     withdrawn_label = "[bold]Withdrawn[/] " + "(" + str(len(get_status_application_count("Withdrawn", 0))) + ")"
     first_interview_label = "[bold]1st Interview[/] " + "(" + str(len(get_status_application_count("Interview", 1))) + ")"
@@ -237,7 +282,7 @@ def get_sankeychart_data():
     
     data =  [
                 {'from': applied_label, "to": no_response_label, "value": len(get_all_status_applications("Applied")), "labelText": "Node 1 (100)"},
-                {'from': applied_label, "to": response_label, "value": get_response_count()},
+                {'from': applied_label, "to": response_label, "value": get_response_count(None)},
                 {'from': applied_label, "to": withdrawn_label, "value": len(get_status_application_count("Withdrawn", 0))},
                 {'from': response_label, "to": rejected_label, "value": len(get_status_application_count("Rejected", 0))},
                 {'from': response_label, "to": first_interview_label, "value": len(get_status_application_count("Interview", 1))},
@@ -337,11 +382,27 @@ def get_current_month_stats():
     current_month = get_month()
     current_month = datetime.strptime(current_month, "%B").month
     current_month_applications = Application.objects.filter(application_date__month=current_month)
+    current_month_applications_count = current_month_applications.count()
     longest_streak_applying, longest_streak_not_applying = get_streaks(current_month_applications)
+    response_count = get_response_count(current_month_applications)
+    no_response_count = get_no_response_count(current_month_applications)
+    response_rate = calc_rate("Applied", current_month_applications)
+    position, position_count = get_position_and_count(current_month_applications)
+    position_count_percent = round((position_count/current_month_applications_count) * 100, 2)
+    current_month_avg_salary = get_average_salary(current_month_applications)
+    current_month_avg_hourly = get_average_hourly(current_month_avg_salary)
     
     data = {
         "application_streak": longest_streak_applying,
         "not_application_streak": longest_streak_not_applying,
+        "no_response_count": no_response_count,
+        "response_count": response_count,
+        "response_rate": response_rate,
+        "position": position,
+        "position_count": position_count,
+        "position_count_percent": position_count_percent,
+        "avg_salary": current_month_avg_salary,
+        "avg_hourly": current_month_avg_hourly,
         "month": get_month(),
         "num_applications": current_month_applications.count(),
     }
@@ -428,13 +489,20 @@ def update_status(request):
     return JsonResponse({ "success": True})
 
 # Function that calculates the rate for the given status out of all Application objects
-def calc_rate(status_name):
-    total_applications = get_application_count()
+def calc_rate(status_name, applications):
+    if not applications:
+        applications_count = get_all_application_count()
+        response_count = get_response_count(None)
+    else:
+        applications_count = applications.count()
+        response_count = get_response_count(applications)
+        
     rate = 0
     if status_name == "Applied":
-        rate = (get_response_count()/total_applications) * 100
+        
+        rate = (response_count/applications_count) * 100
     else:
-        rate = (len(get_all_status_applications(status_name))/total_applications) * 100
+        rate = (len(get_all_status_applications(status_name))/applications_count) * 100
     return round(rate, 2)
 
 # Function that calculates the average response time period after sending an application
