@@ -1,0 +1,19 @@
+<div class="card h-100">
+    <h2 class="card-title card-header text-center text-white">
+        {{ current_month_stats_data.month }}'s Stats
+    </h2>
+
+    <div class="">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+                You have applied to {{ current_month_stats_data.num_applications }} jobs this month
+            </li>
+            <li class="list-group-item">
+                You have applied to at least 1 job {{ current_month_stats_data.application_streak }} days in a row this month
+            </li>
+            <li class="list-group-item">
+                You did not apply for any jobs for {{ current_month_stats_data.not_application_streak }} days in a row this month
+            </li>
+        </ul>
+    </div>
+</div>

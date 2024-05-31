@@ -48,6 +48,7 @@ yRenderer.grid.template.set("visible", false);
 
 yRenderer.labels.template.setAll({
     fill: am5.color(0xffffff),
+    fontSize: 10,
 })
 
 var yAxis = chart.yAxes.push(am5xy.CategoryAxis.new(root, {
@@ -91,7 +92,7 @@ var series = chart.series.push(am5xy.ColumnSeries.new(root, {
 series.columns.template.setAll({
   tooltipText: "{value}",
   strokeOpacity: 1,
-  strokeWidth: 2,
+  strokeWidth: 1,
   width: am5.percent(100),
   height: am5.percent(100)
 });

@@ -41,5 +41,6 @@ class ChartView(View):
             "map_data": get_map_data(),
             "miscstats_data": get_miscstats(),
             "source_stats_data": get_source_stats(),
+            "current_month_stats_data": get_current_month_stats(),
         }
         return render(request, 'chart.html', context) 

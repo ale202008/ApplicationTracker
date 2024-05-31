@@ -131,6 +131,7 @@ function setupStores(data) {
         };
         regionalSeries.US.markerData.push(regionalSeries[store.state]);
 
+
       }
       else {
         // State not found

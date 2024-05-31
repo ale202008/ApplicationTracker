@@ -26,7 +26,7 @@
         {% comment %} Sankey chart {% endcomment %}
         <div class="col-md-12">
             <div class="card">
-                <h2 class="card-title card-header text-center">
+                <h2 class="card-title card-header text-center text-white">
                     Application Sankey Chart
                 </h2>
                 <div id="sankeychart">
@@ -37,23 +37,34 @@
         </div>
 
         {% comment %} Heatmap {% endcomment %}
-        <div class="col-md-6">
-            <div class="card" style="color:white;">
-                <h2 class="card-title card-header text-center">
+        <div class="col-md-4">
+            <div class="card">
+                <h2 class="card-title card-header text-center text-white">
                     {{heatmap_data.month}}
                 </h2>
                 <div id="heatmap"></div>
             </div>
         </div>
+
+        <div class="col-md-2">
+            {% include 'components/current_month_stats.html' %}
+        </div>
+
+        <div class="col-md-2">
+            {% include 'components/current_month_stats.html' %}
+        </div>
+
         {% comment %} Map {% endcomment %}
-        <div class="col-md-6">
+        <div class="col-md-4">
             <div class="card">
-                <h2 class="card-title card-header text-center">
+                <h2 class="card-title card-header text-center text-white">
                     U.S. Application Location Heatmap
                 </h2>
                 <div id="map"></div>
             </div>
         </div>
+
+
 
         {% comment %} Misc Stats Card {% endcomment %}
         <div class="col-md-2">
@@ -63,11 +74,9 @@
         <div class="col-md-2">
             {% include 'components/sourcestats.html' %}
         </div>
-
         <div class="col-md-2">
             {% include 'components/miscstats.html' %}
         </div>
-
         <div class="col-md-2">
             {% include 'components/miscstats.html' %}
         </div>

@@ -6,6 +6,10 @@ body {
     padding-top: 56px;
 }
 
+.text-white {
+    color: var(--white);
+}
+
 .navbarheightfix {
     height: calc(100vh - 56px);
 }

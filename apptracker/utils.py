@@ -14,7 +14,7 @@ import time
 
 # ---- GET ALL FUNCTIONS ---- #
 
-# Function to get all applications of certain status
+# Function that returns applications of certain status
 def get_all_status_applications(status_name):
     status = Status.objects.get(name=status_name)
     
@@ -23,21 +23,32 @@ def get_all_status_applications(status_name):
     else:
         return None
 
-# Function that gets all applications
+# Function that returns all applications
 def get_all_applications():
     return Application.objects.all() 
 
-# Functions that gets all employers
+# Functions that returns all employers
 def get_all_employers():
     return Employer.objects.all()
 
-# Function that gets all locations
+# Function that returns all locations
 def get_all_locations():
     return Location.objects.exclude(city="Remote")
 
-# Function that gets all sources
+# Function that returns all sources
 def get_all_sources():
     return Source.objects.all()
+
+# Function that returns all dates, no duplicates
+def get_all_dates(applications):
+    if not applications:
+        application = get_all_applications()
+    dates = []
+    for application in applications:
+        if application.application_date not in dates:
+            dates.append(application.application_date)
+    return dates
+            
 
 # ---- GET ALL FUNCTIONS END ---- #
 # ---- GET FUNCTIONS ---- #
@@ -86,7 +97,7 @@ def get_applications_date(week):
         applications_for_date_count = len(Application.objects.filter(application_date=current_date.strftime('%Y-%m-%d')))
         application_data.append(
             {
-                'week': "(" + week + ")",
+                'week': "|" + week + "|",
                 'weekday': current_date.strftime('%A'),
                 'value': applications_for_date_count
             },
@@ -101,31 +112,32 @@ def get_month():
     return date.today().strftime('%B')
 
 # Function that returns the longest streak of uninterrupted days of applying, and uninterrupted days not applying
-def get_streaks():
-    applications = get_all_applications()
-    streak_applying = 0
-    longest_streak_applying = 0
+def get_streaks(applications):
+    if not applications:
+        applications = get_all_applications()
+    dates = get_all_dates(applications)
+    streak_applying = 1
+    longest_streak_applying = 1
     streak_not_applying = 0
-    longest_streak_not_applying = 0
-
-    last_date = date.today()
-    for application in applications:
-        if application.application_date != (last_date + timedelta(days=1)):
-            last_date = application.application_date
-            if streak_applying > longest_streak_applying:
-                longest_streak_applying = streak_applying
-                streak_applying = 0
-                
-            streak_not_applying +=1
+    longest_streak_not_applying = 1
+    
+    last_date = dates[0]
+    for date in dates[1:]:
+        if date != (last_date + timedelta(days=1)):
+            longest_streak_applying = max(longest_streak_applying, streak_applying)
+            streak_applying = 1
+            streak_not_applying += 1
         else:
+            longest_streak_not_applying = max(longest_streak_not_applying, streak_not_applying-1)
             streak_applying += 1
+            streak_not_applying = 0
+        last_date = date
             
-            if streak_not_applying > longest_streak_not_applying:
-                longest_streak_not_applying = streak_not_applying
-                streak_not_applying = 0
-
+    longest_streak_applying = max(longest_streak_applying, streak_applying)
+    longest_streak_not_applying = max(longest_streak_not_applying, streak_not_applying)
     
     return longest_streak_applying, longest_streak_not_applying
+
 
 # Function that return the number of most applications in 1 day, and the date.
 def get_most_applications_in_day():
@@ -247,7 +259,7 @@ def get_heatmap_data():
                 max_value = data['value']
             application_date_data.append(data)
         
-        week_period_data.append({'week': "(" + week + ")"})
+        week_period_data.append({'week': "|" + week + "|"})
     
     data = {
         "week_periods": week_period_data,
@@ -284,7 +296,7 @@ def get_map_data():
 
 # Function that gets miscellaneous stats
 def get_miscstats():
-    longest_streak_applying, longest_streak_not_applying = get_streaks()
+    longest_streak_applying, longest_streak_not_applying = get_streaks(None)
     most_applications_day, date = get_most_applications_in_day()
     most_applications_month, month = get_most_applications_in_month()
     most_applied_company, num_applications_company = get_most_applications_employers()
@@ -320,6 +332,22 @@ def get_source_stats():
 
     return data
 
+# Function that get current month statistics and returns the data
+def get_current_month_stats():
+    current_month = get_month()
+    current_month = datetime.strptime(current_month, "%B").month
+    current_month_applications = Application.objects.filter(application_date__month=current_month)
+    longest_streak_applying, longest_streak_not_applying = get_streaks(current_month_applications)
+    
+    data = {
+        "application_streak": longest_streak_applying,
+        "not_application_streak": longest_streak_not_applying,
+        "month": get_month(),
+        "num_applications": current_month_applications.count(),
+    }
+    
+    return data
+
 # ---- CHART.HTML DATA FUNCTIONS END ---- #
 # ---- BOOLEAN FUNCTION ---- #
 
@@ -351,7 +379,12 @@ def application_submission(request):
         location, _ = Location.objects.get_or_create(city=location_city, state=location_state, latitude=latitude, longitude=longitude) if location_name else (None, None)
     employment_type = request.POST.get('employment_type')
     source_name = request.POST.get('source') or request.POST.get('other_source')
-    source, _ = Source.objects.get_or_create(name=source_name) if source_name else (None, None)
+    if Source.objects.get(name=source_name):
+        source = Source.objects.get(name=source_name)
+        source.num_applications += 1
+        source.save()
+    else:
+        source, _ = Source.objects.get_or_create(name=source_name, num_applications=1) if source_name else (None, None)
     description = request.POST.get('description')
     notes = request.POST.get('notes')
     save_url(request.POST.get('websiteurl'), employer)
@@ -373,8 +406,7 @@ def application_submission(request):
     )
     application.save()
     
-    source.num_applications += 1
-    source.save()
+
     
     return JsonResponse({'success': True})
 
