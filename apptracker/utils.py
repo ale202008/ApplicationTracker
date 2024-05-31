@@ -178,6 +178,16 @@ def get_most_source():
             
     return source_count, source_arr
 
+# Function that return the location that has been applied to the most
+def get_most_applied_location():
+    result = Application.objects.values('location__state').annotate(count=Count('id')).order_by('-count')
+    result = result[1]
+    return result['count'], result['location__state'] if result else (0, None)
+
+# Function that returns the applications by locations
+def get_applications_by_location(location):
+    return Application.objects.filter(location=location)
+
 # Function that gets all Employers with a link and appends them to an array
 def get_logo_links(request):
     applications = Employer.objects.exclude(Q(website_url__isnull=True))
@@ -292,22 +302,22 @@ def get_heatmap_data():
 def get_map_data():
     applications_locations = []
     locations = get_all_locations()
-    location_remote = Location.objects.get(city="Remote")
-    num_remote = Application.objects.filter(location=location_remote).count()
 
     for location in locations:
+        applications = get_applications_by_location(location)
         state_code = pycountry.subdivisions.search_fuzzy(location.state)[0].code
-        location_map_str = {
-            "MAIL_ST_PROV_C": state_code[3:],
-            "LNGTD_I": location.latitude,
-            "LATTD_I": location.longitude,
-            "mail_city_n": location.city,
-        }
-        applications_locations.append(location_map_str)
+        for i in range(applications.count()):
+            location_map_str = {
+                "MAIL_ST_PROV_C": state_code[3:],
+                "LNGTD_I": location.latitude,
+                "LATTD_I": location.longitude,
+                "mail_city_n": location.city,
+                "count": i,
+            }
+            applications_locations.append(location_map_str)
     
     data = {
         "query_results": applications_locations,
-        "num_location_remote": num_remote,
     }
     
     return data
@@ -350,7 +360,7 @@ def get_source_stats():
 
     return data
 
-# Function that get current month statistics and returns the data
+# Function that gets current month statistics and returns the data
 def get_current_month_stats():
     current_month = get_month()
     current_month = datetime.strptime(current_month, "%B").month
@@ -379,6 +389,24 @@ def get_current_month_stats():
         "month": get_month(),
         "num_applications": current_month_applications.count(),
     }
+    
+    return data
+
+# Function that gets Location object statistics and return the data
+def get_locations_stats():
+    num_remote_applications = Application.objects.filter(location=Location.objects.get(city="Remote")).count()
+    non_remote_applications_count = get_all_application_count() - num_remote_applications
+    most_location_count, most_location = get_most_applied_location()
+
+    
+    
+    data = {
+        "num_remote_applications": num_remote_applications,
+        "num_non_remote_applications": non_remote_applications_count,
+        "most_applied_location": most_location,
+        "most_applied_location_count": most_location_count,
+    }
+    
     
     return data
 
