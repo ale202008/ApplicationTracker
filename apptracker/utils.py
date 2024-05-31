@@ -1,5 +1,5 @@
 from apptracker.models import *
-from django.db.models import Q
+from django.db.models import Q, Count
 from django.http import JsonResponse
 from datetime import date, datetime, timedelta
 from geopy.geocoders import Nominatim
@@ -46,14 +46,10 @@ def get_all_sources():
 # Function that returns all dates, no duplicates
 def get_all_dates(applications):
     if not applications:
-        application = get_all_applications()
-    dates = []
-    for application in applications:
-        if application.application_date not in dates:
-            dates.append(application.application_date)
+        applications = get_all_applications()
+    dates = applications.values_list('application_date', flat=True).distinct()
     return dates
             
-
 # ---- GET ALL FUNCTIONS END ---- #
 # ---- GET FUNCTIONS ---- #
 
@@ -126,68 +122,45 @@ def get_streaks(applications):
     if not applications:
         applications = get_all_applications()
     dates = get_all_dates(applications)
-    streak_applying = 1
+    current_streak_applying = 1
     longest_streak_applying = 1
-    streak_not_applying = 0
+    # We count only the days between dates we have applied for for streak_not_applying
+    current_streak_not_applying = 0
     longest_streak_not_applying = 1
     
     last_date = dates[0]
     for date in dates[1:]:
         if date != (last_date + timedelta(days=1)):
-            longest_streak_applying = max(longest_streak_applying, streak_applying)
-            streak_applying = 1
-            streak_not_applying += 1
+            longest_streak_applying = max(longest_streak_applying, current_streak_applying)
+            current_streak_applying = 1
+            current_streak_not_applying += 1
         else:
-            longest_streak_not_applying = max(longest_streak_not_applying, streak_not_applying-1)
-            streak_applying += 1
-            streak_not_applying = 0
+            longest_streak_not_applying = max(longest_streak_not_applying, current_streak_not_applying-1)
+            current_streak_applying += 1
+            current_streak_not_applying = 0
         last_date = date
             
-    longest_streak_applying = max(longest_streak_applying, streak_applying)
-    longest_streak_not_applying = max(longest_streak_not_applying, streak_not_applying)
+    longest_streak_applying = max(longest_streak_applying, current_streak_applying)
+    longest_streak_not_applying = max(longest_streak_not_applying, current_streak_not_applying)
     
     return longest_streak_applying, longest_streak_not_applying
 
 # Function that return the number of most applications in 1 day, and the date.
 def get_most_applications_in_day():
-    applications = get_all_applications()
-    most_applications = 0
-    date = None
-    
-    for application in applications:
-        if Application.objects.filter(application_date=application.application_date).count() > most_applications:
-            most_applications = Application.objects.filter(application_date=application.application_date).count()
-            date = application.application_date
-
-    return most_applications, date
+    result = Application.objects.values('application_date').annotate(count=Count('id')).order_by('-count').first()
+    return result['count'], result['application_date'] if result else (0, None)
 
 # Function that return the number of most applications in a month, and the month.
 def get_most_applications_in_month():
-    most_applications = 0
-    month = None
-    
-    for i in range(12):
-        if Application.objects.filter(application_date__month=i).count() > most_applications:
-            most_applications = Application.objects.filter(application_date__month=i).count()
-            month = calendar.month_name[i]
-            
-    return most_applications, month
+    result = Application.objects.values('application_date__month').annotate(count=Count('id')).order_by('-count').first()
+    return result['count'], calendar.month_name[result['application_date__month']] if result else (0, None)
 
 # Function that returns the employer with the most applications, and the number of applications
 def get_most_applications_employers():
-    employers = get_all_employers()
-    num_applications = 0
-    applied_employers = []
-    
-    for employer in employers:
-        if Application.objects.filter(employer=employer).count() > num_applications:
-            num_applications = Application.objects.filter(employer=employer).count()
-            applied_employers[:] = []
-            applied_employers.append(employer.name)
-        elif Application.objects.filter(employer=employer).count() >= num_applications:
-            applied_employers.append(employer.name)
-        
-    return applied_employers, num_applications
+    result = Application.objects.values('employer__name').annotate(count=Count('id')).order_by('-count')
+    max_count = result[0]['count'] if result else 0
+    employers = [r['employer__name'] for r in result if r['count'] == max_count]
+    return employers, max_count
 
 # Function that returns the source with the most applications done.
 def get_most_source():
