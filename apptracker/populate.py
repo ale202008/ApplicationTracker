@@ -89,9 +89,18 @@ def update_source_application_count():
         source.save()
         print(f'{source.name} count of {source.num_applications} applications')
 
+def update_applications_pay():
+    applications = Application.objects.all()
+    
+    for application in applications:
+        if application.pay == 0:
+            application.pay = 55000
+            application.save()
+
 # Call the function to populate applications
 # populateApplications()
 # update_models()
 # update_locations()
 # update_locations_latitude_longitude()
-update_source_application_count()
+# update_source_application_count()
+update_applications_pay()

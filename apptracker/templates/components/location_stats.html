@@ -1,19 +1,18 @@
-<div class="card h-100">
-    <h2 class="card-title card-header text-center text-white">
-        Location's Stats
-    </h2>
-
-    <div class="">
-        <ul class="list-group list-group-flush">
-            <li class="list-group-item">
-                You have applied to {{ location_stats_data.num_remote_applications }} remote position out of {{ applicationcount }} applications.
-            </li>
-            <li class="list-group-item">
-                You have applied to {{ location_stats_data.num_non_remote_applications }} non-remote position out of {{ applicationcount }} applications.
-            </li>
-            <li class="list-group-item">
-                You have applied the most in {{ location_stats_data.most_applied_location }} with {{ location_stats_data.most_applied_location_count }} applications for non-remote positions.
-            </li>
-        </ul>
-    </div>
+<h2 class="card-title card-header text-center text-white">
+    Map's Stats
+</h2>
+<div class="">
+    <ul class="list-group list-group-flush vertical-scrollable-hidden">
+        <li class="list-group-item">
+            You have applied to {{ location_stats_data.num_remote_applications }} remote position out of {{ applicationcount }} applications with an average salary
+            of ${{ location_stats_data.avg_salary_remote }} or ${{ location_stats_data.avg_hourly_remote }}/hr
+        </li>
+        <li class="list-group-item">
+            You have applied to {{ location_stats_data.num_non_remote_applications }} non-remote position out of {{ applicationcount }} applications with an average salary
+            of ${{ location_stats_data.avg_salary_non_remote }} or ${{ location_stats_data.avg_hourly_non_remote }}/hr
+        </li>
+        <li class="list-group-item">
+            You have applied the most in {{ location_stats_data.most_applied_location }} with {{ location_stats_data.most_applied_location_count }} applications
+        </li>
+    </ul>
 </div>

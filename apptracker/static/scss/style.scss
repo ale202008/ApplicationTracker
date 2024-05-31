@@ -79,7 +79,29 @@ a.am5exporting-icon:hover,
 .am5exporting-item a:hover {
     background: #85FFC4;
 }
+  
+.vertical-scrollable-hidden {
+    overflow-y: auto; 
+    max-height: 400px;
 
+    /* Hide scrollbar for Firefox */
+    scrollbar-width: none;
+    /* Hide scrollbar for Internet Explorer 10+ */
+    -ms-overflow-style: none;
+    /* Hide scrollbar for other browsers */
+    overflow: -moz-scrollbars-none;
+    -ms-overflow-style: none;
+    
+    /* Hide scrollbar for WebKit-based browsers (Chrome, Safari) */
+    ::-webkit-scrollbar {
+        width: 0;
+        height: 0;
+    }
+}
+
+
+
+  
 /* chart.html end */
 
 

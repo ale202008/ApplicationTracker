@@ -23,6 +23,7 @@
 
 <div class="container-fluid bg-secondary-subtle p-3 h-100">
     <div class="row g-2">
+
         {% comment %} Sankey chart {% endcomment %}
         <div class="col-md-12">
             <div class="card">
@@ -36,31 +37,38 @@
             </div>
         </div>
 
-        {% comment %} Heatmap {% endcomment %}
-        <div class="col-md-4">
+        {% comment %} Heatmap and Stats {% endcomment %}
+        <div class="col-md-6">
             <div class="card">
-                <h2 class="card-title card-header text-center text-white">
-                    {{heatmap_data.month}}
-                </h2>
-                <div id="heatmap"></div>
+                <div class="row g-0">
+                    <div class="col-md-8">
+                        <h2 class="card-title card-header text-center text-white">
+                            {{heatmap_data.month}}'s Applications Heatmap
+                        </h2>
+                        <div id="heatmap"></div>
+                    </div>
+                    <div class="col-md-4">
+                        {% include 'components/current_month_stats.html' %}
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="col-md-2">
-            {% include 'components/current_month_stats.html' %}
-        </div>
-
-        <div class="col-md-2">
-            {% include 'components/location_stats.html' %}
-        </div>
-
         {% comment %} Map {% endcomment %}
-        <div class="col-md-4">
+        <div class="col-md-6">
             <div class="card">
-                <h2 class="card-title card-header text-center text-white">
-                    U.S. Application Location Heatmap
-                </h2>
-                <div id="map"></div>
+                <div class="row g-0">
+                    <div class="col-md-4">
+                        {% include 'components/location_stats.html' %}
+                    </div>
+                    <div class="col-md-8">
+                        <h2 class="card-title card-header text-center text-white">
+                            U.S. Application Location Heatmap
+                        </h2>
+                        <div id="map"></div>
+                    </div>
+                </div>
+
             </div>
         </div>
 

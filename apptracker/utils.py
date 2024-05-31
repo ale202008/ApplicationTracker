@@ -237,11 +237,10 @@ def get_average_salary(applications):
         applications = get_all_applications()
     
     total_salary = 0
-    
     for application in applications:
         salary = application.pay
-        total_salary += salary
-        
+        total_salary += salary 
+
     return round(total_salary/applications.count(), 2)
 
 # Function that returns the hourly based of a regular 40 hour work week, 2080 hours a year
@@ -394,15 +393,27 @@ def get_current_month_stats():
 
 # Function that gets Location object statistics and return the data
 def get_locations_stats():
-    num_remote_applications = Application.objects.filter(location=Location.objects.get(city="Remote")).count()
-    non_remote_applications_count = get_all_application_count() - num_remote_applications
+    remote_applications = Application.objects.filter(location=Location.objects.get(city="Remote"))
+    non_remote_applications = Application.objects.exclude(location=Location.objects.get(city="Remote"))
+    num_remote_applications = remote_applications.count()
+    non_remote_applications_count = non_remote_applications.count()
     most_location_count, most_location = get_most_applied_location()
+    avg_salary_remote_applications = get_average_salary(remote_applications)
+    avg_hourly_remote_applications = get_average_hourly(avg_salary_remote_applications)
+    avg_salary_non_remote_applications = get_average_salary(non_remote_applications)
+    avg_hourly_non_remote_applications = get_average_hourly(avg_salary_non_remote_applications)
+    
+
 
     
     
     data = {
         "num_remote_applications": num_remote_applications,
+        "avg_salary_remote": avg_salary_remote_applications,
+        "avg_hourly_remote": avg_hourly_remote_applications,
         "num_non_remote_applications": non_remote_applications_count,
+        "avg_salary_non_remote": avg_salary_non_remote_applications,
+        "avg_hourly_non_remote": avg_hourly_non_remote_applications,
         "most_applied_location": most_location,
         "most_applied_location_count": most_location_count,
     }
