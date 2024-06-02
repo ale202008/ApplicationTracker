@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'jquery',
     'apptracker',
     'bootstrap5',
     'compressor',
