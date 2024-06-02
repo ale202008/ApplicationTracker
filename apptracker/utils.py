@@ -365,14 +365,14 @@ def get_current_month_stats():
     current_month = datetime.strptime(current_month, "%B").month
     current_month_applications = Application.objects.filter(application_date__month=current_month)
     current_month_applications_count = current_month_applications.count()
-    longest_streak_applying, longest_streak_not_applying = get_streaks(current_month_applications)
-    response_count = get_response_count(current_month_applications)
-    no_response_count = get_no_response_count(current_month_applications)
-    response_rate = calc_rate("Applied", current_month_applications)
-    position, position_count = get_position_and_count(current_month_applications)
-    position_count_percent = round((position_count/current_month_applications_count) * 100, 2)
-    current_month_avg_salary = get_average_salary(current_month_applications)
-    current_month_avg_hourly = get_average_hourly(current_month_avg_salary)
+    longest_streak_applying, longest_streak_not_applying = get_streaks(current_month_applications) if current_month_applications else 0
+    response_count = get_response_count(current_month_applications) if current_month_applications else 0
+    no_response_count = get_no_response_count(current_month_applications) if current_month_applications else 0
+    response_rate = calc_rate("Applied", current_month_applications) if current_month_applications else 0
+    position, position_count = get_position_and_count(current_month_applications) if current_month_applications else None
+    position_count_percent = round((position_count/current_month_applications_count) * 100, 2) if current_month_applications_count != 0 else 0
+    current_month_avg_salary = get_average_salary(current_month_applications) if current_month_applications else 0
+    current_month_avg_hourly = get_average_hourly(current_month_avg_salary) if current_month_avg_salary else 0
     
     data = {
         "application_streak": longest_streak_applying,
@@ -403,10 +403,6 @@ def get_locations_stats():
     avg_salary_non_remote_applications = get_average_salary(non_remote_applications)
     avg_hourly_non_remote_applications = get_average_hourly(avg_salary_non_remote_applications)
     
-
-
-    
-    
     data = {
         "num_remote_applications": num_remote_applications,
         "avg_salary_remote": avg_salary_remote_applications,
@@ -417,7 +413,6 @@ def get_locations_stats():
         "most_applied_location": most_location,
         "most_applied_location_count": most_location_count,
     }
-    
     
     return data
 
@@ -452,7 +447,7 @@ def application_submission(request):
         location, _ = Location.objects.get_or_create(city=location_city, state=location_state, latitude=latitude, longitude=longitude) if location_name else (None, None)
     employment_type = request.POST.get('employment_type')
     source_name = request.POST.get('source') or request.POST.get('other_source')
-    if Source.objects.get(name=source_name):
+    if Source.objects.filter(name=source_name).exists():
         source = Source.objects.get(name=source_name)
         source.num_applications += 1
         source.save()
