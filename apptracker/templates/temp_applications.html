@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_filters %}
+
+{% block js %}
+    <script src="{% static 'js\applications_viewer.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid bg-secondary-subtle navbarheightfix">
+    <div class="row p-2">
+        <div class="col-md-12 ">
+            {% include 'components/applications_viewer.html' %}
+        </div>
+    </div>
+</div>
+{% endblock %}

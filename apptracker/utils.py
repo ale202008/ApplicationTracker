@@ -1,8 +1,9 @@
 from apptracker.models import *
-from django.db.models import Q, Count
+from django.db.models import Q, Count, Min, Max
 from django.http import JsonResponse
 from datetime import date, datetime, timedelta
 from geopy.geocoders import Nominatim
+from django.views.decorators.http import require_GET, require_POST
 import json
 import calendar
 import random
@@ -247,6 +248,26 @@ def get_average_salary(applications):
 def get_average_hourly(salary):
     return round(salary/2080, 2)
 
+# Function that returns the total days between two dates
+def get_total_days():
+    first_date = Application.objects.aggregate(first_date=Min('application_date'))['first_date']
+    last_date = Application.objects.aggregate(last_date=Max('application_date'))['last_date']
+    return (last_date - first_date).days + 1
+
+# Function that returns the latest application object
+def get_latest_application():
+    return Application.objects.order_by('-application_id').first()
+
+# Function that returns the average amount of application applied a day
+def get_avg_applications_per_day():
+    avg_applications = (get_all_application_count() / get_total_days())
+    return round(avg_applications, 2)
+
+# Function that returns the average amount of days per application
+def get_avg_days_per_application():
+    avg_days = (get_total_days() / get_all_application_count())
+    return int(avg_days)
+
 # ---- GET FUNCTIONS END ---- #
 # ---- CHART.HTML DATA FUNCTIONS ---- #
 
@@ -328,6 +349,8 @@ def get_miscstats():
     most_applications_month, month = get_most_applications_in_month()
     most_applied_company, num_applications_company = get_most_applications_employers()
     most_source_count, most_source = get_most_source()
+    avg_application_per_day = get_avg_applications_per_day()
+    avg_days_per_application = get_avg_days_per_application()
 
     data = {
         "applying_streak": longest_streak_applying,
@@ -340,6 +363,8 @@ def get_miscstats():
         "num_applications_company": num_applications_company,
         "most_source_count": most_source_count,
         "most_source": most_source,
+        "avg_applications_per_day": avg_application_per_day,
+        "avg_days_per_application": avg_days_per_application,
     }
     
     return data
@@ -424,14 +449,9 @@ def applied_today():
     return Application.objects.filter(application_date=date.today()).exists()
 
 # ---- BOOLEAN FUNCTION END ---- #
-# ---- MISC FUNCTIONS ---- #
+# ---- REQUEST FUNCTIONS ---- #
 
-# Function that saves an image
-def save_url(url, employer):
-    if url and not employer.website_url:
-        employer.website_url = url
-        employer.save()
-
+@require_POST
 # Function that submits a new application submission
 def application_submission(request):
     position = request.POST.get('position')
@@ -474,10 +494,9 @@ def application_submission(request):
     )
     application.save()
     
-
-    
     return JsonResponse({'success': True})
 
+@require_POST
 # Function that updates a status based on a drag-drop ui
 def update_status(request):
     data = json.loads(request.body)
@@ -494,6 +513,46 @@ def update_status(request):
     application.save()
 
     return JsonResponse({ "success": True})
+
+@require_GET
+# Function that formats the application from request and application_id, if not return latest application
+def get_application_json(request):
+    application_id = request.GET.get('applicationId')
+    if not application_id:
+        application = get_latest_application()
+    else:
+        application = Application.objects.get(application_id=application_id)
+    
+    if application:
+        data = {
+            'status': str(application.status),
+            'location': str(application.location) if str(application.location) != "Remote, " else "Remote",
+            'employer': str(application.employer),
+            'role': application.position,
+            'pay': application.pay,
+            'hourly_pay': get_average_hourly(application.pay),
+            'desc': application.desc,
+            'source': str(application.source),
+            'notes': application.notes,
+            'application_date': application.application_date,
+            'employment_type': application.get_employment_type_display(),
+            'employer_url_logo': format_url_for_logo(application.employer.website_url),
+            'employer_url': application.employer.website_url,
+        }
+    else:
+        data = {'description': 'No applications available'}
+    return JsonResponse(data)
+
+
+
+# ---- REQUEST FUNCTIONS END ---- #
+# ---- MISC FUNCTIONS ---- #
+
+# Function that saves an image
+def save_url(url, employer):
+    if url and not employer.website_url:
+        employer.website_url = url
+        employer.save()
 
 # Function that calculates the rate for the given status out of all Application objects
 def calc_rate(status_name, applications):
@@ -531,4 +590,14 @@ def calc_avg_salary():
     avg_pay = pay / len(applications)
     return round(avg_pay, 2)
 
+def format_url_for_logo(url):
+    if url:
+        url_without_https = url.replace('https://', '')
+        url_without_https = url_without_https.replace("www.", "")
+        if url_without_https.endswith('/'):
+            url_without_https = url_without_https[:-1]  # Remove the final slash
+        return url_without_https
+    else:
+        return url
 # ---- MISC FUNCTIONS END ---- #
+

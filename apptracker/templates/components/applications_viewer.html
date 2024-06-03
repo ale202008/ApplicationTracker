@@ -1,0 +1,76 @@
+{% load static %}
+{% load custom_filters %}
+
+<div class="card shadow-lg mt-2">
+    <h2 class="card-title card-header text-center text-white">
+        Applications
+    </h2>
+    <div class="row">
+        <div class="col-md-4 max-height-navbar-fix vertical-scrollable-hidden">
+            {% if applications %}
+                 {% for application in applications %}
+                     {% include 'components/temp_application_card.html' %}
+                 {% endfor %}
+             {% endif %} 
+        </div>
+        <div class="col-md-8">
+            <div class="row my-3">
+                <div class="col-md-6 d-flex align-items-flex-end">
+                    <img class="my-1" id="viewer_employer_url_logo" src="https://logo.uplead.com/" alt="" height="128px"> 
+                    <div class="ms-2 d-flex flex-column align-self-end">
+                        <span id="viewer_employer"> Loading... </span>
+                        <span><a id="viewer_employer_url"> Loading... </a></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="d-flex flex-column">
+                                <div>
+                                    <span class="h6"> Source: </span><span id="viewer_source"> Loading... </span>
+                                </div>
+                                <div>
+                                    <span class="h6"> Applied On: </span><span id="viewer_application_date"> Loading... </span>
+                                </div>
+                                <div>
+                                    <span class="h6"> Status: </span><span id="viewer_status"> Loading... </span>
+                                </div>
+                                <div>
+                                    <span class="h6"> Role: </span><span id="viewer_role"> Loading... </span>
+                                </div>
+                                <div>
+                                    <span class="h6"> Pay: </span><span id="viewer_pay"> Loading... </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex flex-column">
+                                <div>
+                                    <span class="h6"> Location: </span><span id="viewer_location"> Loading... </span>
+                                </div>
+                                <div>
+                                    <span class="h6"> Employment Type: </span><span id="viewer_employment_type"> Loading... </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div> 
+                </div>
+            </div>
+
+            <div class="d-flex flex-column">
+                <div class="max-height-50vh vertical-scrollable-hidden">
+                    <span class="h3"> Description: </span>
+                    <br>
+                    <span id="viewer_application_description"> Loading... </span>
+                </div>
+                <div class="notes-container">
+                    <span class="h3"> Notes: </span>
+                    <br>
+                    <span id="viewer_notes"> Loading... </span>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>

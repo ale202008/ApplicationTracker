@@ -30,8 +30,17 @@ class ApplicationsView(View):
             'withdrawn_applications': get_all_status_applications("Withdrawn"),
             'offered_applications': get_all_status_applications("Offered"),
             'accepted_applications': get_all_status_applications("Accepted"),
+            'applications': get_all_applications(),
         }
-        return render(request, 'applications.html', context) 
+        return render(request, 'applications.html', context)
+    
+class Temp_ApplicationsView(View):
+    def get(self, request):
+        sorted_applications = get_all_applications()
+        context = {
+            'applications': get_all_applications().order_by('-application_id'),
+        }
+        return render(request, 'temp_applications.html', context)
 
 class ChartView(View):
     def get(self, request):

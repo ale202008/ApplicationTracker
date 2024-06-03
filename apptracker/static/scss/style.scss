@@ -14,6 +14,39 @@ body {
     height: calc(100vh - 56px);
 }
 
+.notes-container {
+    align-self: flex-end; /* Align the notes container to the bottom */
+    margin-top: auto; /* Push the notes container to the bottom */
+    width: 100%;
+}
+
+/* different heights */
+
+.max-height-400px {
+    --max-height: 400px;
+}
+
+.max-height-navbar-fix {
+    --max-height: 86vh;
+}
+
+.max-height-100vh {
+    --max-height: 100vh;
+}
+
+.max-height-75vh {
+    --max-height: 75vh;
+}
+
+.max-height-50vh {
+    --max-height: 50vh;
+}
+
+.max-height-25vh {
+    --max-height: 25vh;
+}
+
+/* different heights end */
 /* navbar.html */
 
 .rate-font {
@@ -21,8 +54,8 @@ body {
 }
 
 /* navbar.html end */
-
 /* home.html end */
+
 #logo-container {
     position: fixed;
     top: 0;
@@ -45,8 +78,8 @@ body {
         transform: translateY(100vh);
     }
 }
-/* home.html end */
 
+/* home.html end */
 /* chart.html */
 
 #sankeychart {
@@ -82,7 +115,7 @@ a.am5exporting-icon:hover,
   
 .vertical-scrollable-hidden {
     overflow-y: auto; 
-    max-height: 400px;
+    max-height: var(--max-height);
 
     /* Hide scrollbar for Firefox */
     scrollbar-width: none;
@@ -91,7 +124,6 @@ a.am5exporting-icon:hover,
     /* Hide scrollbar for other browsers */
     overflow: -moz-scrollbars-none;
     -ms-overflow-style: none;
-    
     /* Hide scrollbar for WebKit-based browsers (Chrome, Safari) */
     ::-webkit-scrollbar {
         width: 0;
