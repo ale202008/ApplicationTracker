@@ -2,21 +2,44 @@
 {% load custom_filters %}
 
 <div class="card shadow-lg mt-2">
-    <h2 class="card-title card-header text-center text-white">
-        Applications
-    </h2>
+    <span class="h2 card-title card-header text-center text-white">
+        <span> Applications </span>
+    </span>
+    <span class="card-title card-header text-center">
+        <div class="row">
+            <div class="col-md">
+                <span class="text-white">No Response:</span><span> {{ num_no_response }} </span>
+            </div>
+            <div class="col-md">
+                <span class="text-white">Rejected:</span><span> {{ num_rejected }} </span>
+            </div>
+            <div class="col-md">
+                <span class="text-white">Interview:</span><span> {{ num_interview }} </span>
+            </div>
+            <div class="col-md">
+                <span class="text-white">Withdrawn:</span><span> {{ num_withdrawn }} </span>
+            </div>
+            <div class="col-md">
+                <span class="text-white">Offered:</span><span> {{ num_offered }} </span>
+            </div>
+            <div class="col-md">
+                <span class="text-white">Accepted:</span><span> {{ num_accepted }} </span>
+            </div>
+        </div>
+    </span>
+
     <div class="row">
         <div class="col-md-4 max-height-navbar-fix vertical-scrollable-hidden">
             {% if applications %}
                  {% for application in applications %}
-                     {% include 'components/temp_application_card.html' %}
+                     {% include 'components/application_card_button.html' %}
                  {% endfor %}
              {% endif %} 
         </div>
-        <div class="col-md-8">
+        <div class="col-md-8 pe-5">
             <div class="row my-3">
                 <div class="col-md-6 d-flex align-items-flex-end">
-                    <img class="my-1" id="viewer_employer_url_logo" src="https://logo.uplead.com/" alt="" height="128px"> 
+                    <img class="my-1" id="viewer_employer_url_logo" src="https://logo.uplead.com/" alt="" height="100px"> 
                     <div class="ms-2 d-flex flex-column align-self-end">
                         <span id="viewer_employer"> Loading... </span>
                         <span><a id="viewer_employer_url"> Loading... </a></span>
@@ -33,13 +56,13 @@
                                     <span class="h6"> Applied On: </span><span id="viewer_application_date"> Loading... </span>
                                 </div>
                                 <div>
-                                    <span class="h6"> Status: </span><span id="viewer_status"> Loading... </span>
-                                </div>
-                                <div>
-                                    <span class="h6"> Role: </span><span id="viewer_role"> Loading... </span>
-                                </div>
-                                <div>
-                                    <span class="h6"> Pay: </span><span id="viewer_pay"> Loading... </span>
+                                    <span class="h6"> Status: </span>
+                                    <select class="form-select" id="status_id" name="status_type">
+                                        <option value="" id="viewer_status"> Loading... </option>
+                                        {% for status in statuses %}
+                                            <option value="{{ status.name }}">{{ status.name }}</option>
+                                        {% endfor %}
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -50,6 +73,12 @@
                                 </div>
                                 <div>
                                     <span class="h6"> Employment Type: </span><span id="viewer_employment_type"> Loading... </span>
+                                </div>
+                                <div>
+                                    <span class="h6"> Role: </span><span id="viewer_role"> Loading... </span>
+                                </div>
+                                <div>
+                                    <span class="h6"> Pay: </span><span id="viewer_pay"> Loading... </span>
                                 </div>
                             </div>
                         </div>
@@ -63,12 +92,16 @@
                     <br>
                     <span id="viewer_application_description"> Loading... </span>
                 </div>
-                <div class="notes-container">
+                <div class="notes-container mt-auto">
                     <span class="h3"> Notes: </span>
                     <br>
                     <span id="viewer_notes"> Loading... </span>
                 </div>
+                <button class="btn btn-secondary" id="viewer_update_status_button" type="button" data-update-application-id="">
+                    Update Status
+                </button>
             </div>
+
 
 
         </div>

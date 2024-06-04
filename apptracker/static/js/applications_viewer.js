@@ -5,7 +5,6 @@ $(document).ready(function() {
         type: 'GET',
         dataType: 'json',
         success: function(data) {
-            console.log(data)
             $('#viewer_application_description').text(data.desc);
             $('#viewer_employer_url_logo').attr('src', "https://logo.uplead.com/" + data.employer_url_logo);
             $('#viewer_employer_url').text(data.employer_url);
@@ -19,6 +18,7 @@ $(document).ready(function() {
             $('#viewer_application_date').text(data.application_date);
             $('#viewer_employment_type').text(data.employment_type);
             $('#viewer_notes').text(data.notes);
+            $('#viewer_update_status_button').attr('data-update-application-id', data.application_id);
         },
         error: function(xhr, status, error) {
             console.error('Error fetching the latest application:', error);
@@ -30,7 +30,6 @@ $(document).ready(function() {
 $(document).ready(function() {
     $('.application-card-button').click(function() {
         var applicationId = $(this).data('application-id');
-        console.log(applicationId)
         fetchApplicationDetails(applicationId);
     });
 });
@@ -57,6 +56,43 @@ function fetchApplicationDetails(applicationId) {
             $('#viewer_application_date').text(data.application_date);
             $('#viewer_employment_type').text(data.employment_type);
             $('#viewer_notes').text(data.notes);
+            $('#viewer_update_status_button').attr('data-update-application-id', data.application_id);
+        },
+        error: function(xhr, status, error) {
+            console.error('Error fetching the latest application:', error);
+        }
+    });
+}
+
+// Listener for when 'update-status' button is clicked, call function and update status to given status_id
+$(document).ready(function() {
+    $('#viewer_update_status_button').click(function() {
+        var selectedStatus = $('#status_id').val();
+        var applicationId = $(this).data('update-application-id');
+        
+        updateStatus(selectedStatus, applicationId);
+    });
+});
+
+function updateStatus(selectedStatus, applicationId) {
+    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+
+    $.ajax({
+        url: '/update_status/',
+        type: 'POST',
+        data: { 
+            status: selectedStatus,
+            applicationId: applicationId
+         },
+        dataType: 'json',
+        beforeSend: function(xhr, settings) {
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+        },
+        success: function(data) {
+            console.log('Status updated successfully.');
+            alert("Status updated successfully.")
+            fetchApplicationDetails(applicationId)
         },
         error: function(xhr, status, error) {
             console.error('Error fetching the latest application:', error);

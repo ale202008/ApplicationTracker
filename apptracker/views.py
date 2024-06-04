@@ -20,27 +20,20 @@ class HomeView(View):
         }
         
         return render(request, 'home.html', context)
-
+    
 class ApplicationsView(View):
     def get(self, request):
         context = {
-            'applied_applications': get_all_status_applications("Applied"),
-            'rejected_applications': get_all_status_applications("Rejected"),
-            'interview_applications': get_all_status_applications("Interview"),
-            'withdrawn_applications': get_all_status_applications("Withdrawn"),
-            'offered_applications': get_all_status_applications("Offered"),
-            'accepted_applications': get_all_status_applications("Accepted"),
-            'applications': get_all_applications(),
+            'applications': get_all_applications().order_by('-application_id'),
+            'statuses': get_all_statuses,
+            'num_no_response': get_no_response_count(None),
+            'num_rejected': get_status_application_count("Rejected", 0).count(),
+            'num_interview': get_status_application_count("Interview", 1).count(),
+            'num_withdrawn': get_status_application_count("Withdrawn", 0).count(),
+            'num_offered': get_status_application_count("Offered", 0).count(),
+            'num_accepted': get_status_application_count("Accepted", 0).count(),
         }
         return render(request, 'applications.html', context)
-    
-class Temp_ApplicationsView(View):
-    def get(self, request):
-        sorted_applications = get_all_applications()
-        context = {
-            'applications': get_all_applications().order_by('-application_id'),
-        }
-        return render(request, 'temp_applications.html', context)
 
 class ChartView(View):
     def get(self, request):

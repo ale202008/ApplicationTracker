@@ -50,7 +50,11 @@ def get_all_dates(applications):
         applications = get_all_applications()
     dates = applications.values_list('application_date', flat=True).distinct()
     return dates
-            
+
+# Function that returns all statuses
+def get_all_statuses():
+    return Status.objects.all()
+
 # ---- GET ALL FUNCTIONS END ---- #
 # ---- GET FUNCTIONS ---- #
 
@@ -499,18 +503,20 @@ def application_submission(request):
 @require_POST
 # Function that updates a status based on a drag-drop ui
 def update_status(request):
-    data = json.loads(request.body)
-    application = Application.objects.get(id=data.get("applicationId"))
-    if application.status.name != "Interview" and application.status.name != "Applied":
-        return JsonResponse({ "error": "Application status cannot be changed to new status." }, status=500)
-    status = Status.objects.get(name=data.get("columnId"))
-    if status.name == "Interview":
-        application.interview_counter += 1
-    
-    # Updates the most recent date a response was given
-    application.response_time = date.today()
-    application.status = status
-    application.save()
+    application = Application.objects.get(application_id=request.POST.get("applicationId")) if request.POST.get("applicationId") else None
+    status = Status.objects.get(name=request.POST.get("status")) if request.POST.get("status") else None
+    if not application or not status:
+        JsonResponse({ "error": "No valid status or application." }, status=500)
+    else:
+        if application.status.name != "Interview" and application.status.name != "Applied":
+            return JsonResponse({ "error": "Application status cannot be changed to new status." }, status=500)
+        if status.name == "Interview":
+            application.interview_counter += 1
+        
+        # Updates the most recent date a response was given
+        application.response_time = date.today()
+        application.status = status
+        application.save()
 
     return JsonResponse({ "success": True})
 
@@ -525,6 +531,7 @@ def get_application_json(request):
     
     if application:
         data = {
+            'application_id': application.application_id,
             'status': str(application.status),
             'location': str(application.location) if str(application.location) != "Remote, " else "Remote",
             'employer': str(application.employer),
@@ -542,8 +549,6 @@ def get_application_json(request):
     else:
         data = {'description': 'No applications available'}
     return JsonResponse(data)
-
-
 
 # ---- REQUEST FUNCTIONS END ---- #
 # ---- MISC FUNCTIONS ---- #
@@ -590,6 +595,7 @@ def calc_avg_salary():
     avg_pay = pay / len(applications)
     return round(avg_pay, 2)
 
+# Fucntion that formats the employer's url to correct logo api format
 def format_url_for_logo(url):
     if url:
         url_without_https = url.replace('https://', '')
@@ -599,5 +605,6 @@ def format_url_for_logo(url):
         return url_without_https
     else:
         return url
+    
 # ---- MISC FUNCTIONS END ---- #
 

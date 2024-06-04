@@ -2,17 +2,13 @@
 {% load custom_filters %}
 
 
-<button class="application-card-button col-md-12" data-application-id="{{ application.application_id }}">
-    <div 
-        class="application-card card h-100 text-center border border-1 shadow-lg"
-        draggable="true"
-        data-application-id="{{ application.id }}"
-    >
+<div class="col-md-12">
+    <button class="application-card-button btn w-100 border rounded-0 border-1 shadow-lg" type="button" data-application-id="{{ application.application_id }}">
         <div class="row p-2">
             <div class="col-md-2 mx-auto my-auto">
                 <span class='fs-6'>
                     {% if application.employer.website_url %}
-                        <img src="https://logo.uplead.com/{{ application.employer.website_url|remove_https }}" alt="" height='24px' />
+                        <img src="https://logo.uplead.com/{{ application.employer.website_url|remove_https }}" alt="" height='36px' />
                     {% endif %}
                 </span>
             </div>
@@ -34,5 +30,5 @@
                 </span>
             </div>
         </div>
-    </div>
-</button>
+    </button>
+</div>

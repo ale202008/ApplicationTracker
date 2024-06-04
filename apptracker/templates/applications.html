@@ -1,117 +1,18 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load custom_filters %}
-    
+
 {% block js %}
-    <script src="{% static 'js\applicationdraganddrop.js' %}"></script>
+    <script src="{% static 'js\applications_viewer.js' %}"></script>
 {% endblock %}
 
 {% block content %}
 {% csrf_token %}
-    <div class="container-fluid bg-secondary-subtle py-3 navbarheightfix">
-        <div class="row mx-1">
-            <div 
-                class='status-column col-md text-center bg-body rounded-4 border border-0 text-bg-dark py-2 mx-2'
-                id="applied-column"
-                data-column-id="Applied"
-            >
-                <span class='h2 text-decoration-underline'>
-                    No Response:  {% if applied_applications %} {{ applied_applications|length }} {% endif %}
-                </span>
-                <div class="row g-2 mt-1 max-height-50vh vertical-scrollable-hidden">
-                    {% if applied_applications %}
-                        {% for application in applied_applications %}
-                            {% include 'components/applicationcard.html' %}
-                        {% endfor %}
-                    {% endif %}
-                </div>
-            </div>
-            <div 
-                class='status-column col-md text-center bg-body rounded-4 border border-0 text-bg-dark py-2 mx-2'
-                id="rejected-column"
-                data-column-id="Rejected"
-            >
-                <span class='h2 text-decoration-underline'>
-                    Rejected: {% if rejected_applications %} {{ rejected_applications|length }} {% endif %}
-                </span>
-                <div class="row g-2 mt-1 max-height-50vh vertical-scrollable-hidden">
-                    {% if rejected_applications %}
-                        {% for application in rejected_applications %}
-                            {% include 'components/applicationcard.html' %}
-                        {% endfor %}
-                    {% endif %}
-                </div>
-
-            </div>
-            <div 
-                class='status-column col-md text-center bg-body rounded-4 border border-0 text-bg-dark py-2 mx-2'
-                id="interview-column"
-                data-column-id="Interview"
-            >
-                <span class='h2 text-decoration-underline'>
-                    Interviewed: {% if interview_applications %} {{ interview_applications|length }} {% endif %}
-                </span>
-                <div class="row g-2 mt-1 max-height-50vh vertical-scrollable-hidden">
-                    {% if interview_applications %}
-                        {% for application in interview_applications %}
-                            {% include 'components/applicationcard.html' %}
-                        {% endfor %}
-                    {% endif %}
-                </div>
-
-            </div>
-            <div 
-                class='status-column col-md text-center bg-body rounded-4 border border-0 text-bg-dark py-2 mx-2'
-                id="applied-column"
-                data-column-id="Withdrawn"
-            >
-                <span class='h2 text-decoration-underline'>
-                    Withdrawn: {% if withdrawn_applications %} {{ withdrawn_applications|length }} {% endif %}
-                </span>
-                <div class="row g-2 mt-1 max-height-50vh vertical-scrollable-hidden">
-                    {% if withdrawn_applications %}
-                        {% for application in withdrawn_applications %}
-                            {% include 'components/applicationcard.html' %}
-                        {% endfor %}
-                    {% endif %}
-                </div>
-            </div>
-            <div 
-                class='status-column col-md text-center bg-body rounded-4 border border-0 text-bg-dark py-2 mx-2'
-                id="applied-column"
-                data-column-id="Offered"
-            >
-                <span class='h2 text-decoration-underline'>
-                    Offered:  {% if offered_applications %} {{ offered_applications|length }} {% else %} 0 {% endif %}
-                </span>
-                <div class="row g-2 mt-1 max-height-50vh vertical-scrollable-hidden">
-                    {% if offered_applications %}
-                        {% for application in offered_applications %}
-                            {% include 'components/applicationcard.html' %}
-                        {% endfor %}
-                    {% endif %}
-                </div>
-            </div>
-            <div 
-                class='status-column col-md text-center bg-body rounded-4 border border-0 text-bg-dark py-2 mx-2'
-                id="applied-column"
-                data-column-id="Accepted"
-            >
-                <span class='h2 text-decoration-underline'>
-                    Accepted:  {% if accepted_applications %} {{ accepted_applications|length }} {% else %} 0 {% endif %}
-                </span>
-                <div class="row g-2 mt-1 max-height-50vh vertical-scrollable-hidden">
-                    {% if accepted_applications %}
-                        {% for application in accepted_applications %}
-                            {% include 'components/applicationcard.html' %}
-                        {% endfor %}
-                    {% endif %}
-                </div>
+    <div class="container-fluid bg-secondary-subtle navbarheightfix">
+        <div class="row p-2">
+            <div class="col-md-12 ">
+                {% include 'components/applications_viewer.html' %}
             </div>
         </div>
-
-
-
     </div>
 {% endblock %}
-
