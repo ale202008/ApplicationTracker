@@ -1,14 +1,15 @@
 {% load static %}
 {% load custom_filters %}
 
-
 <div class="col-md-12">
     <button class="application-card-button btn w-100 border rounded-0 border-1 shadow-lg" type="button" data-application-id="{{ application.application_id }}">
         <div class="row p-2">
             <div class="col-md-2 mx-auto my-auto">
                 <span class='fs-6'>
                     {% if application.employer.website_url %}
-                        <img src="https://logo.uplead.com/{{ application.employer.website_url|remove_https }}" alt="" height='36px' />
+                        <img src="https://logo.uplead.com/{{ application.employer.website_url|remove_https }}"
+                             onerror="this.onerror=null; this.src='{% static 'icons/no_logo.png' %}'; this.classList.add('fallback-image');"
+                             height='36px' />
                     {% endif %}
                 </span>
             </div>

@@ -42,7 +42,6 @@ function fetchApplicationDetails(applicationId) {
         data: { applicationId: applicationId },
         dataType: 'json',
         success: function(data) {
-            console.log(data)
             $('#viewer_application_description').text(data.desc);
             $('#viewer_employer_url_logo').attr('src', "https://logo.uplead.com/" + data.employer_url_logo);
             $('#viewer_employer_url').text(data.employer_url);
@@ -99,3 +98,10 @@ function updateStatus(selectedStatus, applicationId) {
         }
     });
 }
+
+$(document).ready(function() {
+    $('#viewer_employer_url_logo').on('error', function() {
+        $(this).attr('src', fallbackImageUrl);
+    });
+});
+

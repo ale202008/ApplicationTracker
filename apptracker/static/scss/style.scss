@@ -27,7 +27,7 @@ body {
 }
 
 .max-height-navbar-fix {
-    --max-height: 86vh;
+    --max-height: 82vh;
 }
 
 .max-height-100vh {
@@ -42,11 +42,22 @@ body {
     --max-height: 50vh;
 }
 
+.min-height-50vh {
+    min-height: 50vh;
+}
+
 .max-height-25vh {
     --max-height: 25vh;
 }
 
 /* different heights end */
+/* application.html */
+
+.fallback-image {
+    background-color: white;
+}
+
+/* application.html */
 /* navbar.html */
 
 .rate-font {

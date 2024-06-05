@@ -39,7 +39,7 @@
         <div class="col-md-8 pe-5">
             <div class="row my-3">
                 <div class="col-md-6 d-flex align-items-flex-end">
-                    <img class="my-1" id="viewer_employer_url_logo" src="https://logo.uplead.com/" alt="" height="100px"> 
+                    <img class="my-1" id="viewer_employer_url_logo" height="100px" alt="no_logo" style="max-width: 248px;"/>
                     <div class="ms-2 d-flex flex-column align-self-end">
                         <span id="viewer_employer"> Loading... </span>
                         <span><a id="viewer_employer_url"> Loading... </a></span>
@@ -86,20 +86,30 @@
                 </div>
             </div>
 
-            <div class="d-flex flex-column">
-                <div class="max-height-50vh vertical-scrollable-hidden">
-                    <span class="h3"> Description: </span>
-                    <br>
-                    <span id="viewer_application_description"> Loading... </span>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="d-flex flex-column">
+                        <span class="h3"> Description: </span>
+                        <span class="max-height-50vh min-height-50vh vertical-scrollable-hidden" id="viewer_application_description"> Loading... </span>
+                    </div>
                 </div>
-                <div class="notes-container mt-auto">
-                    <span class="h3"> Notes: </span>
-                    <br>
-                    <span id="viewer_notes"> Loading... </span>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-md-12">
+                    <div class="d-flex flex-column">
+                        <span class="h3"> Notes: </span>
+                        <span id="viewer_notes"> Loading... </span>
+                    </div>
                 </div>
-                <button class="btn btn-secondary" id="viewer_update_status_button" type="button" data-update-application-id="">
-                    Update Status
-                </button>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12 align-items-bottom">
+                    <button class="btn btn-secondary" id="viewer_update_status_button" type="button" style="width: 100%">
+                        Update Status
+                    </button>
+                </div>
             </div>
 
 
