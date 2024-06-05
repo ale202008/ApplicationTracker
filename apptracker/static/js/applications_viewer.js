@@ -73,10 +73,9 @@ $(document).ready(function() {
     });
 });
 
+// Function that updates the status of application object by calling endpoint in utils.py, sending the status and applicationid
 function updateStatus(selectedStatus, applicationId) {
     const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-
-
     $.ajax({
         url: '/update_status/',
         type: 'POST',
@@ -99,9 +98,53 @@ function updateStatus(selectedStatus, applicationId) {
     });
 }
 
+// Replaces logo image with no_logo in the case image fails to load from api
 $(document).ready(function() {
     $('#viewer_employer_url_logo').on('error', function() {
         $(this).attr('src', fallbackImageUrl);
     });
 });
 
+// Listener for when 'status_filter' is selected, call function and update status to given status_name
+$(document).ready(function() {
+    $('#status_filter').change(function() {
+        var selectedStatus = $(this).val()
+
+        if (selectedStatus) {
+            $('.application-card-button').hide()
+            $('.application-card-button').each(function() {
+                var applicationStatus = $(this).data('status'); 
+                if (applicationStatus === selectedStatus) {
+                    $(this).show();
+                }
+            });
+        }
+        else {
+            $('.application-card-button').show()
+        }   
+    });
+});
+
+// Listener for when 'status_search' searchbar is updated via text, filtering through applications
+$(document).ready(function() {
+    $('#search_filter').on('input', function() {
+        var searchText = $(this).val().toLowerCase();
+        
+        $('.application-card-button').each(function() {
+            var status = $(this).data('status').toLowerCase();
+            var employer = $(this).data('employer').toLowerCase();
+            var location = $(this).data('location').toLowerCase();
+            var position = $(this).data('position').toLowerCase();
+            
+            if (status.includes(searchText) || employer.includes(searchText) || location.includes(searchText) || position.includes(searchText)) {
+                $(this).show(); 
+            } else {
+                $(this).hide(); 
+            }
+        });
+    });
+
+    $('#search_filter_form').submit(function(event) {
+        event.preventDefault();
+    });
+});

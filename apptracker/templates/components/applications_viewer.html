@@ -30,11 +30,22 @@
 
     <div class="row">
         <div class="col-md-4 max-height-navbar-fix vertical-scrollable-hidden">
+            <div class="d-flex">
+                <select class="form-select width-25-perc" id="status_filter">
+                    <option value=""> Choose Status </option>
+                    {% for status in statuses %}
+                        <option value="{{ status.name }}">{{ status.name }}</option>
+                    {% endfor %}
+                </select>
+                <form class="width-75-perc" role="search" id="search_filter_form">
+                    <input class="form-control" id="search_filter" type="search" placeholder="Search" aria-label="Search">
+                </form>
+            </div>
             {% if applications %}
                  {% for application in applications %}
                      {% include 'components/application_card_button.html' %}
                  {% endfor %}
-             {% endif %} 
+            {% endif %} 
         </div>
         <div class="col-md-8 pe-5">
             <div class="row my-3">
@@ -106,7 +117,7 @@
 
             <div class="row">
                 <div class="col-md-12 align-items-bottom">
-                    <button class="btn btn-secondary" id="viewer_update_status_button" type="button" style="width: 100%">
+                    <button class="width-100-perc btn btn-secondary" id="viewer_update_status_button" type="button">
                         Update Status
                     </button>
                 </div>

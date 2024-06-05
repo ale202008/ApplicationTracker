@@ -20,13 +20,60 @@ body {
     width: 100%;
 }
 
+.vertical-scrollable-hidden {
+    overflow-y: auto; 
+    max-height: var(--max-height);
+
+    /* Hide scrollbar for Firefox */
+    scrollbar-width: none;
+    /* Hide scrollbar for Internet Explorer 10+ */
+    -ms-overflow-style: none;
+    /* Hide scrollbar for other browsers */
+    overflow: -moz-scrollbars-none;
+    -ms-overflow-style: none;
+    /* Hide scrollbar for WebKit-based browsers (Chrome, Safari) */
+    ::-webkit-scrollbar {
+        width: 0;
+        height: 0;
+    }
+}
+
+
+/* different widths */
+
+.width-100-perc {
+    width: 100%;
+}
+.width-75-perc {
+    width: 75%;
+}
+.width-50-perc {
+    width: 50%;
+}
+.width-25-perc {
+    width: 25%;
+}
+
+/* different widths end */
 /* different heights */
+
+.height-100-perc {
+    height: 100%;
+}
+
+.min-height-50vh {
+    min-height: 50vh;
+}
+
+
+/* scrollable heights */
 
 .max-height-400px {
     --max-height: 400px;
 }
 
 .max-height-navbar-fix {
+    min-height: 82vh;
     --max-height: 82vh;
 }
 
@@ -42,14 +89,11 @@ body {
     --max-height: 50vh;
 }
 
-.min-height-50vh {
-    min-height: 50vh;
-}
-
 .max-height-25vh {
     --max-height: 25vh;
 }
 
+/* scrollable heights end */
 /* different heights end */
 /* application.html */
 
@@ -124,24 +168,6 @@ a.am5exporting-icon:hover,
     background: #85FFC4;
 }
   
-.vertical-scrollable-hidden {
-    overflow-y: auto; 
-    max-height: var(--max-height);
-
-    /* Hide scrollbar for Firefox */
-    scrollbar-width: none;
-    /* Hide scrollbar for Internet Explorer 10+ */
-    -ms-overflow-style: none;
-    /* Hide scrollbar for other browsers */
-    overflow: -moz-scrollbars-none;
-    -ms-overflow-style: none;
-    /* Hide scrollbar for WebKit-based browsers (Chrome, Safari) */
-    ::-webkit-scrollbar {
-        width: 0;
-        height: 0;
-    }
-}
-
 /* chart.html end */
 
 
