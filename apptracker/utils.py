@@ -286,6 +286,7 @@ def get_sankeychart_data():
     second_interview_label = "[bold]2nd Interview[/] " + "(" + str(len(get_status_application_count("Interview", 2))) + ")"
     rejected_after_first_label =  "[bold]Rejected After 1st[/] " + "(" + str(len(get_status_application_count("Rejected", 1))) + ")"
     withdrawn_after_first_label = "[bold]Withdrawn After 1st[/] " + "(" + str(len(get_status_application_count("Withdrawn", 1))) + ")"
+    rejected_after_second_label = "[bold]Rejected[/] " + "(" + str(len(get_status_application_count("Rejected", 2))) + ")"
     
     data =  [
                 {'from': applied_label, "to": no_response_label, "value": len(get_all_status_applications("Applied")), "labelText": "Node 1 (100)"},
@@ -296,6 +297,7 @@ def get_sankeychart_data():
                 {'from': first_interview_label, "to": rejected_after_first_label, "value": len(get_status_application_count("Rejected", 1))},
                 {'from': first_interview_label, "to": withdrawn_after_first_label, "value": len(get_status_application_count("Withdrawn", 1))},
                 {'from': first_interview_label, "to": second_interview_label, "value": len(get_status_application_count("Interview", 2))},
+                {'from': second_interview_label, "to": rejected_after_second_label, "value": len(get_status_application_count("Rejected", 2))}
             ]
     
     return data
