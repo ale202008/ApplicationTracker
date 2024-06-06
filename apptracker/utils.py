@@ -329,9 +329,11 @@ def get_map_data():
     applications_locations = []
     locations = get_all_locations()
 
-    for location in locations:
+    for location in locations:  
         applications = get_applications_by_location(location)
-        state_code = pycountry.subdivisions.search_fuzzy(location.state)[0].code
+        subdivisions = pycountry.subdivisions.search_fuzzy(location.state)
+        us_subdivisions = [subdivision for subdivision in subdivisions if subdivision.country_code == 'US']
+        state_code = us_subdivisions[0].code
         for i in range(applications.count()):
             location_map_str = {
                 "MAIL_ST_PROV_C": state_code[3:],
@@ -341,7 +343,7 @@ def get_map_data():
                 "count": i,
             }
             applications_locations.append(location_map_str)
-    
+            
     data = {
         "query_results": applications_locations,
     }

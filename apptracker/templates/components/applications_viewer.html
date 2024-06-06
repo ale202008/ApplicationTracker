@@ -29,7 +29,7 @@
     </span>
 
     <div class="row">
-        <div class="col-md-4 max-height-navbar-fix vertical-scrollable-hidden">
+        <div class="col-md-4">
             <div class="d-flex">
                 <select class="form-select width-25-perc" id="status_filter">
                     <option value=""> Choose Status </option>
@@ -41,11 +41,13 @@
                     <input class="form-control" id="search_filter" type="search" placeholder="Search" aria-label="Search">
                 </form>
             </div>
-            {% if applications %}
-                 {% for application in applications %}
-                     {% include 'components/application_card_button.html' %}
-                 {% endfor %}
-            {% endif %} 
+            <div class="max-height-79vh vertical-scrollable-hidden">
+                {% if applications %}
+                    {% for application in applications %}
+                        {% include 'components/application_card_button.html' %}
+                    {% endfor %}
+                {% endif %} 
+            </div>
         </div>
         <div class="col-md-8 pe-5">
             <div class="row my-3">

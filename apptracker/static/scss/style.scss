@@ -81,7 +81,13 @@ body {
     --max-height: 100vh;
 }
 
+.max-height-79vh {
+    min-height: 79vh;
+    --max-height: 79vh;
+}
+
 .max-height-75vh {
+    min-height: 75vh;
     --max-height: 75vh;
 }
 
