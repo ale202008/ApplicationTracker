@@ -15,34 +15,42 @@ import time
 
 # ---- GET ALL FUNCTIONS ---- #
 
+
 # Function that returns applications of certain status
 def get_all_status_applications(status_name):
-    status = Status.objects.get(name=status_name)
-    
-    if status:
+    status = Status.objects.get(name=status_name)   
+    if status and status_name != "Interview":
         return Application.objects.filter(status=status).order_by('-id')
+    elif status and status_name == "Interview":
+        return Application.objects.filter(interview_counter__gt=0).order_by('-id')
     else:
         return None
+
 
 # Function that returns all applications
 def get_all_applications():
     return Application.objects.all() 
 
+
 # Function that returns the count of Application objects
 def get_all_application_count():
     return Application.objects.count()
+
 
 # Functions that returns all employers
 def get_all_employers():
     return Employer.objects.all()
 
+
 # Function that returns all locations
 def get_all_locations():
     return Location.objects.exclude(city="Remote")
 
+
 # Function that returns all sources
 def get_all_sources():
     return Source.objects.all()
+
 
 # Function that returns all dates, no duplicates
 def get_all_dates(applications):
@@ -51,12 +59,15 @@ def get_all_dates(applications):
     dates = applications.values_list('application_date', flat=True).distinct()
     return dates
 
+
 # Function that returns all statuses
 def get_all_statuses():
     return Status.objects.all()
 
+
 # ---- GET ALL FUNCTIONS END ---- #
 # ---- GET FUNCTIONS ---- #
+
 
 # Function to get interview applications based on index in status list
 def get_status_application_count(status_name, index):
@@ -66,6 +77,7 @@ def get_status_application_count(status_name, index):
     else:
         return Application.objects.filter(interview_counter__gte=index)
 
+
 # Function to get all applications that have received a response
 def get_response_count(applications):
     if not applications:
@@ -73,12 +85,14 @@ def get_response_count(applications):
     else:
         return applications.count() - applications.filter(status=Status.objects.get(name="Applied")).count()
 
+
 # Function that return all applications that have received no response
 def get_no_response_count(applications):
     if not applications:
         return Application.objects.filter(status=Status.objects.get(name="Applied")).count()
     else:
         return applications.filter(status=Status.objects.get(name="Applied")).count()
+
 
 # Function that return the week periods of the current month.
 def get_month_weeks(year, month):
@@ -94,6 +108,7 @@ def get_month_weeks(year, month):
         week_periods.append(week_period)
         current_day = week_end + timedelta(days=1)
     return week_periods
+
 
 # Function that returns the applications in heatmap data format.
 def get_applications_date(week):
@@ -118,9 +133,11 @@ def get_applications_date(week):
         
     return application_data
 
+
 # Function that returns the current month.
 def get_month():
     return date.today().strftime('%B')
+
 
 # Function that returns the longest streak of uninterrupted days of applying, and uninterrupted days not applying
 def get_streaks(applications):
@@ -150,15 +167,18 @@ def get_streaks(applications):
     
     return longest_streak_applying, longest_streak_not_applying
 
+
 # Function that return the number of most applications in 1 day, and the date.
 def get_most_applications_in_day():
     result = Application.objects.values('application_date').annotate(count=Count('id')).order_by('-count').first()
     return result['count'], result['application_date'] if result else (0, None)
 
+
 # Function that return the number of most applications in a month, and the month.
 def get_most_applications_in_month():
     result = Application.objects.values('application_date__month').annotate(count=Count('id')).order_by('-count').first()
     return result['count'], calendar.month_name[result['application_date__month']] if result else (0, None)
+
 
 # Function that returns the employer with the most applications, and the number of applications
 def get_most_applications_employers():
@@ -166,6 +186,7 @@ def get_most_applications_employers():
     max_count = result[0]['count'] if result else 0
     employers = [r['employer__name'] for r in result if r['count'] == max_count]
     return employers, max_count
+
 
 # Function that returns the source with the most applications done.
 def get_most_source():
@@ -183,15 +204,18 @@ def get_most_source():
             
     return source_count, source_arr
 
+
 # Function that return the location that has been applied to the most
 def get_most_applied_location():
     result = Application.objects.values('location__state').annotate(count=Count('id')).order_by('-count')
     result = result[1]
     return result['count'], result['location__state'] if result else (0, None)
 
+
 # Function that returns the applications by locations
 def get_applications_by_location(location):
     return Application.objects.filter(location=location)
+
 
 # Function that gets all Employers with a link and appends them to an array
 def get_logo_links(request):
@@ -206,6 +230,7 @@ def get_logo_links(request):
     random.shuffle(links)
     return JsonResponse({'links': links})
 
+
 # Function that returns the latitude and longitude of City, State
 def get_latitude_and_longitude(location_city, location_state):
     geolocator = Nominatim(user_agent="appl_tracker")
@@ -216,6 +241,7 @@ def get_latitude_and_longitude(location_city, location_state):
     location_latitude = geo_location.latitude
     location_longitude = geo_location.longitude
     return location_latitude, location_longitude
+
 
 # Function that returns the most applied for role and count
 def get_position_and_count(applications):
@@ -236,6 +262,7 @@ def get_position_and_count(applications):
     
     return most_applied_position, highest_count
 
+
 # Function that returns the average salary of the given query_set of applications or all applications if None
 def get_average_salary(applications):
     if not applications:
@@ -248,9 +275,11 @@ def get_average_salary(applications):
 
     return round(total_salary/applications.count(), 2)
 
+
 # Function that returns the hourly based of a regular 40 hour work week, 2080 hours a year
 def get_average_hourly(salary):
     return round(salary/2080, 2)
+
 
 # Function that returns the total days between two dates
 def get_total_days():
@@ -258,22 +287,27 @@ def get_total_days():
     last_date = Application.objects.aggregate(last_date=Max('application_date'))['last_date']
     return (last_date - first_date).days + 1
 
+
 # Function that returns the latest application object
 def get_latest_application():
     return Application.objects.order_by('-application_id').first()
+
 
 # Function that returns the average amount of application applied a day
 def get_avg_applications_per_day():
     avg_applications = (get_all_application_count() / get_total_days())
     return round(avg_applications, 2)
 
+
 # Function that returns the average amount of days per application
 def get_avg_days_per_application():
     avg_days = (get_total_days() / get_all_application_count())
     return int(avg_days)
 
+
 # ---- GET FUNCTIONS END ---- #
 # ---- CHART.HTML DATA FUNCTIONS ---- #
+
 
 # Function that correctly labels and sends the values for the Sankey chart display
 def get_sankeychart_data():
@@ -302,6 +336,7 @@ def get_sankeychart_data():
     
     return data
 
+
 # Function that grabs heatmap data
 def get_heatmap_data():
     week_period_data = []
@@ -323,6 +358,7 @@ def get_heatmap_data():
     }
     
     return data
+
 
 # Function that gets map data, formats it, and returns it in GeoJSON
 def get_map_data():
@@ -349,6 +385,7 @@ def get_map_data():
     }
     
     return data
+
 
 # Function that gets miscellaneous stats
 def get_miscstats():
@@ -377,6 +414,7 @@ def get_miscstats():
     
     return data
 
+
 # Function that gets source and # of applications from each source, organizes them from in decreasing order and returns the data
 def get_source_stats():
     sources = Source.objects.order_by('-num_applications')
@@ -391,6 +429,7 @@ def get_source_stats():
     }
 
     return data
+
 
 # Function that gets current month statistics and returns the data
 def get_current_month_stats():
@@ -424,6 +463,7 @@ def get_current_month_stats():
     
     return data
 
+
 # Function that gets Location object statistics and return the data
 def get_locations_stats():
     remote_applications = Application.objects.filter(location=Location.objects.get(city="Remote"))
@@ -449,15 +489,19 @@ def get_locations_stats():
     
     return data
 
+
 # ---- CHART.HTML DATA FUNCTIONS END ---- #
 # ---- BOOLEAN FUNCTION ---- #
+
 
 # Function that returns a boolean based if an Application object exists with today's date
 def applied_today():
     return Application.objects.filter(application_date=date.today()).exists()
 
+
 # ---- BOOLEAN FUNCTION END ---- #
 # ---- REQUEST FUNCTIONS ---- #
+
 
 @require_POST
 # Function that submits a new application submission
@@ -504,6 +548,7 @@ def application_submission(request):
     
     return JsonResponse({'success': True})
 
+
 @require_POST
 # Function that updates a status based on a drag-drop ui
 def update_status(request):
@@ -523,6 +568,7 @@ def update_status(request):
         application.save()
 
     return JsonResponse({ "success": True})
+
 
 @require_GET
 # Function that formats the application from request and application_id, if not return latest application
@@ -549,19 +595,40 @@ def get_application_json(request):
             'employment_type': application.get_employment_type_display(),
             'employer_url_logo': format_url_for_logo(application.employer.website_url),
             'employer_url': application.employer.website_url,
+            'response_time': application.response_time if application.response_time else None,
         }
     else:
         data = {'description': 'No applications available'}
     return JsonResponse(data)
 
+
+@require_POST
+# Function that returns the stats shown in the navbar, updates navbar stats when an application update occurs
+def get_navbar_stats(request):
+    print()
+    data = {
+        'responserate': calc_rate("Applied", None),
+        'rejectionrate': calc_rate("Rejected", None),
+        'interviewrate': calc_rate("Interview", None),
+        'withdrawnrate': calc_rate("Withdrawn", None),
+        'offeredrate': calc_rate("Offered", None),
+        'acceptedrate': calc_rate("Accepted", None),
+        'responsetime': calc_avg_response_time(),
+        'avgpay': calc_avg_salary(),
+    }
+    return JsonResponse(data)
+
+
 # ---- REQUEST FUNCTIONS END ---- #
 # ---- MISC FUNCTIONS ---- #
+
 
 # Function that saves an image
 def save_url(url, employer):
     if url and not employer.website_url:
         employer.website_url = url
         employer.save()
+
 
 # Function that calculates the rate for the given status out of all Application objects
 def calc_rate(status_name, applications):
@@ -574,11 +641,12 @@ def calc_rate(status_name, applications):
         
     rate = 0
     if status_name == "Applied":
-        
         rate = (response_count/applications_count) * 100
     else:
         rate = (len(get_all_status_applications(status_name))/applications_count) * 100
+        # print(get_all_status_applications("Interview"))
     return round(rate, 2)
+
 
 # Function that calculates the average response time period after sending an application
 def calc_avg_response_time():
@@ -590,6 +658,7 @@ def calc_avg_response_time():
     time_period = time_period / len(applications)
     return int(time_period)
 
+
 # Function that calculates the average salary/pay if the information is available from applications
 def calc_avg_salary():
     applications = Application.objects.filter(pay__gt=0)
@@ -599,7 +668,8 @@ def calc_avg_salary():
     avg_pay = pay / len(applications)
     return round(avg_pay, 2)
 
-# Fucntion that formats the employer's url to correct logo api format
+
+# Function that formats the employer's url to correct logo api format
 def format_url_for_logo(url):
     if url:
         url_without_https = url.replace('https://', '')
@@ -609,6 +679,7 @@ def format_url_for_logo(url):
         return url_without_https
     else:
         return url
-    
+
+
 # ---- MISC FUNCTIONS END ---- #
 

@@ -68,14 +68,17 @@
                                 <div>
                                     <span class="h6"> Applied On: </span><span id="viewer_application_date"> Loading... </span>
                                 </div>
-                                <div>
+                                <div class="d-flex">
                                     <span class="h6"> Status: </span>
-                                    <select class="form-select" id="status_id" name="status_type">
+                                    <select class="form-select" id="status_id" name="status_type" style="width: 25vh;">
                                         <option value="" id="viewer_status"> Loading... </option>
                                         {% for status in statuses %}
                                             <option value="{{ status.name }}">{{ status.name }}</option>
                                         {% endfor %}
                                     </select>
+                                </div>
+                                <div id="viewer_response_time_container" style="display: none;">
+                                    <span class="h6"> Responded On: </span><span id="viewer_response_time"> Loading... </span>
                                 </div>
                             </div>
                         </div>

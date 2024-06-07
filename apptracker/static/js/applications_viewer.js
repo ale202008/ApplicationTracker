@@ -1,3 +1,5 @@
+
+
 // Loads up the latest application into the fields for our application_viewer element.
 $(document).ready(function() {
     $.ajax({
@@ -19,6 +21,13 @@ $(document).ready(function() {
             $('#viewer_employment_type').text(data.employment_type);
             $('#viewer_notes').text(data.notes);
             $('#viewer_update_status_button').attr('data-update-application-id', data.application_id);
+            if (data.response_time) {
+                $('#viewer_response_time').text(data.response_time);
+                $('#viewer_response_time_container').show();
+            } else {
+                $('#viewer_response_time').text(""); 
+                $('#viewer_response_time_container').hide(); 
+            }
         },
         error: function(xhr, status, error) {
             console.error('Error fetching the latest application:', error);
@@ -26,13 +35,16 @@ $(document).ready(function() {
     });
 });
 
+
 // When a button is clicked and has the class 'application-card-button', retrieve information for that button's application_id
 $(document).ready(function() {
     $('.application-card-button').click(function() {
         var applicationId = $(this).data('application-id');
         fetchApplicationDetails(applicationId);
+        $('#status_id').val('');
     });
 });
+
 
 // Function for getting an application details when given an applicationId
 function fetchApplicationDetails(applicationId) {
@@ -56,6 +68,13 @@ function fetchApplicationDetails(applicationId) {
             $('#viewer_employment_type').text(data.employment_type);
             $('#viewer_notes').text(data.notes);
             $('#viewer_update_status_button').attr('data-update-application-id', data.application_id);
+            if (data.response_time) {
+                $('#viewer_response_time').text(data.response_time);
+                $('#viewer_response_time_container').show();
+            } else {
+                $('#viewer_response_time').text(""); 
+                $('#viewer_response_time_container').hide(); 
+            }
         },
         error: function(xhr, status, error) {
             console.error('Error fetching the latest application:', error);
@@ -63,15 +82,16 @@ function fetchApplicationDetails(applicationId) {
     });
 }
 
+
 // Listener for when 'update-status' button is clicked, call function and update status to given status_id
 $(document).ready(function() {
     $('#viewer_update_status_button').click(function() {
         var selectedStatus = $('#status_id').val();
         var applicationId = $(this).data('update-application-id');
-        
         updateStatus(selectedStatus, applicationId);
     });
 });
+
 
 // Function that updates the status of application object by calling endpoint in utils.py, sending the status and applicationid
 function updateStatus(selectedStatus, applicationId) {
@@ -91,6 +111,7 @@ function updateStatus(selectedStatus, applicationId) {
             console.log('Status updated successfully.');
             alert("Status updated successfully.")
             fetchApplicationDetails(applicationId)
+            updateNavbarStats();
         },
         error: function(xhr, status, error) {
             console.error('Error fetching the latest application:', error);
@@ -98,12 +119,41 @@ function updateStatus(selectedStatus, applicationId) {
     });
 }
 
+
+// Function that updates the Navbar stats without needing to reload the page
+function updateNavbarStats() {
+    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    $.ajax({
+        url: '/get_navbar_stats/',
+        type: 'POST',
+        dataType: 'json',
+        beforeSend: function(xhr, settings) {
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+        },
+        success: function(data) {
+            console.log(data)
+            $('#avg_resp_time').text(data.responsetime + " Days");
+            $('#response_rate').text(data.responserate + "%");
+            $('#rejection_rate').text(data.rejectionrate + "%");
+            $('#interview_rate').text(data.interviewrate + "%");
+            $('#withdrawn_rate').text(data.withdrawnrate + "%");
+            $('#offered_rate').text(data.offeredrate + "%");
+            $('#accepted_rate').text(data.acceptedrate + "%");
+        },
+        error: function(xhr, status, error) {
+            console.error('Error updating navbar stats.', error);
+        }
+    });
+}
+
+
 // Replaces logo image with no_logo in the case image fails to load from api
 $(document).ready(function() {
     $('#viewer_employer_url_logo').on('error', function() {
         $(this).attr('src', fallbackImageUrl);
     });
 });
+
 
 // Listener for when 'status_filter' is selected, call function and update status to given status_name
 $(document).ready(function() {
@@ -124,6 +174,7 @@ $(document).ready(function() {
         }   
     });
 });
+
 
 // Listener for when 'status_search' searchbar is updated via text, filtering through applications
 $(document).ready(function() {
