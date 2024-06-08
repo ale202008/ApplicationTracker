@@ -30,7 +30,9 @@
 
     </head>
     <body class="bg-secondary-subtle" data-bs-theme="dark">
-        {% include 'components/navbar.html' %}
+        <div class="navbar-container">
+            {% include 'components/navbar.html' %}
+        </div>
         {% block content %}
         {% endblock %}
     </body>
