@@ -115,6 +115,14 @@ body {
 }
 
 /* navbar.html end */
+/* base.html */
+
+.navbar-container {
+    width: 100%;
+
+}
+
+/* base.html end */
 /* home.html end */
 
 #logo-container {
@@ -138,6 +146,14 @@ body {
     100% {
         transform: translateY(100vh);
     }
+}
+
+.submission-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
 }
 
 /* home.html end */
