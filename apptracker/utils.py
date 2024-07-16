@@ -249,7 +249,7 @@ def get_position_and_count(applications):
         applications = get_all_applications()
     
     position_count = {}
-    
+
     for application in applications:
         position = application.position
         if position in position_count:
@@ -259,7 +259,7 @@ def get_position_and_count(applications):
 
     sorted_positions = sorted(position_count.items(), key=lambda item: item[1], reverse=True)
     most_applied_position, highest_count = sorted_positions[0]
-    
+
     return most_applied_position, highest_count
 
 
