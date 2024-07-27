@@ -1,4 +1,4 @@
-<div class="card bg-body rounded-4 border border-0 shadow-lg text-bg-dark">
+<div class="submissioncard card bg-body rounded-4 border border-0 shadow-lg text-bg-dark">
     <div class="card-header text-center">
       Application Submission
     </div>
@@ -13,14 +13,12 @@
           </div>
           <div class="col-md-12 mb-3">
             <label for="employer" class="form-label">Employer</label>
-            <select class="form-select" id="employer_id" name="employer">
-              <option value="">Select Employer</option>
+            <input list="employer_list" class="form-control" id="employer_id" name="employer" placeholder="Select or Create Employer">
+            <datalist id="employer_list">
               {% for choice in employer_choices %}
                   <option value="{{ choice }}">{{ choice }}</option>
               {% endfor %}
-              <option value="other">Other...</option>
-            </select>
-            <input type="text" class="form-control d-none" id="other_employer" name="other_employer" placeholder="Enter other employer">
+            </datalist>
           </div>
           <div class="col-md-12 mb-3">
             <div class="col-md-12 mb-3">
@@ -28,12 +26,12 @@
               <input class="form-control" id="websiteurl_id" name="websiteurl">
             </div>
             <label for="employment_type" class="form-label">Employment Type</label>
-            <select class="form-select" id="employment_type_id" name="employment_type">
-              <option value="">Select Employment Type</option>
+            <input list="employment_type_list" class="form-control" id="employment_type_id" name="employment_type" placeholder="Select Employment Type">
+            <datalist id="employment_type_list">
               {% for choice in employment_choices %}
                   <option value="{{ choice.0 }}">{{ choice.1 }}</option>
               {% endfor %}
-            </select>
+            </datalist>
           </div>
         </div>
         {% comment %} right inputs {% endcomment %}
@@ -44,8 +42,8 @@
           </div>
           <div class="col-md-12 mb-3">
             <label for="location" class="form-label">Location</label>
-            <select class="form-select" id="location_id" name="location">
-              <option value="">Select Location</option>
+            <input list="location_list" class="form-control" id="location_id" name="location" placeholder="Select or Create Location">
+            <datalist id="location_list">
               {% for choice in location_choices %}
                   {% if choice.state %}
                     <option value="{{ choice.city }}, {{choice.state}}">{{ choice.city }}, {{ choice.state }}</option>
@@ -53,20 +51,16 @@
                     <option value="{{ choice.city }}">{{ choice.city }}</option>
                   {% endif %}
               {% endfor %}
-              <option value="other">Other...</option>
-            </select>
-            <input type="text" class="form-control d-none" id="other_location" name="other_location" placeholder="Enter other location">
+            </datalist>
           </div>
           <div class="col-md-12 mb-3">
             <label for="source" class="form-label">Source</label>
-            <select class="form-select" id="source_id" name="source">
-              <option value="">Select Source</option>
+            <input list="source_list" class="form-control" id="source_id" name="source" placeholder="Select or Create Source">
+            <datalist id="source_list">
               {% for choice in source_choices %}
                   <option value="{{ choice }}">{{ choice }}</option>
               {% endfor %}
-              <option value="other">Other...</option>
-              <input type="text" class="form-control d-none" id="other_source" name="other_source" placeholder="Enter other source">
-            </select>
+            </datalist>
           </div>
           <div class="col-md-12 mb-3">
             <label for="application_date" class="form-label">Application Date</label>

@@ -2,10 +2,6 @@
     --white: #fff;
 }
 
-body { 
-    padding-top: 56px;
-}
-
 .text-white {
     color: var(--white);
 }
@@ -81,11 +77,6 @@ body {
     --max-height: 100vh;
 }
 
-.max-height-79vh {
-    min-height: 79vh;
-    --max-height: 79vh;
-}
-
 .max-height-75vh {
     min-height: 75vh;
     --max-height: 75vh;
@@ -102,6 +93,11 @@ body {
 /* scrollable heights end */
 /* different heights end */
 /* application.html */
+
+.application-scrollbar-container {
+    min-height: 79vh;
+    --max-height: 79vh;
+}
 
 .fallback-image {
     background-color: white;
@@ -154,7 +150,13 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
+
+    .submissioncard{
+        width: 30%;
+    }
 }
+
+
 
 /* home.html end */
 /* chart.html */
