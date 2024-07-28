@@ -3,13 +3,13 @@ const logoContainer = document.getElementById('logo-container');
 function fetchLogoLinks() {
     return new Promise((resolve, reject) => {
         $.ajax({
-            url: '/get_logo_links/', // Replace with the URL to fetch logo links
+            url: '/get_logo_links/', 
             method: 'GET',
             success: function(response) {
-                resolve(response.links); // Resolve with logo links
+                resolve(response.links); 
             },
             error: function(xhr, status, error) {
-                reject(error); // Reject with error message
+                reject(error); 
             }
         })
     })
@@ -20,18 +20,18 @@ function createLogoElement(link) {
     const logo = document.createElement('img');
     logo.src = link;
     logo.classList.add('logo');
-    logo.style.left = `${Math.random() * 95}vw`; // Random horizontal position
+    logo.style.left = `${Math.random() * 95}vw`; 
     logoContainer.appendChild(logo);
 
     // Add event listener for animation iteration end event
     logo.addEventListener('animationiteration', () => {
-        logo.style.left = `${Math.random() * 95}vw`; // Randomize horizontal position
+        logo.style.left = `${Math.random() * 95}vw`; 
     });
 
     // Add event listener for error handling
     logo.addEventListener('error', () => {
         // Handle error (disable or remove logo)
-        logo.style.display = 'none'; // Hide the logo
+        logo.style.display = 'none'; 
         console.error('Failed to load logo:', link);
     });
 

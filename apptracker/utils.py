@@ -234,7 +234,7 @@ def get_logo_links(request):
 # Function that returns the latitude and longitude of City, State
 def get_latitude_and_longitude(location_city, location_state):
     geolocator = Nominatim(user_agent="appl_tracker")
-    state_code = pycountry.subdivisions.search_fuzzy(location_state)[0].code
+    state_code = pycountry.subdivisions.search_fuzzy(location_state)[0].code if location_state != "D.C." else 'US-DC'
     state_code = state_code[3:]
     geo_location_str = f'{location_city}, {state_code}'
     geo_location = geolocator.geocode(geo_location_str)
@@ -367,7 +367,7 @@ def get_map_data():
 
     for location in locations:  
         applications = get_applications_by_location(location)
-        subdivisions = pycountry.subdivisions.search_fuzzy(location.state)
+        subdivisions = pycountry.subdivisions.search_fuzzy(location.state) if location.state != 'D.C.' else pycountry.subdivisions.search_fuzzy('US-DC')
         us_subdivisions = [subdivision for subdivision in subdivisions if subdivision.country_code == 'US']
         state_code = us_subdivisions[0].code
         for i in range(applications.count()):
