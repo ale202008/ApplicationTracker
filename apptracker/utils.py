@@ -9,6 +9,7 @@ import calendar
 import random
 import pycountry
 import time
+from bs4 import BeautifulSoup
 
 
 # Functions dedicated to grab applications based on requirements separated by category
@@ -508,9 +509,10 @@ def applied_today():
 def application_submission(request):
     position = request.POST.get('position')
     pay = request.POST.get('pay')
-    employer_name = request.POST.get('employer') or request.POST.get('other_employer')
-    employer, _ = Employer.objects.get_or_create(name=employer_name) if employer_name else (None, None)
-    location_name = request.POST.get('location') or request.POST.get('other_location')
+    employer_name = request.POST.get('employer')
+    employer_id = request.POST.get('glassdoorid')
+    employer, _ = Employer.objects.get_or_create(name=employer_name, glassdoor_id=employer_id) if employer_name else (None, None)
+    location_name = request.POST.get('location')
     if location_name == "Remote":
         location = Location.objects.get(city=location_name)
     else:
@@ -602,6 +604,22 @@ def get_application_json(request):
     return JsonResponse(data)
 
 
+@require_GET
+# Function that webscrapes the glassdoor review score for a company:
+def get_glassdoor_score(request):
+    # headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'}
+    # company_name = request.GET.get('employer_name')
+    # company_id = request.GET.get('employer_id')
+    # url = (f'https://www.glassdoor.com/Reviews/{company_name}-Reviews-{company_id}.htm')
+    # print(url)
+    
+    data = {
+        'id': request.GET.get('id'),
+        'score': 3
+        }
+    return JsonResponse(data)
+
+
 @require_POST
 # Function that returns the stats shown in the navbar, updates navbar stats when an application update occurs
 def get_navbar_stats(request):
@@ -617,6 +635,7 @@ def get_navbar_stats(request):
         'avgpay': calc_avg_salary(),
     }
     return JsonResponse(data)
+
 
 
 # ---- REQUEST FUNCTIONS END ---- #

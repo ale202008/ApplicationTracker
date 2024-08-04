@@ -19,12 +19,20 @@
                              height='36px' style="max-width: 124px" />
                     {% endif %}
                 </span>
-            </div>
+            </div> 
             <div class="col-md-7">
                 <div class="row">
                     <span>
-                        {{ application.employer }}
+                        {{ application.employer.name }}
+                        <span
+                            id="glassdoor_review_score-{{ application.employer.id }}"
+                            data-employer-name="{{ application.employer.name }}" 
+                            data-employer-id="{{ application.employer.glassdoor_id }}"
+                            data-id="{{ application.employer.id }}"
+                        >
+                        </span>
                     </span>
+
                 </div>
                 <div class="row">
                     <span>

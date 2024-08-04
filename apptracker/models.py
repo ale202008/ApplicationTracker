@@ -28,6 +28,7 @@ class Location(models.Model):
 class Employer(models.Model):
     name = models.CharField(max_length=50)
     website_url = models.URLField(null=True, blank=True)
+    glassdoor_id = models.CharField(max_length=50)
     
     def __str__(self):
         return self.name

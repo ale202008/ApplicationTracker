@@ -18,5 +18,6 @@ urlpatterns = [
     path('get_logo_links/', get_logo_links, name='get_links'),
     path('get_application_json/', get_application_json, name='get_application_json'),
     path('get_navbar_stats/', get_navbar_stats, name='get_navbar_stats'),
+    path('get_glassdoor_review_score/', get_glassdoor_score, name='get_glassdoor_review_score')
     
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
