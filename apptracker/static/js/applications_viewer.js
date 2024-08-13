@@ -35,8 +35,30 @@ $(document).ready(function() {
 
 
 // Function that sends a request to the backend to retrieve glassdoor review score.
+// $(document).ready(function() {
+//     $('span[id^="glassdoor_review_score-"').each(function() {
+//         var $this = $(this)
+//         employerName = $this.data('employer-name')
+//         employerId = $this.data('employer-id')
+//         id = $this.data('id')
+
+//         $.ajax({
+//             url: '/get_glassdoor_review_score/',
+//             type: 'GET',
+//             data: {
+//                 employer_name: employerName,
+//                 employer_id: employerId,
+//                 id: id,
+//             },
+//             success: function(data) {
+//                 $('#glassdoor_review_score-' + data.id).text(data.score)
+//             }   
+//         })
+//     })
+// })
+
 $(document).ready(function() {
-    $('span[id^="glassdoor_review_score-"').each(function() {
+        $('span[id^="glassdoor_review_score-161"').each(function() {
         var $this = $(this)
         employerName = $this.data('employer-name')
         employerId = $this.data('employer-id')
@@ -52,12 +74,10 @@ $(document).ready(function() {
             },
             success: function(data) {
                 $('#glassdoor_review_score-' + data.id).text(data.score)
-                console.log("ID: ", data.id)
             }   
         })
     })
 })
-
 
 // When a button is clicked and has the class 'application-card-button', retrieve information for that button's application_id
 $(document).ready(function() {

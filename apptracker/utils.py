@@ -9,6 +9,7 @@ import calendar
 import random
 import pycountry
 import time
+import requests
 from bs4 import BeautifulSoup
 
 
@@ -607,11 +608,24 @@ def get_application_json(request):
 @require_GET
 # Function that webscrapes the glassdoor review score for a company:
 def get_glassdoor_score(request):
-    # headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'}
-    # company_name = request.GET.get('employer_name')
-    # company_id = request.GET.get('employer_id')
-    # url = (f'https://www.glassdoor.com/Reviews/{company_name}-Reviews-{company_id}.htm')
-    # print(url)
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+        'Accept-Language': 'en-US,en;q=0.9',
+        'Accept-Encoding': 'gzip, deflate, br',
+        'Connection': 'keep-alive',
+        'DNT': '1',
+        'Upgrade-Insecure-Requests': '1'
+    }
+    company_name = request.GET.get('employer_name').replace(" ", "-")
+    company_id = request.GET.get('employer_id')
+    url = (f'https://www.glassdoor.com/Reviews/{company_name}-Reviews-{company_id}.htm')
+    print(url)
+
+
+    resp = requests.get(url, headers=headers)
+    print(resp.status_code)
+
+
     
     data = {
         'id': request.GET.get('id'),
