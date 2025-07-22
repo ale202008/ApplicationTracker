@@ -21,6 +21,19 @@ class HomeView(View):
         
         return render(request, 'home.html', context)
     
+    
+class HomeV2View(View):
+    def get(self, request):
+        total_applications = get_all_application_count();
+        total_applied = get_no_response_count(None);
+        
+        context = {
+            'total_applications': total_applications,
+            'total_applied': total_applied,
+        }
+        return render(request, 'homev2.html', context)
+    
+    
 class ApplicationsView(View):
     def get(self, request):
         context = {

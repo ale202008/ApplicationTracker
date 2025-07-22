@@ -10,6 +10,7 @@ urlpatterns = [
     path('', HomeView.as_view(), name='home'),
     path('applications/', ApplicationsView.as_view(), name='applications'),
     path('chart/', ChartView.as_view(), name='chart'),
+    path('home_v2/', HomeV2View.as_view(), name='home_v2'),
     
     
     # For Endpoints

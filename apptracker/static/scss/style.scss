@@ -1,10 +1,48 @@
 :root {
     --white: #fff;
+    --black: #010409;
+    --dark-gray: #2E343C;
+
+    --text-sm: .875rem;
+    --text-sm--line-height: calc(1.25 / .875);
+}
+
+.text-sm {
+    font-size: var(--text-sm);
+    line-height: var(--text-sm--line-height);
+}
+
+/* colors start */
+
+.color-white {
+    background-color: var(--white);
 }
 
 .text-white {
     color: var(--white);
 }
+
+.color-black {
+    background-color: var(--black);
+}
+
+.text-black {
+    color: var(--black);
+}
+
+.color-dark-gray {
+    background-color: var(--dark-gray);
+}
+
+.text-dark-gray {
+    color: var(--dark-gray);
+}
+
+.line-dark-gray {
+    border-color: var(--dark-gray);
+}
+
+/* colors end */
 
 .navbarheightfix {
     height: calc(100vh - 56px);
@@ -110,16 +148,19 @@
     font-size: 70%;
 }
 
+.navbar {
+    border-bottom: 1px solid var(--dark-gray);
+}
+
 /* navbar.html end */
 /* base.html */
 
 .navbar-container {
     width: 100%;
-
 }
 
 /* base.html end */
-/* home.html end */
+/* home.html start */
 
 #logo-container {
     position: fixed;
@@ -159,6 +200,11 @@
 
 
 /* home.html end */
+/* homev2.html start */
+
+
+/* homev2.html end*/
+
 /* chart.html */
 
 #sankeychart {
