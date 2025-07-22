@@ -2,6 +2,7 @@
     --white: #fff;
     --black: #010409;
     --dark-gray: #2E343C;
+    --light-gray: #262C36;
 
     --text-sm: .875rem;
     --text-sm--line-height: calc(1.25 / .875);
@@ -40,7 +41,17 @@
 
 .line-dark-gray {
     border-color: var(--dark-gray);
+    border-width: 2px;
 }
+
+.color-light-gray {
+    background-color: var(--light-gray);
+}
+
+.text-dark-gray {
+    color: var(--light-gray);
+}
+
 
 /* colors end */
 
@@ -197,11 +208,13 @@
     }
 }
 
-
-
 /* home.html end */
 /* homev2.html start */
 
+.application-container {
+    height: 100vh;
+    width: 65%;
+}
 
 /* homev2.html end*/
 

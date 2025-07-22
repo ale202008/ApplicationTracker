@@ -2,57 +2,71 @@
 {% load static %}
 
 {% block content %}
-    <div class="container-fluid mx-auto p-3"> 
-        <div class="row align-items-center mb-4 g-3">  
-            <div class="col-md-auto">
-                <div class="card color-black text-white line-dark-gray" style="min-width: 14rem; height: 120px;">
-                    <div class="card-body d-flex flex-column h-100">
-                        <h4 class="text-sm d-flex justify-content-between align-items-center mb-auto">
-                            <span>Total Applications</span>
-                            <img src="{% static 'icons/trendingup.svg' %}" alt="Trending Up" width="24" style="margin-right: -8px;">
-                        </h4>
-                        <p class="mb-0 mt-auto fs-5">{{ total_applications }}</p>
-                    </div>   
+    <div class="container-fluid max-height-75vh">
+        <!-- Header -->
+        <div class="application-container mx-auto max-height-75vh pt-3">
+            <div class="row justify-content-center mb-1 mt-3">
+                <div class="px-0" style="width: calc(5 * 14rem + 4 * 1rem); max-width: 100%;">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div>
+                            <h1 class="text-white mb-1">Application Tracker</h1>
+                            <p class="text-white">Track your job applications and stay organized</p>
+                        </div>
+                        <button class="btn btn-secondary color-light-gray line-dark-gray">+ Add Application</button>
+                    </div>
+
                 </div>
             </div>
-            <div class="col-md-auto"> 
-                <div class="card color-black text-white line-dark-gray" style="min-width: 14rem; height: 120px;">
-                    <div class="card-body d-flex flex-column h-100">
-                        <h4 class="text-sm d-flex justify-content-between align-items-center mb-auto">
-                            <span>Applied</span>
-                        </h4>
-                        <p class="mb-0 mt-auto fs-5">{{ total_applied }}</p>
-                    </div>   
+            
+            <!-- Cards row -->
+            <div class="row justify-content-center g-3 mx-auto" style="max-width: 80rem;">
+                
+                <div class="col-md-auto px-2">
+                    <div class="card color-black text-white line-dark-gray" style="min-width: 14rem; height: 120px;">
+                        <div class="card-body d-flex flex-column h-100">
+                            <h4 class="text-sm d-flex justify-content-between align-items-center mb-auto">
+                                <span>Total Applications</span>
+                                <img src="{% static 'icons/trendingup.svg' %}" alt="Trending Up" width="24" style="margin-right: -8px;">
+                            </h4>
+                            <p class="mb-0 mt-auto fs-5">{{ total_applications }}</p>
+                        </div>   
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-auto"> 
-                <div class="card color-black text-white line-dark-gray" style="min-width: 14rem; height: 120px;">
-                    <div class="card-body d-flex flex-column h-100">
-                        <h4 class="text-sm d-flex justify-content-between align-items-center mb-auto">
-                            <span>Interviews</span>
-                        </h4>
-                        <p class="mb-0 mt-auto fs-5">{{ total_interviews }}</p>
-                    </div>   
+                
+                <div class="col-md-auto px-2">
+                    <div class="card color-black text-white line-dark-gray" style="min-width: 14rem; height: 120px;">
+                        <div class="card-body d-flex flex-column h-100">
+                            <h4 class="text-sm mb-auto">Applied</h4>
+                            <p class="mb-0 mt-auto fs-5">{{ total_applied }}</p>
+                        </div>   
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-auto"> 
-                <div class="card color-black text-white line-dark-gray" style="min-width: 14rem; height: 120px;">
-                    <div class="card-body d-flex flex-column h-100">
-                        <h4 class="text-sm d-flex justify-content-between align-items-center mb-auto">
-                            <span>Offers</span>
-                        </h4>
-                        <p class="mb-0 mt-auto fs-5">{{ total_offered }}</p>
-                    </div>   
+                
+                <div class="col-md-auto px-2">
+                    <div class="card color-black text-white line-dark-gray" style="min-width: 14rem; height: 120px;">
+                        <div class="card-body d-flex flex-column h-100">
+                            <h4 class="text-sm mb-auto">Interviews</h4>
+                            <p class="mb-0 mt-auto fs-5">{{ total_interviews }}</p>
+                        </div>   
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-auto"> 
-                <div class="card color-black text-white line-dark-gray" style="min-width: 14rem; height: 120px;">
-                    <div class="card-body d-flex flex-column h-100">
-                        <h4 class="text-sm d-flex justify-content-between align-items-center mb-auto">
-                            <span>Rejected</span>
-                        </h4>
-                        <p class="mb-0 mt-auto fs-5">{{ total_rejected }}</p>
-                    </div>   
+                
+                <div class="col-md-auto px-2">
+                    <div class="card color-black text-white line-dark-gray" style="min-width: 14rem; height: 120px;">
+                        <div class="card-body d-flex flex-column h-100">
+                            <h4 class="text-sm mb-auto">Offers</h4>
+                            <p class="mb-0 mt-auto fs-5">{{ total_offered }}</p>
+                        </div>   
+                    </div>
+                </div>
+                
+                <div class="col-md-auto px-2">
+                    <div class="card color-black text-white line-dark-gray" style="min-width: 14rem; height: 120px;">
+                        <div class="card-body d-flex flex-column h-100">
+                            <h4 class="text-sm mb-auto">Rejected</h4>
+                            <p class="mb-0 mt-auto fs-5">{{ total_rejected }}</p>
+                        </div>   
+                    </div>
                 </div>
             </div>
         </div>
