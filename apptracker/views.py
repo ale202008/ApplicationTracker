@@ -26,10 +26,16 @@ class HomeV2View(View):
     def get(self, request):
         total_applications = get_all_application_count();
         total_applied = get_no_response_count(None);
+        total_interviews = get_status_application_count("Interview", 1).count()
+        total_offered = get_status_application_count("Offered", 0).count()
+        total_rejected = get_status_application_count("Rejected", 0).count()
         
         context = {
             'total_applications': total_applications,
             'total_applied': total_applied,
+            'total_interviews': total_interviews,
+            'total_offered': total_offered,
+            'total_rejected': total_rejected,
         }
         return render(request, 'homev2.html', context)
     
