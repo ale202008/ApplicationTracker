@@ -1,0 +1,91 @@
+<div class="modal fade line-dark-gray" id="addApplicationModal" tabindex="-1" aria-labelledby="addApplicationModalLabel" aria-hidden="true" data-bs-backdrop="static">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content color-black text-white">  
+      <div class="modal-header color-dark-gray line-dark-gray">  
+        <h5 class="modal-title" id="addApplicationModalLabel">New Application</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body color-light-gray line-dark-gray">
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="position_id" class="form-label">Position</label>
+                <input class="form-control" id="position_id" name="position">
+            </div>
+            <div class="col-md-6">
+                <label for="compensation_id" class="form-label">Compensation</label>
+                <input class="form-control" id="compensation_id" name="compensation">
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="employer" class="form-label">Employer</label>
+                <input list="employer_list" class="form-control" id="employer_id" name="employer" placeholder="Select or Create Employer">
+                <datalist id="employer_list">
+                    {% for choice in employer_choices %}
+                        <option value="{{ choice }}">{{ choice }}</option>
+                    {% endfor %}
+                </datalist>
+            </div>
+            <div class="col-md-6">
+                <label for="location" class="form-label">Location</label>
+                <input list="location_list" class="form-control" id="location_id" name="location" placeholder="Select or Create Location">
+                <datalist id="location_list">
+                    {% for choice in location_choices %}
+                        {% if choice.state %}
+                            <option value="{{ choice.city }}, {{choice.state}}">{{ choice.city }}, {{ choice.state }}</option>
+                        {% else %}
+                            <option value="{{ choice.city }}">{{ choice.city }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </datalist>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label class="form-label">Employer Website URL</label>
+                <input class="form-control" id="websiteurl_id" name="websiteurl">
+            </div>
+            <div class="col-md-6">
+                <label for="source" class="form-label">Job Board</label>
+                <input list="source_list" class="form-control" id="source_id" name="source" placeholder="Select or Create Source">
+                <datalist id="source_list">
+                    {% for choice in source_choices %}
+                        <option value="{{ choice }}">{{ choice }}</option>
+                    {% endfor %}
+                </datalist>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="employment_type" class="form-label">Employment Type</label>
+                <input list="employment_type_list" class="form-control" id="employment_type_id" name="employment_type" placeholder="Select Employment Type">
+                <datalist id="employment_type_list">
+                    {% for choice in employment_choices %}
+                        <option value="{{ choice.0 }}">{{ choice.1 }}</option>
+                    {% endfor %}
+                </datalist>
+            </div>
+            <div class="col-md-6">
+                <label for="application_date" class="form-label">Application Date</label>
+                <input class="form-control" type="date" id="application_date" name="application_date">
+            </div>
+        </div>
+        <div class="align-items-center m-auto" style="width: 95%;">
+            <div class="row mb-3">
+                <label for="description" class="form-label">Description</label>
+                <textarea class="form-control" id="description_id" name="description"></textarea>
+            </div>
+            <div class="row mb-3">
+                <label for="notes" class="form-label">Notes</label>
+                <textarea class="form-control" id="notes_id" name="notes"></textarea>
+            </div>
+        </div>
+        
+      </div>
+      <div class="modal-footer color-dark-gray line-dark-gray">  
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-secondary">Add Application</button> 
+      </div>
+    </div>
+  </div>
+</div>

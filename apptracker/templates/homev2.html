@@ -2,9 +2,10 @@
 {% load static %}
 
 {% block content %}
-    <div class="container-fluid max-height-75vh">
+    {% include 'components/modal_application_form.html' %}
+    <div class="container-fluid">
         <!-- Header -->
-        <div class="application-container mx-auto max-height-75vh pt-3">
+        <div class="application-container mx-auto pt-3 max-height-75vh">
             <div class="row justify-content-center mb-1 mt-3">
                 <div class="px-0" style="width: calc(5 * 14rem + 4 * 1rem); max-width: 100%;">
                     <div class="d-flex justify-content-between align-items-center mb-3">
@@ -12,7 +13,9 @@
                             <h1 class="text-white mb-1">Application Tracker</h1>
                             <p class="text-white">Track your job applications and stay organized</p>
                         </div>
-                        <button class="btn btn-secondary color-light-gray line-dark-gray">+ Add Application</button>
+                        <button class="btn btn-secondary color-light-gray line-dark-gray" data-bs-toggle="modal" data-bs-target="#addApplicationModal">
+                            + Add Application
+                        </button>
                     </div>
 
                 </div>
